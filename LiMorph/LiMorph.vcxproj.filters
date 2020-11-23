@@ -97,5 +97,8 @@
     <None Include="MountEvent.lua">
       <Filter>Lua</Filter>
     </None>
+    <None Include="ShapeshiftEvent.lua">
+      <Filter>Lua</Filter>
+    </None>
   </ItemGroup>
 </Project>
