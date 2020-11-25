@@ -8,27 +8,27 @@ namespace LiMorph {
 namespace Offsets {
 
 	// Function offsets
-	constexpr uintptr_t update_display_info = 0x10B6F50;
-	constexpr uintptr_t update_mount_display_info = 0x10A2BA0;
-	constexpr uintptr_t frame_script_execute = 0x7B2300;
-	constexpr uintptr_t frame_script_register_function = 0x7B32F0;
-	constexpr uintptr_t frame_script_invalid_ptr_check = 0xFCDC10;
-	constexpr uintptr_t lua_gettop = 0x2809A0;
-	constexpr uintptr_t lua_pushnumber = 0x281240;
-	constexpr uintptr_t lua_tolstring = 0x281EB0;
-	constexpr uintptr_t lua_tonumber = 0x281F50;
-	constexpr uintptr_t get_unit_from_name = 0x1A55FB0;
+	constexpr uintptr_t update_display_info = 0x10C42B0;
+	constexpr uintptr_t update_mount_display_info = 0x10AFE80;
+	constexpr uintptr_t frame_script_execute = 0x7BE5E0;
+	constexpr uintptr_t frame_script_register_function = 0x7BF5D0;
+	constexpr uintptr_t frame_script_invalid_ptr_check = 0xFDC060;
+	constexpr uintptr_t lua_gettop = 0x28B220;
+	constexpr uintptr_t lua_pushnumber = 0x28BAC0;
+	constexpr uintptr_t lua_tolstring = 0x28C730;
+	constexpr uintptr_t lua_tonumber = 0x28C7D0;
+	constexpr uintptr_t get_unit_from_name = 0x1A69850;
 
 
 	// POINTER TO END OF .TEXT (change value at this address to make frame_script_register_function work)
-	constexpr uintptr_t invalid_ptr_limit = 0x2E91F78;
+	constexpr uintptr_t invalid_ptr_limit = 0x2EA1F68;
 
 	// Generally useful offsets
 	constexpr uintptr_t game_version = 0x26297FC;
-	constexpr uintptr_t in_game_flag = 0x2FBAB3C;
+	constexpr uintptr_t in_game_flag = 0x2FCAB3C;
 
 	// Object manager
-	constexpr uintptr_t object_manager = 0x2EF6630;
+	constexpr uintptr_t object_manager = 0x2F18650;
 
 
 	// Object manager offsets
@@ -49,7 +49,7 @@ namespace Offsets {
 	constexpr uintptr_t gender_id = 0x1C7B;
 	constexpr uintptr_t title_id = 0x2240;
 
-	//constexpr uintptr_t mount_id1 = 0x93C;
+	constexpr uintptr_t mount_id1 = 0x93C;
 	//constexpr uintptr_t mount_id2 = 0x938;
 
 	constexpr uintptr_t guid = standard_offset + 0x18;

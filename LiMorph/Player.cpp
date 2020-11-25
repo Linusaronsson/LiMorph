@@ -82,6 +82,10 @@ int Player::getMorphIDInMemory() {
 	return Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
 }
 
+int Player::getMountIDInMemory() {
+	return Memory::readMemory<int>(m_player_ptr + Offsets::mount_id1);
+}
+
 
 int Player::getOriginalMorphID() {
 	return m_current_original_morph_id;
@@ -145,30 +149,26 @@ int Player::getOriginalShapeshiftID(ShapeshiftForm form) {
 }
 
 void Player::setCurrentOriginalShapeshiftID(ShapeshiftForm form) {
+	int morph_id = Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
 	switch (form) {
 	case ShapeshiftForm::BEAR:
-		m_original_bear_form_id = Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
-		m_current_original_morph_id = m_original_bear_form_id;
+		m_original_bear_form_id = m_current_original_morph_id = morph_id;
 		break;
 	case ShapeshiftForm::CAT:
-		m_original_cat_form_id = Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
-		m_current_original_morph_id = m_original_cat_form_id;
+		m_original_cat_form_id = m_current_original_morph_id = morph_id;
 		break;
 	case ShapeshiftForm::SWIFT_FLIGHT:
-		m_original_flight_form_id = Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
-		m_current_original_morph_id = m_original_flight_form_id;
+		m_original_flight_form_id = m_current_original_morph_id = morph_id;
 		break;
 	case ShapeshiftForm::TRAVEL:
-		m_original_travel_form_id = Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
-		m_current_original_morph_id = m_original_travel_form_id;
+		m_original_travel_form_id = m_current_original_morph_id = morph_id;
 		break;
+		// unused
 	case ShapeshiftForm::SHADOW:
-		m_original_flight_form_id = Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
-		m_current_original_morph_id = m_original_flight_form_id;
+		m_original_shadow_form_id = m_current_original_morph_id = morph_id;
 		break;
 	case ShapeshiftForm::MOONKIN:
-		m_original_moonkin_form_id = Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
-		m_current_original_morph_id = m_original_moonkin_form_id;
+		m_original_moonkin_form_id = m_current_original_morph_id = morph_id;
 		break;
 	case ShapeshiftForm::HUMANOID:
 		m_current_original_morph_id = m_original_humanoid_form_id;

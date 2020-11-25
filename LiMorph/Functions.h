@@ -12,7 +12,7 @@ namespace LiMorph {
 namespace WoWFunctions {
     typedef uintptr_t(__cdecl* GetUnitFromName)(const char*);
     typedef void(__fastcall* UpdateDisplayInfo)(uintptr_t);
-    typedef void(__fastcall* UpdateMountDisplayInfo)(uintptr_t, int);
+    typedef void(__fastcall* UpdateMountDisplayInfo)(uintptr_t, unsigned int);
     typedef uintptr_t(__fastcall* FrameScriptExecute)(const char* script, const char* script_name, int64_t val);
     typedef bool(__fastcall* FrameScriptRegisterFunction)(const char*, uintptr_t);
     typedef uintptr_t(__cdecl* FrameScriptInvalidPtrCheck)(uintptr_t);

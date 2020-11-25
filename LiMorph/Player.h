@@ -25,6 +25,7 @@ public:
 	int getMorphID();
 	int getMorphIDInMemory();
 	int getOriginalMorphID();
+	int getMountIDInMemory();
 
 	int getGenderID();
 	int getRaceID();
@@ -65,16 +66,9 @@ private:
 	uintptr_t m_player_ptr;
 	uintptr_t m_customization_ptr;
 
-
-
-
-	// morphing
-
-	// this is whats morphed (written memory)
-	int m_current_morph_id;
-
-	// if reset: always morph in to this!
-	int m_current_original_morph_id;
+	// Morphing
+	int m_current_morph_id; // this is whats morphed (written to memory)
+	int m_current_original_morph_id; // if reset: always morph into this! (tracks correct original id of current shapeshift)
 
 	//shapeshifting
 	int m_humanoid_form_id;

@@ -35,9 +35,9 @@ public:
 
 private:
 	// lua callbacks
-	static void chatCallback(uintptr_t lua_state);
-	static void mountCallback(uintptr_t lua_state);
-	static void shapeshiftCallback(uintptr_t lua_state);
+	static int chatCallback(uintptr_t lua_state);
+	static int mountCallback(uintptr_t lua_state);
+	static int shapeshiftCallback(uintptr_t lua_state);
 
 	static void __fastcall updateDisplayInfoHook(uintptr_t unit);
 	static void run_in_main_thread(); //currently unused (todo: use this in startMorpher probly)
