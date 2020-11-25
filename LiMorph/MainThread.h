@@ -1,6 +1,6 @@
 #pragma once
 
-namespace morph {
+namespace LiMorph {
 
 
 typedef LRESULT WindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);

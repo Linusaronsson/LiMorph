@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MainThread.h"
 
-namespace morph {
+namespace LiMorph {
 
 WNDPROC m_old_callback;
 _callback* m_invoke;

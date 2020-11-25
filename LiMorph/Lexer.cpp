@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Lexer.h"
 
-namespace morph {
+namespace LiMorph {
 
 void Lexer::setText(const std::string& source) {
 	m_source_code = source;

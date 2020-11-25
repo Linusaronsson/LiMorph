@@ -13,7 +13,7 @@
 
 //12E0
 
-namespace morph {
+namespace LiMorph {
 
 // { "maxWoWAddress", "48 8B 05 ? ? ? 01 48 85 D2 74 09 48 85 C0 0F 85 ? 00 00 00", SignatureType::NORMAL, 0x3, 0x0 },
 
@@ -34,15 +34,18 @@ public:
 	}
 
 private:
+	// lua callbacks
 	static void chatCallback(uintptr_t lua_state);
 	static void mountCallback(uintptr_t lua_state);
 	static void shapeshiftCallback(uintptr_t lua_state);
 
 	static void __fastcall updateDisplayInfoHook(uintptr_t unit);
-	static void run_in_main_thread();
+	static void run_in_main_thread(); //currently unused (todo: use this in startMorpher probly)
 
-	void initializeMorpher(int init_type);
-	void initialLogin();
+	void initializeMorpher();
+	void registerFunctions();
+	void registerLuaEvents();
+	void hookUpdateDisplayInfo();
 
 	uintptr_t getPlayerPtr();
 

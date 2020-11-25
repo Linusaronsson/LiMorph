@@ -2,7 +2,7 @@
 
 #include <fstream>
 
-namespace morph {
+namespace LiMorph {
 
 namespace Logging {
     void Print(const std::string& msg);

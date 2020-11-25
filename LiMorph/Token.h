@@ -3,7 +3,7 @@
 #include <string_view>
 #include <charconv>
 
-namespace morph {
+namespace LiMorph {
 
 enum class TokenType : uint8_t
 {

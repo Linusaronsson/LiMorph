@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Player.h"
 
-namespace morph {
+namespace LiMorph {
+
 void Player::initializePlayer() {
 	m_customization_ptr = m_player_ptr + Offsets::customization_ptr;
 
 	m_current_morph_id = Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
-
 	m_original_race_id = m_race_id = Memory::readMemory<int>(m_player_ptr + Offsets::race_id);
 	m_original_gender_id = m_gender_id = Memory::readMemory<int>(m_player_ptr + Offsets::gender_id);
 	m_original_title_id = m_title_id = Memory::readMemory<int>(m_player_ptr + Offsets::title_id);
@@ -19,6 +19,9 @@ void Player::initializePlayer() {
 	m_original_cat_form_id = m_cat_form_id = 0;
 	m_original_flight_form_id = m_flight_form_id = 0;
 	m_original_travel_form_id = m_travel_form_id = 0;
+	m_original_moonkin_form_id = m_moonkin_form_id = 0;
+
+	m_mount_id = 0;
 
 	// read item related things
 	for (int i = 0, j = 0; i < m_original_item_ids.size(); i += 3, j++) {
@@ -52,6 +55,8 @@ void Player::resetPlayer() {
 	m_cat_form_id = m_original_cat_form_id;
 	m_flight_form_id = m_original_flight_form_id;
 	m_travel_form_id = m_original_travel_form_id;
+	m_moonkin_form_id = m_original_moonkin_form_id;
+	//m_travel_form_id = m_original_travel_form_id;
 
 	m_mount_morphed = false;
 	 
@@ -107,6 +112,10 @@ int Player::getShapeshiftID(ShapeshiftForm form) {
 		return m_flight_form_id;
 	case ShapeshiftForm::TRAVEL:
 		return m_travel_form_id;
+	case ShapeshiftForm::SHADOW:
+		return m_shadow_form_id;
+	case ShapeshiftForm::MOONKIN:
+		return m_moonkin_form_id;
 	default:
 		//UNREACHABLE
 		break;
@@ -125,6 +134,10 @@ int Player::getOriginalShapeshiftID(ShapeshiftForm form) {
 		return m_original_flight_form_id;
 	case ShapeshiftForm::TRAVEL:
 		return m_original_travel_form_id;
+	case ShapeshiftForm::SHADOW:
+		return m_original_shadow_form_id;
+	case ShapeshiftForm::MOONKIN:
+		return m_original_moonkin_form_id;
 	default:
 		//UNREACHABLE
 		break;
@@ -148,6 +161,14 @@ void Player::setCurrentOriginalShapeshiftID(ShapeshiftForm form) {
 	case ShapeshiftForm::TRAVEL:
 		m_original_travel_form_id = Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
 		m_current_original_morph_id = m_original_travel_form_id;
+		break;
+	case ShapeshiftForm::SHADOW:
+		m_original_flight_form_id = Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
+		m_current_original_morph_id = m_original_flight_form_id;
+		break;
+	case ShapeshiftForm::MOONKIN:
+		m_original_moonkin_form_id = Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
+		m_current_original_morph_id = m_original_moonkin_form_id;
 		break;
 	case ShapeshiftForm::HUMANOID:
 		m_current_original_morph_id = m_original_humanoid_form_id;
@@ -173,6 +194,12 @@ void Player::setShapeshiftID(ShapeshiftForm form, int form_id) {
 		break;
 	case ShapeshiftForm::TRAVEL:
 		m_travel_form_id = form_id;
+		break;
+	case ShapeshiftForm::SHADOW:
+		m_shadow_form_id = form_id;
+		break;
+	case ShapeshiftForm::MOONKIN:
+		m_moonkin_form_id = form_id;
 		break;
 	default:
 		break;

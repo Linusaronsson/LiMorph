@@ -2,7 +2,7 @@
 
 #include "Logging.h"
 
-namespace morph {
+namespace LiMorph {
 void Logging::Print(const std::string& msg) {
     std::ofstream outfile;
     outfile.open("D:\\Desktop\\debugfile.txt", std::ios_base::app);

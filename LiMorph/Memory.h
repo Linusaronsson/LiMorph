@@ -1,6 +1,6 @@
 #pragma once
 
-namespace morph {
+namespace LiMorph {
 
 namespace Memory
 {

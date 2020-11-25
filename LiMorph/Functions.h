@@ -6,9 +6,9 @@
 
 #include <functional>
 
-extern morph::Morpher* morpher_ptr;
+extern LiMorph::Morpher* morpher_ptr;
 
-namespace morph {
+namespace LiMorph {
 namespace WoWFunctions {
     typedef uintptr_t(__cdecl* GetUnitFromName)(const char*);
     typedef void(__fastcall* UpdateDisplayInfo)(uintptr_t);

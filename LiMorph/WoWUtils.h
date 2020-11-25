@@ -1,6 +1,6 @@
 #pragma once
 
-namespace morph {
+namespace LiMorph {
 
 /*
 struct WGUID {
@@ -30,6 +30,7 @@ enum class ShapeshiftForm {
 	SWIFT_FLIGHT = 27,
 	FLIGHT = 29,
 	MOONKIN = 31,
+	SHADOW = 28,
 };
 
 enum class Items {

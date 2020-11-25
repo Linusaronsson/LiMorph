@@ -4,7 +4,7 @@
 
 #include "Token.h"
 
-namespace morph {
+namespace LiMorph {
 
 class Lexer
 {

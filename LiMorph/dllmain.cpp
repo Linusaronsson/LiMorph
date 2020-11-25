@@ -3,8 +3,8 @@
 #include "pch.h"
 #include "Morpher.h"
 
-morph::Morpher morpher;
-morph::Morpher* morpher_ptr;
+LiMorph::Morpher morpher;
+LiMorph::Morpher* morpher_ptr;
 
 DWORD WINAPI runMorpher(LPVOID lpParam) {
     //ThreadSynchronizer ts = ThreadSynchronizer();

@@ -3,32 +3,32 @@
 #include "pch.h"
 #include "WoWUtils.h"
 
-namespace morph {
+namespace LiMorph {
 
 namespace Offsets {
 
 	// Function offsets
-	constexpr uintptr_t update_display_info = 0x10BBDB0;
-	constexpr uintptr_t update_mount_display_info = 0x10A7840;
-	constexpr uintptr_t frame_script_execute = 0x7BA0A0;
-	constexpr uintptr_t frame_script_register_function = 0x7BB090;
-	constexpr uintptr_t frame_script_invalid_ptr_check = 0xFD42F0;
-	constexpr uintptr_t lua_gettop = 0x288C40;
-	constexpr uintptr_t lua_pushnumber = 0x2894E0;
-	constexpr uintptr_t lua_tolstring = 0x28A150;
-	constexpr uintptr_t lua_tonumber = 0x28A1F0;
-	constexpr uintptr_t get_unit_from_name = 0x1A5A9B0;
+	constexpr uintptr_t update_display_info = 0x10B6F50;
+	constexpr uintptr_t update_mount_display_info = 0x10A2BA0;
+	constexpr uintptr_t frame_script_execute = 0x7B2300;
+	constexpr uintptr_t frame_script_register_function = 0x7B32F0;
+	constexpr uintptr_t frame_script_invalid_ptr_check = 0xFCDC10;
+	constexpr uintptr_t lua_gettop = 0x2809A0;
+	constexpr uintptr_t lua_pushnumber = 0x281240;
+	constexpr uintptr_t lua_tolstring = 0x281EB0;
+	constexpr uintptr_t lua_tonumber = 0x281F50;
+	constexpr uintptr_t get_unit_from_name = 0x1A55FB0;
 
 
 	// POINTER TO END OF .TEXT (change value at this address to make frame_script_register_function work)
-	constexpr uintptr_t invalid_ptr_limit = 0x2E94F58;
+	constexpr uintptr_t invalid_ptr_limit = 0x2E91F78;
 
 	// Generally useful offsets
 	constexpr uintptr_t game_version = 0x26297FC;
-	constexpr uintptr_t in_game_flag = 0x2FBDB0C;
+	constexpr uintptr_t in_game_flag = 0x2FBAB3C;
 
 	// Object manager
-	constexpr uintptr_t object_manager = 0x2F0B640;
+	constexpr uintptr_t object_manager = 0x2EF6630;
 
 
 	// Object manager offsets

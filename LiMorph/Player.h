@@ -6,7 +6,7 @@
 #include "Offsets.h"
 #include "WoWUtils.h"
 
-namespace morph {
+namespace LiMorph {
 
 class Player
 {
@@ -82,12 +82,16 @@ private:
 	int m_cat_form_id;
 	int m_flight_form_id;
 	int m_travel_form_id;
+	int m_shadow_form_id;
+	int m_moonkin_form_id;
 
 	int m_original_humanoid_form_id;
 	int m_original_bear_form_id;
 	int m_original_cat_form_id;
 	int m_original_flight_form_id;
 	int m_original_travel_form_id;
+	int m_original_shadow_form_id;
+	int m_original_moonkin_form_id;
 
 
 	// things not related to morphing the player model
