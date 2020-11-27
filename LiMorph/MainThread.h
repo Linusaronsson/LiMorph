@@ -21,11 +21,13 @@ struct handle_data {
 class MainThread
 {
 public:
-    MainThread() {}
+    MainThread() {
+        m_handle = find_main_window(GetCurrentProcessId()); // can we run this once? i.e., move to constructor?
+    }
     ~MainThread() {}
 
     // Run startup() in main thread.
-    void InvokeInMainThread(_callback* startup);
+    void invokeInMainThread(_callback* startup);
 
     // find main window handle (could be private)
     HWND find_main_window(unsigned long process_id);

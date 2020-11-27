@@ -18,15 +18,14 @@ LRESULT CALLBACK MainThread::WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM 
     return 0;
 }
 
-void MainThread::InvokeInMainThread(_callback* callback) {
-    m_handle = find_main_window(GetCurrentProcessId()); // can we run this once? i.e., move to constructor?
+void MainThread::invokeInMainThread(_callback* callback) {
     m_invoke = callback;
     m_new_callback = WndProc;
     Attach();
     Invoke(UserMessage::Startup);
     // Do something before detaching, not sure what yet.
     // Invoke(UserMessage::Shutdown);
-    //Detach();
+    Detach();
 
 }
 

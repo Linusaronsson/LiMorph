@@ -39,6 +39,8 @@ namespace Offsets {
 	// Player object offsets
 	constexpr uintptr_t next_object = 0x0;
 	constexpr uintptr_t morph_id = 0x1B88;
+	constexpr uintptr_t morph_id2 = 0x8A8;
+
 	constexpr uintptr_t original_morph_id = 0x1CE8;
 
 	//constexpr uintptr_t bear_form_id = 0x19F8;
@@ -49,8 +51,8 @@ namespace Offsets {
 	constexpr uintptr_t gender_id = 0x1C7B;
 	constexpr uintptr_t title_id = 0x2240;
 
-	constexpr uintptr_t mount_id1 = 0x93C;
-	//constexpr uintptr_t mount_id2 = 0x938;
+	//constexpr uintptr_t mount_id1 = 0x93C;
+	constexpr uintptr_t mount_id1 = 0x938;
 
 	constexpr uintptr_t guid = standard_offset + 0x18;
 	constexpr uintptr_t object_type = standard_offset + 0x10;

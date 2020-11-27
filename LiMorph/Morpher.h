@@ -23,7 +23,6 @@ public:
 	Morpher() {}
 	~Morpher() {}
 	void startMorpher();
-	void parseChat(uintptr_t lua_state);
 
 	inline void setBaseAddress(uintptr_t base_address) {
 		m_base_address = base_address;
@@ -39,17 +38,28 @@ private:
 	static int mountCallback(uintptr_t lua_state);
 	static int shapeshiftCallback(uintptr_t lua_state);
 
-	static void __fastcall updateDisplayInfoHook(uintptr_t unit);
-	static void run_in_main_thread(); //currently unused (todo: use this in startMorpher probly)
+
+
+	static void initializeMorpherCallback();
+	static void hookUpdateDisplayInfoCallback();
+	static void registerFunctions();
+	static void registerLuaEvents();
 
 	void initializeMorpher();
-	void registerFunctions();
-	void registerLuaEvents();
 	void hookUpdateDisplayInfo();
 
-	uintptr_t getPlayerPtr();
+	
+	void updateModel();
+
+	static void __fastcall updateDisplayInfoHook(uintptr_t unit);
+
+
 
 	void SendWoWMessage(const std::string& message, const std::string& color);
+	uintptr_t getPlayerPtr();
+
+	// Parsing
+	void parseChat(uintptr_t lua_state);
 	void reportParseError(const std::string& message);
 	void parseMorph();
 	void parseRace();

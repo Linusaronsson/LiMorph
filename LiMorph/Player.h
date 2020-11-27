@@ -71,37 +71,22 @@ private:
 	int m_current_original_morph_id; // if reset: always morph into this! (tracks correct original id of current shapeshift)
 
 	//shapeshifting
-	int m_humanoid_form_id;
-	int m_bear_form_id;
-	int m_cat_form_id;
-	int m_flight_form_id;
-	int m_travel_form_id;
-	int m_shadow_form_id;
-	int m_moonkin_form_id;
+	std::array<int, N_SHAPESHIFTS> m_shapeshift_ids;
+	std::array<int, N_SHAPESHIFTS> m_original_shapeshift_ids;
 
-	int m_original_humanoid_form_id;
-	int m_original_bear_form_id;
-	int m_original_cat_form_id;
-	int m_original_flight_form_id;
-	int m_original_travel_form_id;
-	int m_original_shadow_form_id;
-	int m_original_moonkin_form_id;
-
+	//items (all stored in array because they exist at executive bytes in memory)
+	std::array<int, N_ITEMS * 3> m_item_ids;
+	std::array<int, N_ITEMS * 3> m_original_item_ids;
 
 	// things not related to morphing the player model
-	int m_original_race_id;
-	int m_original_gender_id;
-	int m_original_mount_id;
-	int m_original_title_id;
-
 	int m_race_id;
 	int m_gender_id;
 	int m_mount_id;
 	int m_title_id;
-
-	//items (all stored in array because they exist at executive bytes in memory)
-	std::array<int, N_ITEMS * 3> m_original_item_ids;
-	std::array<int, N_ITEMS * 3> m_item_ids;
+	int m_original_race_id;
+	int m_original_gender_id;
+	int m_original_mount_id;
+	int m_original_title_id;
 
 	// other stuff
 	bool m_mount_morphed;

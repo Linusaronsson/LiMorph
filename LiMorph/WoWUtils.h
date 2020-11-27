@@ -26,11 +26,27 @@ enum class ShapeshiftForm {
 	TRAVEL = 3,
 	AQUATIC = 4,
 	BEAR = 5,
-	GHOST_WOLF = 6,
+	GHOST_WOLF = 16,
 	SWIFT_FLIGHT = 27,
+	SHADOW = 28,
 	FLIGHT = 29,
 	MOONKIN = 31,
-	SHADOW = 28,
+};
+
+constexpr int N_SHAPESHIFTS = 11;
+
+const ShapeshiftForm SHAPESHIFT_LIST[N_SHAPESHIFTS] = {
+	ShapeshiftForm::HUMANOID,
+	ShapeshiftForm::CAT,
+	ShapeshiftForm::TREE_OF_LIFE,
+	ShapeshiftForm::TRAVEL,
+	ShapeshiftForm::AQUATIC,
+	ShapeshiftForm::BEAR,
+	ShapeshiftForm::GHOST_WOLF,
+	ShapeshiftForm::SWIFT_FLIGHT,
+	ShapeshiftForm::SHADOW,
+	ShapeshiftForm::FLIGHT,
+	ShapeshiftForm::MOONKIN,
 };
 
 enum class Items {
@@ -61,7 +77,7 @@ enum class ItemVersion {
 
 constexpr int N_ITEMS = 13;
 
-const Items ITEMS_LIST[13] = {
+const Items ITEMS_LIST[N_ITEMS] = {
 	Items::HEAD,
 	Items::SHOULDERS,
 	Items::SHIRT,
@@ -77,6 +93,47 @@ const Items ITEMS_LIST[13] = {
 	Items::TABARD
 };
 
+
+namespace WoWUtils {
+
+	inline int shapeshiftToIndex(ShapeshiftForm item) {
+		switch (item) {
+		case ShapeshiftForm::HUMANOID: return 0;
+		case ShapeshiftForm::CAT: return 1;
+		case ShapeshiftForm::TREE_OF_LIFE: return 2;
+		case ShapeshiftForm::TRAVEL: return 3;
+		case ShapeshiftForm::AQUATIC: return 4;
+		case ShapeshiftForm::BEAR: return 5;
+		case ShapeshiftForm::GHOST_WOLF: return 6;
+		case ShapeshiftForm::SWIFT_FLIGHT: return 7;
+		case ShapeshiftForm::SHADOW: return 7;
+		case ShapeshiftForm::FLIGHT: return 9;
+		case ShapeshiftForm::MOONKIN: return 10;
+		}
+		// Unreachable
+		return -1;
+	}
+
+	inline int itemToIndex(Items item) {
+		switch (item) {
+		case Items::HEAD: return 0;
+		case Items::SHOULDERS: return 1;
+		case Items::SHIRT: return 2;
+		case Items::CHEST: return 3;
+		case Items::BELT: return 4;
+		case Items::LEGS: return 5;
+		case Items::FEET: return 6;
+		case Items::WRISTS: return 7;
+		case Items::GLOVES: return 8;
+		case Items::BACK: return 9;
+		case Items::MAIN_HAND: return 10;
+		case Items::OFF_HAND: return 11;
+		case Items::TABARD: return 12;
+		}
+		// Unreachable
+		return -1;
+	}
+}
 
 enum class RaceIDs {
 	HUMAN = 1,

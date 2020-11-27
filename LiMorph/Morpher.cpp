@@ -25,21 +25,30 @@ void Morpher::reportParseError(const std::string& message) {
     m_lex.finish();
 }
 
-void Morpher::_morph(int morph_id) {
-    m_player.setCurrentMorphID(morph_id);
+void Morpher::updateModel() {
     m_player.setCurrentMorphIDInMemory();
     WoWFunctions::updateModel(m_player_ptr);
 }
 
+void Morpher::_morph(int morph_id) {
+    m_player.setCurrentMorphID(morph_id);
+    m_player.setCurrentMorphIDInMemory();
+    updateModel();
+}
+
 void Morpher::morphShapeshift(ShapeshiftForm form_id, int morph_id) {
     switch (form_id) {
-    case ShapeshiftForm::BEAR:
-    case ShapeshiftForm::CAT:
-    case ShapeshiftForm::SWIFT_FLIGHT:
-    case ShapeshiftForm::TRAVEL:
     case ShapeshiftForm::HUMANOID:
-    case ShapeshiftForm::MOONKIN:
+    case ShapeshiftForm::CAT:
+    case ShapeshiftForm::TREE_OF_LIFE:
+    case ShapeshiftForm::TRAVEL:
+    case ShapeshiftForm::AQUATIC:
+    case ShapeshiftForm::BEAR:
+    case ShapeshiftForm::GHOST_WOLF:
+    case ShapeshiftForm::SWIFT_FLIGHT:
     case ShapeshiftForm::SHADOW:
+    case ShapeshiftForm::FLIGHT:
+    case ShapeshiftForm::MOONKIN:
         m_player.setShapeshiftID(form_id, morph_id);
         WoWFunctions::executeLUA("player_shapeshift_event()");
         break;
@@ -54,20 +63,24 @@ void Morpher::smartMorphShapeshift(uintptr_t lua_state) {
     int top = WoWFunctions::luaGetTop(lua_state);
     if (top) {
         int id = WoWFunctions::luaToNumber(lua_state, top);
-        //  SendWoWMessage("HERE: " + std::to_string(id));
+        //SendWoWMessage("HERE: " + std::to_string(id));
         ShapeshiftForm shapeshift_form = static_cast<ShapeshiftForm>(id);
 
         switch (static_cast<ShapeshiftForm>(shapeshift_form)) {
         case ShapeshiftForm::HUMANOID: 
         case ShapeshiftForm::SHADOW: // treat shadow as humanoid for now
-            // SendWoWMessage("HUMANOID FORM");
+            //SendWoWMessage("HUMANOID FORM");
             m_player.setCurrentOriginalShapeshiftID(ShapeshiftForm::HUMANOID);
             _morph(m_player.getShapeshiftID(ShapeshiftForm::HUMANOID));
             break;
-        case ShapeshiftForm::BEAR:
-        case ShapeshiftForm::SWIFT_FLIGHT:
         case ShapeshiftForm::CAT:
+        case ShapeshiftForm::TREE_OF_LIFE:
         case ShapeshiftForm::TRAVEL:
+        case ShapeshiftForm::AQUATIC:
+        case ShapeshiftForm::BEAR:
+        case ShapeshiftForm::GHOST_WOLF:
+        case ShapeshiftForm::SWIFT_FLIGHT:
+        case ShapeshiftForm::FLIGHT:
         case ShapeshiftForm::MOONKIN:
         {
             //  SendWoWMessage("NON HUMANOID FORM");
@@ -80,7 +93,7 @@ void Morpher::smartMorphShapeshift(uintptr_t lua_state) {
             else {
                 m_player.setCurrentMorphID(m_player.getMorphIDInMemory());
             }
-            WoWFunctions::updateModel(m_player_ptr);
+            updateModel();
             break;
         }
         default:
@@ -191,7 +204,7 @@ void Morpher::morphItem(int item, int item_id, int item_version = -1) {
         reportParseError("Invalid item ID.");
         return;
     }
-    WoWFunctions::updateModel(m_player_ptr);
+    updateModel();
 }
 
 void Morpher::morphEnchant(int item, int enchant_id) {
@@ -206,24 +219,21 @@ void Morpher::morphEnchant(int item, int enchant_id) {
         reportParseError("Can not enchant that item.");
         return;
     }
-    WoWFunctions::updateModel(m_player_ptr);
+    updateModel();
 }
 
 void Morpher::morphMount() {
     if (m_player.mountMorphed()) {
        WoWFunctions::updateMountModel(m_player_ptr, m_player.getMountID());
     }
-    else {
-        WoWFunctions::updateMountModel(m_player_ptr, m_player.getMorphIDInMemory());
-    }
 
     m_player.setCurrentMorphIDInMemory();
-    WoWFunctions::updateModel(m_player_ptr);
+    updateModel();
 }
 
 void Morpher::morphTitle(int title_id) {
     m_player.setTitleID(title_id);
-    WoWFunctions::updateModel(m_player_ptr);
+    updateModel();
 }
 
 int __cdecl Morpher::chatCallback(uintptr_t lua_state) {
@@ -288,19 +298,29 @@ void Morpher::hookUpdateDisplayInfo() {
     m_hook->HookFunction(updateDisplayInfoHook, Offsets::update_display_info_vtable_offset);
 }
 
+
 void Morpher::initializeMorpher() {
     m_player_ptr = getPlayerPtr();
     m_player = Player(m_player_ptr);
     m_player.initializePlayer();
-
-    //MainThread ts = MainThread();
-    //ts.InvokeInMainThread(run_in_main_thread);
 
     hookUpdateDisplayInfo();
     registerFunctions();
     registerLuaEvents();
 
     SendWoWMessage("Loaded. Type .commands for usable commands.");
+    
+    /*
+std::stringstream stream;
+stream << std::hex << m_base_address;
+SendWoWMessage("Base address: " + stream.str());
+stream.str("");
+stream << std::hex << m_player_ptr;
+SendWoWMessage("Player_ptr address: " + stream.str());
+SendWoWMessage("MORPHER LOADED. Type .commands for usable commands.");
+SendWoWMessage("MorphID: " + std::to_string(m_player.getMorphID()));
+
+*/
 }
 
 //undead male: 54041
@@ -314,16 +334,17 @@ void Morpher::initializeMorpher() {
 
 // swift flight form 21243
 
-void Morpher::run_in_main_thread() {
-    //Logging::Print("IN MAIN THREAD\nThread id: ");
-    //Logging::Print(std::to_string(GetCurrentThreadId()));
+void Morpher::initializeMorpherCallback() {
+    morpher_ptr->initializeMorpher();
+}
+void Morpher::hookUpdateDisplayInfoCallback() {
+  //  morpher_ptr->SendWoWMessage("ASDASDASD");
     morpher_ptr->hookUpdateDisplayInfo();
-    morpher_ptr->registerFunctions();
-    morpher_ptr->registerLuaEvents();
+  //  return 0;
 }
 
 void Morpher::startMorpher() {
-
+    MainThread ts = MainThread();
 
     //Logging::Print("flag: " + std::to_string(Memory::readMemory<int>(m_base_address + Offsets::in_game_flag)) + "\n");
     // Login: 0, 1, 1037, 1545, 1561, 1553.
@@ -341,13 +362,13 @@ void Morpher::startMorpher() {
             m_player_ptr = getPlayerPtr();
             m_player.setPlayerPtr(m_player_ptr);
             if (flag_updated == 1553) {
-                Sleep(2000); //avoids crashes
+             //   Sleep(1000); //avoids crashes
                 switch (flag) {
                 case 1037:
                 case 1545:
                 case 1561:
                     // This is reached after a login loading screen
-                    initializeMorpher();
+                    ts.invokeInMainThread(initializeMorpherCallback);
                     morpher_loaded = true;
                     //  WoWFunctions::executeLUA("print('you just logged in!')");
                     break;
@@ -355,10 +376,12 @@ void Morpher::startMorpher() {
                 case 1809:
                     // This is reached after a /reload loading screen
                    // m_player.setPlayerPtr(m_player_ptr);
-                    //m_player.restorePlayer();
-                    hookUpdateDisplayInfo();
-                    registerFunctions();
-                    registerLuaEvents();
+                   // m_player.restorePlayer();
+                    ts.invokeInMainThread(hookUpdateDisplayInfoCallback);
+                    ts.invokeInMainThread(registerFunctions);
+                    ts.invokeInMainThread(registerLuaEvents);
+
+                    //WoWFunctions::executeLUA("player_shapeshift_event()");
                     //WoWFunctions::executeLUA("player_shapeshift_event()");
                     //   WoWFunctions::executeLUA("print('you just did /reload!')");
                     break;
@@ -366,10 +389,10 @@ void Morpher::startMorpher() {
                     // This is reached after a loading screen cause by any form of zoning in game
                    // m_player.setPlayerPtr(m_player_ptr);
                     m_player.restorePlayer();
-                    hookUpdateDisplayInfo();
+                    ts.invokeInMainThread(hookUpdateDisplayInfoCallback);
 
                     //only needed since Shapeshift event is not triggered after zoning when zoning as humanoid
-                    WoWFunctions::updateModel(m_player_ptr);
+                    updateModel();
 
                     //  WoWFunctions::executeLUA("player_shapeshift_event()");
                         //    WoWFunctions::executeLUA("print('you just zoned!')");
@@ -382,9 +405,9 @@ void Morpher::startMorpher() {
             // already in world, load morpher if not loaded already
             if (flag_updated == 1553 && flag == 1553) {
                 if (!morpher_loaded) {
-                    Sleep(400);
+                    //Sleep(400);
                     while (getPlayerPtr() == 0);
-                    initializeMorpher();
+                    ts.invokeInMainThread(initializeMorpherCallback);
                     morpher_loaded = true;
                 }
             }
@@ -606,7 +629,7 @@ void Morpher::resetMorpher() {
     //WoWFunctions::updateModel(m_player_ptr);
 
     // TODO: see if running the line below works well (i.e resetting mount while on it)
-    WoWFunctions::executeLUA("player_mount_event()");
+    //WoWFunctions::executeLUA("player_mount_event()");
     m_lex.finish();
 }
 
