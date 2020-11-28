@@ -1,7 +1,5 @@
 #pragma once
 
-#include <map>
-
 #include "Offsets.h"
 #include "Memory.h"
 #include "MainThread.h"
@@ -38,25 +36,34 @@ private:
 	static int mountCallback(uintptr_t lua_state);
 	static int shapeshiftCallback(uintptr_t lua_state);
 
-
-
+	// main thread callbacks
 	static void initializeMorpherCallback();
 	static void hookUpdateDisplayInfoCallback();
 	static void registerFunctions();
 	static void registerLuaEvents();
 
-	void initializeMorpher();
-	void hookUpdateDisplayInfo();
-
-	
-	void updateModel();
-
+	// CGUnit_C__UpdateDisplayInfo callback
 	static void __fastcall updateDisplayInfoHook(uintptr_t unit);
 
 
 
+	void initializeMorpher();
+	void hookUpdateDisplayInfo();
+	void updateModel();
 	void SendWoWMessage(const std::string& message, const std::string& color);
 	uintptr_t getPlayerPtr();
+
+	// Morphing
+	void _morph(int morph_id);
+	void morphRace(int race_id);
+	void morphGender(int gender_id);
+	void updateGender(int gender);
+	void morphItem(int item, int item_id, int item_version);
+	void morphEnchant(int item, int enchant_id);
+	void morphMount();
+	void morphTitle(int title_id);
+	void morphShapeshift(ShapeshiftForm form_id, int morph_id);
+	void smartMorphShapeshift(uintptr_t lua_state);
 
 	// Parsing
 	void parseChat(uintptr_t lua_state);
@@ -72,76 +79,11 @@ private:
 	void parseCommands();
 	void resetMorpher();
 
-	void _morph(int morph_id);
-	void morphRace(int race_id);
-	void morphGender(int gender_id);
-	void updateGender(int gender);
-	void morphItem(int item, int item_id, int item_version);
-	void morphEnchant(int item, int enchant_id);
-	void morphMount();
-	void morphTitle(int title_id);
-	void morphShapeshift(ShapeshiftForm form_id, int morph_id);
-	void smartMorphShapeshift(uintptr_t lua_state);
-
-
-	// Normal instance variables
 	uintptr_t m_base_address;
 	uintptr_t m_player_ptr;
 	uintptr_t m_customization_ptr;
 	Player m_player;
 	Lexer m_lex;
-
-	const std::map<RaceIDs, RaceMorphIDs> m_race_male = {
-		{RaceIDs::HUMAN, RaceMorphIDs::HUMAN_M},
-		{RaceIDs::ORC, RaceMorphIDs::ORC_M},
-		{RaceIDs::DWARF, RaceMorphIDs::DWARF_M},
-		{RaceIDs::NELF, RaceMorphIDs::NELF_M},
-		{RaceIDs::UNDEAD, RaceMorphIDs::UNDEAD_M},
-		{RaceIDs::TAUREN, RaceMorphIDs::TAUREN_M},
-		{RaceIDs::GNOME, RaceMorphIDs::GNOME_M},
-		{RaceIDs::TROLL, RaceMorphIDs::TROLL_M},
-		{RaceIDs::GOBLIN, RaceMorphIDs::GOBLIN_M},
-		{RaceIDs::BELF, RaceMorphIDs::BELF_M},
-		{RaceIDs::DRAENEI, RaceMorphIDs::DRAENEI_M},
-		{RaceIDs::WORGEN, RaceMorphIDs::WORGEN_M},
-		{RaceIDs::PANDAREN, RaceMorphIDs::PANDAREN_M},
-		{RaceIDs::NIGHTBORNE, RaceMorphIDs::NIGHTBORNE_M},
-		{RaceIDs::HIGHMOUNTAIN_TAUREN, RaceMorphIDs::HIGHMOUNTAIN_TAUREN_M},
-		{RaceIDs::VOID_ELF, RaceMorphIDs::VOID_ELF_M},
-		{RaceIDs::LIGHTFORGED_DRAENEI, RaceMorphIDs::LIGHTFORGED_DRAENEI_M},
-		{RaceIDs::ZANDALARI_TROLL, RaceMorphIDs::ZANDALARI_TROLL_M},
-		{RaceIDs::KUL_TIRAN, RaceMorphIDs::KUL_TIRAN_M},
-		{RaceIDs::DARK_IRON_DWARF, RaceMorphIDs::DARK_IRON_DWARF_M},
-		{RaceIDs::VULPERA, RaceMorphIDs::VULPERA_M},
-		{RaceIDs::MAGHAR_ORC, RaceMorphIDs::MAGHAR_ORC_M},
-		{RaceIDs::MECHAGNOME, RaceMorphIDs::MECHAGNOME_M},
-	};
-
-	const std::map<RaceIDs, RaceMorphIDs> m_race_female = {
-		{RaceIDs::HUMAN, RaceMorphIDs::HUMAN_F},
-		{RaceIDs::ORC, RaceMorphIDs::ORC_F},
-		{RaceIDs::DWARF, RaceMorphIDs::DWARF_F},
-		{RaceIDs::NELF, RaceMorphIDs::NELF_F},
-		{RaceIDs::UNDEAD, RaceMorphIDs::UNDEAD_F},
-		{RaceIDs::TAUREN, RaceMorphIDs::TAUREN_F},
-		{RaceIDs::GNOME, RaceMorphIDs::GNOME_F},
-		{RaceIDs::TROLL, RaceMorphIDs::TROLL_F},
-		{RaceIDs::GOBLIN, RaceMorphIDs::GOBLIN_F},
-		{RaceIDs::BELF, RaceMorphIDs::BELF_F},
-		{RaceIDs::DRAENEI, RaceMorphIDs::DRAENEI_F},
-		{RaceIDs::WORGEN, RaceMorphIDs::WORGEN_F},
-		{RaceIDs::PANDAREN, RaceMorphIDs::PANDAREN_F},
-		{RaceIDs::NIGHTBORNE, RaceMorphIDs::NIGHTBORNE_F},
-		{RaceIDs::HIGHMOUNTAIN_TAUREN, RaceMorphIDs::HIGHMOUNTAIN_TAUREN_F},
-		{RaceIDs::VOID_ELF, RaceMorphIDs::VOID_ELF_F},
-		{RaceIDs::LIGHTFORGED_DRAENEI, RaceMorphIDs::LIGHTFORGED_DRAENEI_F},
-		{RaceIDs::ZANDALARI_TROLL, RaceMorphIDs::ZANDALARI_TROLL_F},
-		{RaceIDs::KUL_TIRAN, RaceMorphIDs::KUL_TIRAN_F},
-		{RaceIDs::DARK_IRON_DWARF, RaceMorphIDs::DARK_IRON_DWARF_F},
-		{RaceIDs::VULPERA, RaceMorphIDs::VULPERA_F},
-		{RaceIDs::MAGHAR_ORC, RaceMorphIDs::MAGHAR_ORC_F},
-		{RaceIDs::MECHAGNOME, RaceMorphIDs::MECHAGNOME_F},
-	};
 };
 
 } // namespace morph

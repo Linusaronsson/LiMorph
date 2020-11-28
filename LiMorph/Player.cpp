@@ -85,7 +85,6 @@ int Player::getMountIDInMemory() {
 	return Memory::readMemory<int>(m_player_ptr + Offsets::mount_id1);
 }
 
-
 int Player::getOriginalMorphID() {
 	return m_current_original_morph_id;
 }
