@@ -54,6 +54,8 @@ void Morpher::updateModel() {
     // correctly (i.e., not called when not necessary)
     if (m_last_morphed_id != m_player.getMorphID()) {
         forceUpdateModel();
+       // SendWoWMessage("morphing...");
+
     }
 }
 
@@ -126,7 +128,7 @@ void Morpher::smartMorphShapeshift(uintptr_t lua_state) {
         int id = WoWFunctions::luaToNumber(lua_state, top-1);
         int force_morph = WoWFunctions::luaToNumber(lua_state, top);
 
-        //  SendWoWMessage("id: " + std::to_string(id));
+          //SendWoWMessage("id: " + std::to_string(id));
         //  SendWoWMessage("ev: " + std::to_string(ev));
 
         auto shapeshift_form = static_cast<ShapeshiftForm>(id);
@@ -136,6 +138,7 @@ void Morpher::smartMorphShapeshift(uintptr_t lua_state) {
         // since they should inherit humanoid behaviour if not shapeshifted. Also, they dont
         // set any morph id in memory (todo: check if true. update: think they do, but it is the 
         // original morph id of HUMANOID, so this special case is still needed)
+
         switch (shapeshift_form) {
         case ShapeshiftForm::SHADOW:
         case ShapeshiftForm::STEALTH:
@@ -167,12 +170,22 @@ void Morpher::smartMorphShapeshift(uintptr_t lua_state) {
             case ShapeshiftForm::FLIGHT:
             case ShapeshiftForm::MOONKIN:
             {
-                //  SendWoWMessage("NON HUMANOID FORM");
-                m_player.setCurrentOriginalShapeshiftID(shapeshift_form);
+
+                if(!force_morph)
+                  m_player.setCurrentOriginalShapeshiftID(shapeshift_form); // consider passing current_morph_id_in_memory directly for consistency
                 int current_form_id = m_player.getShapeshiftID(shapeshift_form);
+
+                /*
+                SendWoWMessage("last morphed id " + std::to_string(m_last_morphed_id));
+                SendWoWMessage("morph id in mem " + std::to_string(current_morph_id_in_memory));
+                SendWoWMessage("current form id " + std::to_string(current_form_id));
+                SendWoWMessage("current morph id " + std::to_string(m_player.getMorphID()));
+                SendWoWMessage("current original morph id " + std::to_string(m_player.getOriginalMorphID()));
+                */
+
                 _morph(current_form_id ? current_form_id : current_morph_id_in_memory);
                 break;
-            }
+            }   
             default:
                 // This makes non-supported shapeshifts work as normal
                 WoWFunctions::updateModel(m_player_ptr); // might be risky
@@ -351,7 +364,6 @@ void Morpher::hookUpdateDisplayInfo() {
     m_hook->HookFunction(updateDisplayInfoHook, Offsets::update_display_info_vtable_offset);
 }
 
-
 void Morpher::initializeMorpher() {
     m_player_ptr = getPlayerPtr();
     m_player = Player(m_player_ptr);
@@ -361,6 +373,8 @@ void Morpher::initializeMorpher() {
     hookUpdateDisplayInfo();
     registerFunctions();
     registerLuaEvents();
+   // WoWFunctions::executeLUA("player_shapeshift_event()"); // init original morph of current shapeshift
+
 
     SendWoWMessage("Loaded. Type .commands for usable commands.");
     
@@ -713,6 +727,7 @@ void Morpher::parseShapeshift() {
 void Morpher::resetMorpher() {
     m_player.resetPlayer();
     WoWFunctions::executeLUA("player_shapeshift_event()");
+    forceUpdateModel();
     //WoWFunctions::updateModel(m_player_ptr);
 
     // TODO: see if running the line below works well (i.e resetting mount while on it)

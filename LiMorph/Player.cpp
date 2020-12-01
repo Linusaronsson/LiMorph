@@ -15,7 +15,7 @@ void Player::initializePlayer() {
 
 	// initialzie humanoid shapeshift from memory
 	int morph_id = Memory::readMemory<int>(m_player_ptr + Offsets::original_morph_id);
-	m_current_original_morph_id = morph_id;
+	m_current_original_morph_id = m_current_morph_id;
 	m_original_shapeshift_ids[WoWUtils::shapeshiftToIndex(ShapeshiftForm::HUMANOID)] = morph_id;
 	m_shapeshift_ids[WoWUtils::shapeshiftToIndex(ShapeshiftForm::HUMANOID)] = morph_id;
 
@@ -59,7 +59,7 @@ void Player::resetPlayer() {
 
 	m_mount_morphed = false;
 	 
-	//setCurrentMorphIDInMemory();
+	setCurrentMorphIDInMemory();
 	setTitleID(m_original_title_id);
 }
 
