@@ -1,4 +1,4 @@
-R"V0G0N(
+-- LIMORPH_LUA R"lua(
 
 local original_ChatEdit_SendText = ChatEdit_SendText;
 
@@ -13,4 +13,4 @@ end
 
 ChatEdit_SendText = ParseChatLua;
 
-)V0G0N";
+-- )lua";

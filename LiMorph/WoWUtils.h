@@ -32,10 +32,11 @@ enum class ShapeshiftForm {
 	SWIFT_FLIGHT = 27,
 	SHADOW = 28,
 	FLIGHT = 29,
+	STEALTH = 30,
 	MOONKIN = 31,
 };
 
-constexpr int N_SHAPESHIFTS = 11;
+constexpr int N_SHAPESHIFTS = 12;
 
 const ShapeshiftForm SHAPESHIFT_LIST[N_SHAPESHIFTS] = {
 	ShapeshiftForm::HUMANOID,
@@ -48,6 +49,7 @@ const ShapeshiftForm SHAPESHIFT_LIST[N_SHAPESHIFTS] = {
 	ShapeshiftForm::SWIFT_FLIGHT,
 	ShapeshiftForm::SHADOW,
 	ShapeshiftForm::FLIGHT,
+	ShapeshiftForm::STEALTH,
 	ShapeshiftForm::MOONKIN,
 };
 
@@ -212,6 +214,7 @@ namespace WoWUtils {
 		case ShapeshiftForm::SHADOW: return 7;
 		case ShapeshiftForm::FLIGHT: return 9;
 		case ShapeshiftForm::MOONKIN: return 10;
+		case ShapeshiftForm::STEALTH: return 11;
 		}
 		// Unreachable
 		return -1;

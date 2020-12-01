@@ -31,6 +31,11 @@ public:
 	}
 
 private:
+	// load lua code into c++
+	static const char* getMountEventLuaCode();
+	static const char* getShapeshiftEventLuaCode();
+	static const char* getParseChatLuaCode();
+
 	// lua callbacks
 	static int chatCallback(uintptr_t lua_state);
 	static int mountCallback(uintptr_t lua_state);
@@ -41,15 +46,21 @@ private:
 	static void hookUpdateDisplayInfoCallback();
 	static void registerFunctions();
 	static void registerLuaEvents();
+	static void zoningCallback();
+	static void zoningUpdateModelCallback();
+
 
 	// CGUnit_C__UpdateDisplayInfo callback
 	static void __fastcall updateDisplayInfoHook(uintptr_t unit);
 
 
-
+	void zoning();
+	void zoningUpdateModel();
 	void initializeMorpher();
 	void hookUpdateDisplayInfo();
 	void updateModel();
+	void forceUpdateModel();
+
 	void SendWoWMessage(const std::string& message, const std::string& color);
 	uintptr_t getPlayerPtr();
 
@@ -64,6 +75,7 @@ private:
 	void morphTitle(int title_id);
 	void morphShapeshift(ShapeshiftForm form_id, int morph_id);
 	void smartMorphShapeshift(uintptr_t lua_state);
+	void morphTransparentShapeshift(ShapeshiftForm form_id, bool force_morph);
 
 	// Parsing
 	void parseChat(uintptr_t lua_state);
@@ -84,6 +96,7 @@ private:
 	uintptr_t m_customization_ptr;
 	Player m_player;
 	Lexer m_lex;
+	int m_last_morphed_id = 0;
 };
 
 } // namespace morph

@@ -59,7 +59,7 @@ void Player::resetPlayer() {
 
 	m_mount_morphed = false;
 	 
-	setCurrentMorphIDInMemory();
+	//setCurrentMorphIDInMemory();
 	setTitleID(m_original_title_id);
 }
 
@@ -69,7 +69,7 @@ void Player::restorePlayer() {
 		setItemVersionID(ITEMS_LIST[j], m_item_ids[i + 1]);
 		setItemEnchantID(ITEMS_LIST[j], m_item_ids[i + 2]);
 	}
-	setCurrentMorphIDInMemory();
+	//setCurrentMorphIDInMemory();
 	setTitleID(m_title_id);
 }
 
