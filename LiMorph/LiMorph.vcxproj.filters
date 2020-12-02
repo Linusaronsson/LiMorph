@@ -100,5 +100,11 @@
     <None Include="ShapeshiftEvent.lua">
       <Filter>Lua</Filter>
     </None>
+    <None Include="ClickMorphing.lua">
+      <Filter>Lua</Filter>
+    </None>
+    <None Include="ClickMountMorphing.lua">
+      <Filter>Lua</Filter>
+    </None>
   </ItemGroup>
 </Project>

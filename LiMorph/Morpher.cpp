@@ -42,6 +42,17 @@ const char* Morpher::getParseChatLuaCode() {
     #include "ParseChat.lua"
 }
 
+const char* Morpher::getClickMorphingCode() {
+    auto dummy = 0;
+    #include "ClickMorphing.lua"
+}
+
+const char* Morpher::getClickMountMorphingCode() {
+    auto dummy = 0;
+    #include "ClickMountMorphing.lua"
+}
+
+
 void Morpher::forceUpdateModel() {
     m_last_morphed_id = m_player.getMorphID();
     m_player.setCurrentMorphIDInMemory(); //todo: remove since ran in updateModel right?
@@ -298,13 +309,14 @@ void Morpher::morphItem(int item, int item_id, int item_version = -1) {
     forceUpdateModel();
 }
 
+
+
 void Morpher::morphEnchant(int item, int enchant_id) {
-    switch (item) {
-    case 1:
-        m_player.setItemEnchantID(Items::MAIN_HAND, enchant_id);
-        break;
-    case 2:
-        m_player.setItemEnchantID(Items::OFF_HAND, enchant_id);
+    Items item_ = static_cast<Items>(item);
+    switch (item_) {
+    case Items::MAIN_HAND:
+    case Items::OFF_HAND:
+        m_player.setItemEnchantID(item_, enchant_id);
         break;
     default:
         reportParseError("Can not enchant that item.");
@@ -320,6 +332,11 @@ void Morpher::morphMount() {
    // SendWoWMessage("reached morph mount");
    // m_player.setCurrentMorphIDInMemory();
     updateModel();
+}
+
+void Morpher::morphMountByID(int mount_id) {
+    m_player.setMountID(mount_id);
+    WoWFunctions::executeLUA("player_mount_event()");
 }
 
 void Morpher::morphTitle(int title_id) {
@@ -349,14 +366,19 @@ void __fastcall Morpher::updateDisplayInfoHook(uintptr_t unit) {
 
 void Morpher::registerFunctions() {
     WoWFunctions::registerFunction("ParseChat", (uintptr_t)chatCallback);
-    WoWFunctions::registerFunction("MorphMount", (uintptr_t)mountCallback);
+    WoWFunctions::registerFunction("MorphMount_", (uintptr_t)mountCallback);
     WoWFunctions::registerFunction("MorphShapeshift", (uintptr_t)shapeshiftCallback);
+    WoWFunctions::registerFunction("MorphItem", (uintptr_t)morphItemCallback);
+    WoWFunctions::registerFunction("MorphEnchant", (uintptr_t)morphEnchantCallback);
+    WoWFunctions::registerFunction("MorphMount", (uintptr_t)morphMountCallback);
 }
 
 void Morpher::registerLuaEvents() {
     WoWFunctions::executeLUA(getMountEventLuaCode());
     WoWFunctions::executeLUA(getShapeshiftEventLuaCode());
     WoWFunctions::executeLUA(getParseChatLuaCode());
+    WoWFunctions::executeLUA(getClickMorphingCode());
+    WoWFunctions::executeLUA(getClickMountMorphingCode());
 }
 
 void Morpher::hookUpdateDisplayInfo() {
@@ -437,6 +459,38 @@ int __cdecl Morpher::shapeshiftCallback(uintptr_t lua_state) {
     morpher_ptr->smartMorphShapeshift(lua_state);
     return 0;
 }
+
+int __cdecl Morpher::morphItemCallback(uintptr_t lua_state) {
+    int top = WoWFunctions::luaGetTop(lua_state);
+    if (top) {
+        int item = WoWFunctions::luaToNumber(lua_state, top - 2);
+        int item_id = WoWFunctions::luaToNumber(lua_state, top - 1);
+        int item_version = WoWFunctions::luaToNumber(lua_state, top);
+        morpher_ptr->morphItem(item, item_id, item_version);
+    }
+    return 0;
+}
+
+int __cdecl Morpher::morphEnchantCallback(uintptr_t lua_state) {
+    int top = WoWFunctions::luaGetTop(lua_state);
+    if (top) {
+        int item = WoWFunctions::luaToNumber(lua_state, top - 1);
+        int enchant_id = WoWFunctions::luaToNumber(lua_state, top);
+
+        morpher_ptr->morphEnchant(item, enchant_id);
+    }
+    return 0;
+}
+
+int __cdecl Morpher::morphMountCallback(uintptr_t lua_state) {
+    int top = WoWFunctions::luaGetTop(lua_state);
+    if (top) {
+        int mount_id = WoWFunctions::luaToNumber(lua_state, top);
+        morpher_ptr->morphMountByID(mount_id);
+    }
+    return 0;
+}
+
 
 void Morpher::initializeMorpherCallback() {
     morpher_ptr->initializeMorpher();
@@ -557,7 +611,6 @@ void Morpher::parseChat(uintptr_t lua_state) {
                 parseTitle();
                 return;
             case TokenType::SHAPESHIFT:
-                //reportParseError("Currently not supported.");
                 parseShapeshift();
                 return;
             case TokenType::NUMBER:
@@ -657,6 +710,8 @@ void Morpher::parseItem() {
     m_lex.finish();
 }
 
+
+
 void Morpher::parseEnchant() {
     Token next = m_lex.nextToken();
     int item;
@@ -666,7 +721,17 @@ void Morpher::parseEnchant() {
         next = m_lex.nextToken();
         if (next.type() == TokenType::NUMBER) {
             enchant_id = next.toNumber();
-            morphEnchant(item, enchant_id);
+            switch (item) {
+            case 1:
+                morphEnchant(static_cast<int>(Items::MAIN_HAND), enchant_id);
+                break;
+            case 2:
+                morphEnchant(static_cast<int>(Items::OFF_HAND), enchant_id);
+                break;
+            default:
+                reportParseError("Can not enchant that item.");
+                return;
+            }
         }
         else {
             reportParseError("Invalid .enchant second operand (must be number).");
@@ -681,9 +746,7 @@ void Morpher::parseEnchant() {
 void Morpher::parseMount() {
     Token next = m_lex.nextToken();
     if (next.type() == TokenType::NUMBER) {
-        m_player.setMountID(next.toNumber());
-        // WoWFunctions::executeLUA("last_id = -1");
-        WoWFunctions::executeLUA("player_mount_event()");
+        morphMountByID(next.toNumber());
     }
     else {
         reportParseError("Invalid .mount operand (must be number).");

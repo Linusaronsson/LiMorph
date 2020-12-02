@@ -7,7 +7,7 @@ f:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED');
 function player_mount_event()
 	--print("mount event reached")
 	if IsMounted() and not UnitOnTaxi("player") then
-		MorphMount()
+		MorphMount_()
 	end
 end
 

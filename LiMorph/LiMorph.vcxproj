@@ -188,6 +188,8 @@
     <ClCompile Include="Token.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClickMorphing.lua" />
+    <None Include="ClickMountMorphing.lua" />
     <None Include="MountEvent.lua" />
     <None Include="ParseChat.lua" />
     <None Include="ShapeshiftEvent.lua" />

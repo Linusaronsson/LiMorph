@@ -35,11 +35,16 @@ private:
 	static const char* getMountEventLuaCode();
 	static const char* getShapeshiftEventLuaCode();
 	static const char* getParseChatLuaCode();
+	static const char* getClickMorphingCode();
+	static const char* getClickMountMorphingCode();
 
-	// lua callbacks
+	// lua callbacks (for LUA API)
 	static int chatCallback(uintptr_t lua_state);
 	static int mountCallback(uintptr_t lua_state);
 	static int shapeshiftCallback(uintptr_t lua_state);
+	static int morphItemCallback(uintptr_t lua_state);
+	static int morphEnchantCallback(uintptr_t lua_state);
+	static int morphMountCallback(uintptr_t lua_state);
 
 	// main thread callbacks
 	static void initializeMorpherCallback();
@@ -72,6 +77,7 @@ private:
 	void morphItem(int item, int item_id, int item_version);
 	void morphEnchant(int item, int enchant_id);
 	void morphMount();
+	void morphMountByID(int mount_id);
 	void morphTitle(int title_id);
 	void morphShapeshift(ShapeshiftForm form_id, int morph_id);
 	void smartMorphShapeshift(uintptr_t lua_state);
