@@ -218,6 +218,18 @@ uintptr_t Morpher::getPlayerPtr() {
     return WoWFunctions::getUnitFromName("Player");
 }
 
+int Morpher::getTargetMorphID() {
+    uintptr_t target_ptr = WoWFunctions::getUnitFromName("Target");
+    if (target_ptr) {
+        return Memory::readMemory<int>(target_ptr + Offsets::morph_id);
+    }
+    else {
+        reportParseError("You need to target something first.");
+    }
+    return 0;
+}
+
+
 void Morpher::morphShapeshift(ShapeshiftForm form_id, int morph_id) {
     switch (form_id) {
     case ShapeshiftForm::HUMANOID:
@@ -551,6 +563,12 @@ void Morpher::parseChat(uintptr_t lua_state) {
             case TokenType::ENCHANT:
                 parseEnchant();
                 return;
+            case TokenType::NPC:
+                parseMorphNPC();
+                return;
+            case TokenType::NPCID:
+                parseNPCID();
+                return;
             case TokenType::MOUNT:
                 parseMount();
                 return;
@@ -566,11 +584,11 @@ void Morpher::parseChat(uintptr_t lua_state) {
             case TokenType::END:
                 reportParseError("UNREACHABLE END");
                 return;
-            case TokenType::UNKNOWN:
+            case TokenType::STRING:
                 reportParseError("Unknown command. Type .commands to see available commands.");
                 return;
             default:
-                reportParseError("UNREACHABLE!!");
+                reportParseError("UNREACHABLE: parseChat()");
                 //UnknownCommand(TokenType::UNKNOWN);
                 return;
             }
@@ -613,8 +631,17 @@ void Morpher::parseMorph() {
       //  m_hook->HookFunction(updateDisplayInfoHook, next.toNumber());
        morphShapeshift(ShapeshiftForm::HUMANOID, next.toNumber());
     }
-    else {
-        reportParseError("Invalid .morph operand (must be number).");
+    else if(next.type() == TokenType::STRING) {
+        std::string arg = next.toString();
+        if (arg == "target") {
+            int target_morph_id = getTargetMorphID();
+            if(target_morph_id)
+                morphShapeshift(ShapeshiftForm::HUMANOID, target_morph_id);
+        }
+        else
+            reportParseError("Invalid .morph operand.");
+    } else {
+        reportParseError("Invalid .morph operand.");
     }
     m_lex.finish();
 }
@@ -747,8 +774,16 @@ void Morpher::parseShapeshift() {
         if (next.type() == TokenType::NUMBER) {
             morph_id = next.toNumber();
             morphShapeshift(static_cast<ShapeshiftForm>(form_id), morph_id);
-        }
-        else {
+        } else if (next.type() == TokenType::STRING) {
+            std::string arg = next.toString();
+            if (arg == "target") {
+                int target_morph_id = getTargetMorphID();
+                if (target_morph_id)
+                    morphShapeshift(static_cast<ShapeshiftForm>(form_id), target_morph_id);
+            }
+            else
+                reportParseError("Invalid .shapeshift second operand.");
+        } else {
             reportParseError("Invalid .shapeshift second operand.");
         }
     }
@@ -757,6 +792,18 @@ void Morpher::parseShapeshift() {
     }
     m_lex.finish();
 }
+
+void Morpher::parseMorphNPC() {
+    morphShapeshift(ShapeshiftForm::HUMANOID, getTargetMorphID());
+    m_lex.finish();
+}
+
+void Morpher::parseNPCID() {
+    SendWoWMessage(std::to_string(getTargetMorphID()));
+    m_lex.finish();
+}
+
+
 
 void Morpher::resetMorpher() {
     m_player.resetPlayer();

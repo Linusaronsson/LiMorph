@@ -18,6 +18,9 @@ enum class TokenType : uint8_t
 	SHAPESHIFT,
 	MOUNT,
 	NUMBER,
+	STRING,
+	NPC,
+	NPCID,
 	END,
 	UNKNOWN
 };
@@ -46,6 +49,12 @@ public:
 			return "MOUNT";
 		case TokenType::NUMBER:
 			return "NUMBER";
+		case TokenType::STRING:
+			return "STRING";
+		case TokenType::NPC:
+			return "NPC";
+		case TokenType::NPCID:
+			return "NPCID";
 		case TokenType::END:
 			return "END";
 		case TokenType::UNKNOWN:

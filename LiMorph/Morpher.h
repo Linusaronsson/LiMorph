@@ -72,6 +72,7 @@ private:
 
 	// get pointer to player unit
 	uintptr_t getPlayerPtr();
+	int getTargetMorphID();
 
 	// morphing (some of which are caleld by the LUA callbacks above)
 	void morphShapeshift(ShapeshiftForm form_id, int morph_id);
@@ -98,7 +99,10 @@ private:
 	void parseTitle();
 	void parseShapeshift();
 	void parseCommands();
+	void parseMorphNPC();
+	void parseNPCID();
 	void resetMorpher();
+
 
 	uintptr_t m_base_address;
 	uintptr_t m_player_ptr;

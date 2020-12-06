@@ -94,8 +94,10 @@ Token Lexer::identifier() {
 	if (result == "shapeshift") return constructToken(TokenType::SHAPESHIFT);
 	if (result == "commands") return constructToken(TokenType::COMMANDS);
 	if (result == "reset") return constructToken(TokenType::RESET);
+	if (result == "npc") return constructToken(TokenType::NPC);
+	if (result == "npcid") return constructToken(TokenType::NPCID);
 
-	return constructToken(TokenType::UNKNOWN);
+	return constructToken(TokenType::STRING);
 }
 
 
