@@ -52,27 +52,170 @@ const char* Morpher::getClickMountMorphingCode() {
     #include "ClickMountMorphing.lua"
 }
 
+int __cdecl Morpher::chatCallback(uintptr_t lua_state) {
+    morpher_ptr->parseChat(lua_state);
+    return 0;
+}
+
+int __cdecl Morpher::mountCallback(uintptr_t lua_state) {
+    morpher_ptr->morphMount();
+    return 0;
+}
+
+int __cdecl Morpher::shapeshiftCallback(uintptr_t lua_state) {
+    morpher_ptr->smartMorphTransparentShapeshift();
+    return 0;
+}
+
+int __cdecl Morpher::morphItemCallback(uintptr_t lua_state) {
+    int top = WoWFunctions::luaGetTop(lua_state);
+    if (top) {
+        int item = WoWFunctions::luaToNumber(lua_state, top - 2);
+        int item_id = WoWFunctions::luaToNumber(lua_state, top - 1);
+        int item_version = WoWFunctions::luaToNumber(lua_state, top);
+        morpher_ptr->morphItem(item, item_id, item_version);
+    }
+    return 0;
+}
+
+int __cdecl Morpher::morphEnchantCallback(uintptr_t lua_state) {
+    int top = WoWFunctions::luaGetTop(lua_state);
+    if (top) {
+        int item = WoWFunctions::luaToNumber(lua_state, top - 1);
+        int enchant_id = WoWFunctions::luaToNumber(lua_state, top);
+        morpher_ptr->morphEnchant(item, enchant_id);
+    }
+    return 0;
+}
+
+int __cdecl Morpher::morphMountCallback(uintptr_t lua_state) {
+    int top = WoWFunctions::luaGetTop(lua_state);
+    if (top) {
+        int mount_id = WoWFunctions::luaToNumber(lua_state, top);
+        morpher_ptr->morphMountByID(mount_id);
+    }
+    return 0;
+}
+
+void Morpher::initializeMorpherCallback() {
+    morpher_ptr->initializeMorpher();
+}
+
+void Morpher::hookUpdateDisplayInfoCallback() {
+    morpher_ptr->hookUpdateDisplayInfo();
+}
+
+void Morpher::registerFunctions() {
+    WoWFunctions::registerFunction("ParseChat", (uintptr_t)chatCallback);
+    WoWFunctions::registerFunction("MorphMount_", (uintptr_t)mountCallback);
+    WoWFunctions::registerFunction("MorphTransparentShapeshift", (uintptr_t)shapeshiftCallback);
+    WoWFunctions::registerFunction("MorphItem", (uintptr_t)morphItemCallback);
+    WoWFunctions::registerFunction("MorphEnchant", (uintptr_t)morphEnchantCallback);
+    WoWFunctions::registerFunction("MorphMount", (uintptr_t)morphMountCallback);
+    //WoWFunctions::registerFunction("PlayerPtr", (uintptr_t)WoWFunctions::getUnitFromName("Player"));
+
+}
+
+void Morpher::registerLuaEvents() {
+    WoWFunctions::executeLUA(getMountEventLuaCode());
+    WoWFunctions::executeLUA(getShapeshiftEventLuaCode());
+    WoWFunctions::executeLUA(getParseChatLuaCode());
+    WoWFunctions::executeLUA(getClickMorphingCode());
+    WoWFunctions::executeLUA(getClickMountMorphingCode());
+}
+
+void Morpher::zoningCallback() {
+    morpher_ptr->zoning();
+}
+
+void Morpher::zoning() {
+    hookUpdateDisplayInfo();
+    m_player.restorePlayer(); // note: does not set current morph id in memory (its taken care of by player_shapeshift_event() below)
+
+    //when zoning wow will call UpdateDisplayInfo (while unhooked) with a new model (original model of whichever shapeshift),
+    //pressumably with current morph id in memory as the model
+    m_last_morphed_id = m_player.getMorphIDFromMemory();
+
+    //WoWFunctions::executeLUA("player_shapeshift_event()");
+
+    // needed incase mount state is different between enter and exit zoning
+    // (in which case mount event is not triggered automatically)
+    WoWFunctions::executeLUA("player_mount_event()");
+
+    smartMorphShapeshift();
+    updateModel();
+}
+
+void Morpher::initializeMorpher() {
+    m_player_ptr = getPlayerPtr();
+    m_player = Player(m_player_ptr);
+    m_player.initializePlayer();
+    m_last_morphed_id = m_player.getCurrentMorphID(); // maybe not needed or wrong
+
+    hookUpdateDisplayInfo();
+    registerFunctions();
+    registerLuaEvents();
+
+    //smartMorphShapeshift();
+
+    SendWoWMessage("Loaded. Type .commands for usable commands.");
+
+    /*
+    std::stringstream stream;
+    stream << std::hex << m_base_address;
+    SendWoWMessage("Base address: " + stream.str());
+    stream.str("");
+    stream << std::hex << m_player_ptr;
+    SendWoWMessage("Player_ptr address: " + stream.str());
+    SendWoWMessage("MorphID: " + std::to_string(m_player.getMorphID()));
+
+    SendWoWMessage("Loaded. Type .commands for usable commands.");
+    */
+}
+
+void Morpher::hookUpdateDisplayInfo() {
+    VMTHook* hook = new VMTHook(reinterpret_cast<void*>(m_player_ptr));
+    hook->HookFunction(updateDisplayInfoHook, Offsets::update_display_info_vtable_offset);
+}
+
+//typedef int(__fastcall* testFunc)(uintptr_t, uint16_t, uint16_t, uint16_t);
+int __fastcall Morpher::updateDisplayInfoHook(uintptr_t unit) {
+    morpher_ptr->updateDisplayInfoCustom(unit);
+
+    // morpher_ptr->SendWoWMessage("HOOKED DISPLAY: " + std::to_string(arg) + ",   " + std::to_string(arg2) + ",     " + std::to_string(arg3));
+     //uint32_t ret = morpher_ptr->m_hook->GetOriginalFunction<testFunc>(119)(unit, arg, arg2, arg3);
+     //morpher_ptr->SendWoWMessage("Return val: " + std::to_string(ret));
+
+     //if (unit != WoWFunctions::getUnitFromName("Player")) {
+     //    WoWFunctions::updateModel(unit);
+     //}
+
+    // return ret;
+    return 0;
+}
+
+void Morpher::updateDisplayInfoCustom(uintptr_t unit) {
+    //SendWoWMessage("Hello?");
+    smartMorphShapeshift();
+    updateModel();
+}
 
 void Morpher::forceUpdateModel() {
-    m_last_morphed_id = m_player.getMorphID();
-    m_player.setCurrentMorphIDInMemory(); //todo: remove since ran in updateModel right?
+    m_player.setCurrentMorphIDInMemory();
+    m_last_morphed_id = m_player.getCurrentMorphID();
     WoWFunctions::updateModel(m_player_ptr);
 }
 
 void Morpher::updateModel() {
     m_player.setCurrentMorphIDInMemory();
-    // todo: dont think this check is necessary if updateModel is always called 
-    // correctly (i.e., not called when not necessary)
-    if (m_last_morphed_id != m_player.getMorphID()) {
-        forceUpdateModel();
-       // SendWoWMessage("morphing...");
-
+    if (m_last_morphed_id != m_player.getCurrentMorphID()) {
+        m_last_morphed_id = m_player.getCurrentMorphID();
+        WoWFunctions::updateModel(m_player_ptr);
     }
 }
 
-void Morpher::_morph(int morph_id) {
-    m_player.setCurrentMorphID(morph_id);
-    updateModel();
+uintptr_t Morpher::getPlayerPtr() {
+    return WoWFunctions::getUnitFromName("Player");
 }
 
 void Morpher::morphShapeshift(ShapeshiftForm form_id, int morph_id) {
@@ -90,7 +233,7 @@ void Morpher::morphShapeshift(ShapeshiftForm form_id, int morph_id) {
     case ShapeshiftForm::FLIGHT:
     case ShapeshiftForm::MOONKIN:
         m_player.setShapeshiftID(form_id, morph_id);
-        WoWFunctions::executeLUA("player_shapeshift_event()");
+        _smartMorphShapeshift(form_id);
         break;
     default:
         reportParseError("Invalid form id.");
@@ -98,111 +241,91 @@ void Morpher::morphShapeshift(ShapeshiftForm form_id, int morph_id) {
     }
 }
 
-// todo: allow any shapeshift to become "transparent", meaning that 
-// it will have the same morph as HUMANOID by default (e.g., .mapshapeshift 5 0 for 
-// mapping bear form to humanoid form
-void Morpher::morphTransparentShapeshift(ShapeshiftForm form_id, bool force_morph) {
-    int current_id = m_player.getShapeshiftID(form_id);
-    // shapeshift has been morphed, morph into it
-    if (current_id) {
-        // true transparent shapeshifts have the same original id as humanoid,
-        // a fake transparent shapeshift wouldnt (fix if this is implemented)
-        m_player.setCurrentOriginalShapeshiftID(ShapeshiftForm::HUMANOID);
-        _morph(current_id);
+void Morpher::_smartMorphShapeshift(ShapeshiftForm form_id) {
+    ShapeshiftForm current_shapeshift_form = 
+        static_cast<ShapeshiftForm>(m_player.getShapeshiftFormIDFromMemory());
+    if (current_shapeshift_form == form_id) {
+        smartMorphShapeshift(false);
+        updateModel();
     }
-    //otherwise use humanoid morph
-    else {
-        if (force_morph) {
+}
+
+void Morpher::smartMorphTransparentShapeshift(bool set_original) {
+    ShapeshiftForm form_id =
+        static_cast<ShapeshiftForm>(m_player.getShapeshiftFormIDFromMemory());
+    int morph_id_in_mem = m_player.getMorphIDFromMemory();
+    switch (form_id) {
+        // shapeshifts that only change transparancy (or nothing) by default need special treatment
+        // todo: allow any shapeshift to become "transparent", meaning that 
+        // it will have the same morph as HUMANOID by default (e.g., .mapshapeshift 5 0 for 
+        // mapping bear form to humanoid form
+    case ShapeshiftForm::SHADOW:
+    case ShapeshiftForm::STEALTH:
+    {
+        int form_morph_id = m_player.getShapeshiftID(form_id);
+        // shapeshift has been morphed, morph into it
+        if (form_morph_id) {
+            // true transparent shapeshifts have the same original id as humanoid,
+            // a fake transparent shapeshift wouldnt (fix if this is implemented)
+            if(set_original)
+                m_player.setCurrentOriginalShapeshiftID(
+                    ShapeshiftForm::HUMANOID,
+                    m_player.getOriginalShapeshiftID(ShapeshiftForm::HUMANOID));
+            m_player.setCurrentMorphID(form_morph_id);
+            updateModel();
+            // _morph(current_id);
+        }
+        //otherwise use humanoid morph
+        else {
             // This is run if .morph is done while in a transparent shapeshift.
             // This will update the HUMANOID morph id, but we also want it to
             // update the model of the transparent shapeshift in that case since it
             // is the same as the HUMANOID by default.
-            m_player.setCurrentOriginalShapeshiftID(ShapeshiftForm::HUMANOID); // probably not needed
-            _morph(m_player.getShapeshiftID(ShapeshiftForm::HUMANOID));
+            if(set_original) //likely unecessary
+                m_player.setCurrentOriginalShapeshiftID(ShapeshiftForm::HUMANOID, morph_id_in_mem); 
+
         }
-        else {
-            // otherwise set current morph ID in memory for consistency 
-            // note: probably not needed. (todo: check if actually needed, 
-            // entering transparent shapeshift might actually set current morph id to 
-            // original HUMANOID morph id)
-            m_player.setCurrentMorphIDInMemory();
-        }
+    }
+    break;
+    default:
+        //SendWoWMessage("UNREACHABLE: smartMorphTransparentShapeshift())");
+        break;
     }
 }
 
-// callback invoked by the lua function player_shapeshift_event_() on a shapeshift event with force_morph = false
-// also invoked by lua function player_shapeshift_event() with force_morph = true, which is called explicitly by
-// ExecuteLua("player_shapeshift_event()") (e.g., on .morph and .shapeshift, see morphShapeshift(...) above)
-void Morpher::smartMorphShapeshift(uintptr_t lua_state) {
-    int top = WoWFunctions::luaGetTop(lua_state);
-    if (top) {
-        int id = WoWFunctions::luaToNumber(lua_state, top-1);
-        int force_morph = WoWFunctions::luaToNumber(lua_state, top);
 
-          //SendWoWMessage("id: " + std::to_string(id));
-        //  SendWoWMessage("ev: " + std::to_string(ev));
-
-        auto shapeshift_form = static_cast<ShapeshiftForm>(id);
-        int current_morph_id_in_memory = m_player.getMorphIDInMemory();
-
-        // shapeshifts that only change transparancy (or nothing) by default need special treatment
-        // since they should inherit humanoid behaviour if not shapeshifted. Also, they dont
-        // set any morph id in memory (todo: check if true. update: think they do, but it is the 
-        // original morph id of HUMANOID, so this special case is still needed)
-
-        switch (shapeshift_form) {
-        case ShapeshiftForm::SHADOW:
-        case ShapeshiftForm::STEALTH:
-            morphTransparentShapeshift(shapeshift_form, force_morph);
-            return;
-        default:
-            break;
-        }
-        // All other shapeshifts will set the morph id in memory. Only run 
-        // When the morph id has actually changed in memory: update the model accordingly.
-        // This is needed because UPDATE_SHAPESHIFT_FORM is called multiple times when 
-        // entering/exiting shapeshift forms. This makes the shapeshit animations look clean 
-        // since it is only done once (i.e., probably at the last event).
-        // Also ran if force_morph = true (so that the shapeshifts can be updated accordingly 
-        // upon .morph and .shapeshift; these do not modify morph id in memory obviously)
-        if (current_morph_id_in_memory != m_player.getMorphID() || force_morph) {
-            switch (shapeshift_form) {
-            case ShapeshiftForm::HUMANOID:
-                m_player.setCurrentOriginalShapeshiftID(shapeshift_form); // note: will be current for shadow/stealth too (as wanted)
-                _morph(m_player.getShapeshiftID(shapeshift_form));
-                break;
-            case ShapeshiftForm::CAT:
-            case ShapeshiftForm::TREE_OF_LIFE:
-            case ShapeshiftForm::TRAVEL:
-            case ShapeshiftForm::AQUATIC:
-            case ShapeshiftForm::BEAR:
-            case ShapeshiftForm::GHOST_WOLF:
-            case ShapeshiftForm::SWIFT_FLIGHT:
-            case ShapeshiftForm::FLIGHT:
-            case ShapeshiftForm::MOONKIN:
-            {
-
-                if(!force_morph)
-                  m_player.setCurrentOriginalShapeshiftID(shapeshift_form); // consider passing current_morph_id_in_memory directly for consistency
-                int current_form_id = m_player.getShapeshiftID(shapeshift_form);
-
-                /*
-                SendWoWMessage("last morphed id " + std::to_string(m_last_morphed_id));
-                SendWoWMessage("morph id in mem " + std::to_string(current_morph_id_in_memory));
-                SendWoWMessage("current form id " + std::to_string(current_form_id));
-                SendWoWMessage("current morph id " + std::to_string(m_player.getMorphID()));
-                SendWoWMessage("current original morph id " + std::to_string(m_player.getOriginalMorphID()));
-                */
-
-                _morph(current_form_id ? current_form_id : current_morph_id_in_memory);
-                break;
-            }   
-            default:
-                // This makes non-supported shapeshifts work as normal
-                WoWFunctions::updateModel(m_player_ptr); // might be risky
-                break;
-            }
-        }
+// Only responsible for setting the correct morph id as the current morph id
+void Morpher::smartMorphShapeshift(bool set_original) {
+    ShapeshiftForm form_id =
+        static_cast<ShapeshiftForm>(m_player.getShapeshiftFormIDFromMemory());
+    int morph_id_in_mem = m_player.getMorphIDFromMemory();
+    //SendWoWMessage("shapeshift form: " + std::to_string((int)form_id));
+    switch (form_id) {
+    // transparent shapeshifts need special treatment
+    case ShapeshiftForm::SHADOW:
+    case ShapeshiftForm::STEALTH:
+        smartMorphTransparentShapeshift(set_original);
+        break;
+    case ShapeshiftForm::HUMANOID:
+    case ShapeshiftForm::CAT:
+    case ShapeshiftForm::TREE_OF_LIFE:
+    case ShapeshiftForm::TRAVEL:
+    case ShapeshiftForm::AQUATIC:
+    case ShapeshiftForm::BEAR:
+    case ShapeshiftForm::GHOST_WOLF:
+    case ShapeshiftForm::SWIFT_FLIGHT:
+    case ShapeshiftForm::FLIGHT:
+    case ShapeshiftForm::MOONKIN:
+    {
+        if(set_original)
+            m_player.setCurrentOriginalShapeshiftID(form_id, morph_id_in_mem); // note: will be current for shadow/stealth too (as wanted)
+        int form_morph_id = m_player.getShapeshiftID(form_id);
+        m_player.setCurrentMorphID(form_morph_id ? form_morph_id : morph_id_in_mem);
+        break;
+    }   
+    default:
+        SendWoWMessage("UNREACHABLE: smartMorphShapeshift()");
+        break;
     }
 }
 
@@ -309,8 +432,6 @@ void Morpher::morphItem(int item, int item_id, int item_version = -1) {
     forceUpdateModel();
 }
 
-
-
 void Morpher::morphEnchant(int item, int enchant_id) {
     Items item_ = static_cast<Items>(item);
     switch (item_) {
@@ -329,8 +450,6 @@ void Morpher::morphMount() {
     if (m_player.mountMorphed()) {
        WoWFunctions::updateMountModel(m_player_ptr, m_player.getMountID());
     }
-   // SendWoWMessage("reached morph mount");
-   // m_player.setCurrentMorphIDInMemory();
     updateModel();
 }
 
@@ -344,173 +463,8 @@ void Morpher::morphTitle(int title_id) {
     forceUpdateModel();
 }
 
-/*
-void UpdateModel() {
-    WoWFunctions::updateModel(WoWFunctions::getUnitFromName("Player"));
-    std::string msg = "HELLO THEREEE";
-    const std::string& color = "0,1,1";
-    std::string script = "DEFAULT_CHAT_FRAME:AddMessage('MORPHER: ";
-    script += msg;
-    script += "'," + color + ")"; //RGB color of message.
-    WoWFunctions::executeLUA(script);
-}
-*/
-
-void __fastcall Morpher::updateDisplayInfoHook(uintptr_t unit) {
-    //__SendMessage("HOOKED DISPLAY.");
-
-    //if (unit != WoWFunctions::getUnitFromName("Player")) {
-    //    WoWFunctions::updateModel(unit);
-    //}
-}
-
-void Morpher::registerFunctions() {
-    WoWFunctions::registerFunction("ParseChat", (uintptr_t)chatCallback);
-    WoWFunctions::registerFunction("MorphMount_", (uintptr_t)mountCallback);
-    WoWFunctions::registerFunction("MorphShapeshift", (uintptr_t)shapeshiftCallback);
-    WoWFunctions::registerFunction("MorphItem", (uintptr_t)morphItemCallback);
-    WoWFunctions::registerFunction("MorphEnchant", (uintptr_t)morphEnchantCallback);
-    WoWFunctions::registerFunction("MorphMount", (uintptr_t)morphMountCallback);
-}
-
-void Morpher::registerLuaEvents() {
-    WoWFunctions::executeLUA(getMountEventLuaCode());
-    WoWFunctions::executeLUA(getShapeshiftEventLuaCode());
-    WoWFunctions::executeLUA(getParseChatLuaCode());
-    WoWFunctions::executeLUA(getClickMorphingCode());
-    WoWFunctions::executeLUA(getClickMountMorphingCode());
-}
-
-void Morpher::hookUpdateDisplayInfo() {
-    VMTHook* m_hook = new VMTHook(reinterpret_cast<void*>(m_player_ptr));
-    m_hook->HookFunction(updateDisplayInfoHook, Offsets::update_display_info_vtable_offset);
-}
-
-void Morpher::initializeMorpher() {
-    m_player_ptr = getPlayerPtr();
-    m_player = Player(m_player_ptr);
-    m_player.initializePlayer();
-    m_last_morphed_id = m_player.getMorphID();
-
-    hookUpdateDisplayInfo();
-    registerFunctions();
-    registerLuaEvents();
-   // WoWFunctions::executeLUA("player_shapeshift_event()"); // init original morph of current shapeshift
-
-
-    SendWoWMessage("Loaded. Type .commands for usable commands.");
-    
-        /*
-    std::stringstream stream;
-    stream << std::hex << m_base_address;
-    SendWoWMessage("Base address: " + stream.str());
-    stream.str("");
-    stream << std::hex << m_player_ptr;
-    SendWoWMessage("Player_ptr address: " + stream.str());
-    SendWoWMessage("MORPHER LOADED. Type .commands for usable commands.");
-    SendWoWMessage("MorphID: " + std::to_string(m_player.getMorphID()));
-
-    */
-}
-
-void Morpher::zoning() {
-    hookUpdateDisplayInfo();
-    m_player.restorePlayer(); // note: does not set current morph id in memory (its taken care of by player_shapeshift_event() below)
-
-    //when zoning wow will call UpdateDisplayInfo with a new model (original model of whichever shapeshift),
-    //pressumably with current morph id in memory as the model
-    m_last_morphed_id = m_player.getMorphIDInMemory(); 
-
-    WoWFunctions::executeLUA("player_shapeshift_event()");
-
-    // needed incase mount state is different between enter and exit zoning
-    // (in which case mount event is not triggered automatically)
-    WoWFunctions::executeLUA("player_mount_event()");
-
-   // forceUpdateModel();
-}
-
-void Morpher::zoningUpdateModel() {
-    forceUpdateModel();
-}
-
-//undead male: 54041
-//female NE: 54439
-
-// fire bear: 66718
-// ice bea: 66719
-
-// cat 8: 66795
-// cat 7:  66794
-
-// swift flight form 21243
-
-int __cdecl Morpher::chatCallback(uintptr_t lua_state) {
-    morpher_ptr->parseChat(lua_state);
-    return 0;
-}
-
-int __cdecl Morpher::mountCallback(uintptr_t lua_state) {
-    morpher_ptr->morphMount();
-    return 0;
-}
-
-int __cdecl Morpher::shapeshiftCallback(uintptr_t lua_state) {
-    morpher_ptr->smartMorphShapeshift(lua_state);
-    return 0;
-}
-
-int __cdecl Morpher::morphItemCallback(uintptr_t lua_state) {
-    int top = WoWFunctions::luaGetTop(lua_state);
-    if (top) {
-        int item = WoWFunctions::luaToNumber(lua_state, top - 2);
-        int item_id = WoWFunctions::luaToNumber(lua_state, top - 1);
-        int item_version = WoWFunctions::luaToNumber(lua_state, top);
-        morpher_ptr->morphItem(item, item_id, item_version);
-    }
-    return 0;
-}
-
-int __cdecl Morpher::morphEnchantCallback(uintptr_t lua_state) {
-    int top = WoWFunctions::luaGetTop(lua_state);
-    if (top) {
-        int item = WoWFunctions::luaToNumber(lua_state, top - 1);
-        int enchant_id = WoWFunctions::luaToNumber(lua_state, top);
-
-        morpher_ptr->morphEnchant(item, enchant_id);
-    }
-    return 0;
-}
-
-int __cdecl Morpher::morphMountCallback(uintptr_t lua_state) {
-    int top = WoWFunctions::luaGetTop(lua_state);
-    if (top) {
-        int mount_id = WoWFunctions::luaToNumber(lua_state, top);
-        morpher_ptr->morphMountByID(mount_id);
-    }
-    return 0;
-}
-
-
-void Morpher::initializeMorpherCallback() {
-    morpher_ptr->initializeMorpher();
-}
-
-void Morpher::hookUpdateDisplayInfoCallback() {
-    morpher_ptr->hookUpdateDisplayInfo();
-}
-
-void Morpher::zoningCallback() {
-    morpher_ptr->zoning();
-}
-
-void Morpher::zoningUpdateModelCallback() {
-    morpher_ptr->zoningUpdateModel();
-}
-
 void Morpher::startMorpher() {
     MainThread ts = MainThread();
-
     //Logging::Print("flag: " + std::to_string(Memory::readMemory<int>(m_base_address + Offsets::in_game_flag)) + "\n");
     // Login: 0, 1, 1037, 1545, 1561, 1553.
     // Reload: 1553, 1293, 1817, 1553
@@ -546,10 +500,6 @@ void Morpher::startMorpher() {
                 case 1537:
                     // This is reached after a loading screen cause by any form of zoning in game
                    ts.invokeInMainThread(zoningCallback);
-                   Sleep(200);
-                   ts.invokeInMainThread(zoningUpdateModelCallback);
-                   Sleep(1000);
-                   ts.invokeInMainThread(zoningUpdateModelCallback);
                     break;
                 }
             }
@@ -566,10 +516,7 @@ void Morpher::startMorpher() {
             }
         }
     }
-}
 
-uintptr_t Morpher::getPlayerPtr() {
-    return WoWFunctions::getUnitFromName("Player");
 }
 
 // Chat Parsing
@@ -649,10 +596,22 @@ void Morpher::parseCommands() {
     m_lex.finish();
 }
 
+// remember 93
+//remember 103
+// remember 109 ??
+// 110 (on spell press)
+// 114 (on model change)
+// 119 cast spell probly
+// 123 does something on shapeshift
+// 125 (triggered on move key)
+// 127 (on move key release)
+// 130 (consistent on spell press)
+
 void Morpher::parseMorph() {
     Token next = m_lex.nextToken();
     if (next.type() == TokenType::NUMBER) {
-        morphShapeshift(ShapeshiftForm::HUMANOID, next.toNumber());
+      //  m_hook->HookFunction(updateDisplayInfoHook, next.toNumber());
+       morphShapeshift(ShapeshiftForm::HUMANOID, next.toNumber());
     }
     else {
         reportParseError("Invalid .morph operand (must be number).");
@@ -683,6 +642,7 @@ void Morpher::parseGender() {
 }
 
 void Morpher::parseItem() {
+  //  m_hook->UnhookAllFunctions();
     Token next = m_lex.nextToken();
     int item;
     int item_id;
@@ -694,6 +654,20 @@ void Morpher::parseItem() {
             next = m_lex.nextToken();
             if (next.type() == TokenType::NUMBER) {
                 int item_version_id = next.toNumber();
+
+               
+                // m_hook->HookFunction(updateDisplayInfoHook, Offsets::update_display_info_vtable_offset);
+                // m_hook->HookFunction(updateDisplayInfoHook, Offsets::update_display_info_vtable_offset+1);
+
+                // m_hook->PrintFunctions(m_base_address, m_player_ptr);
+                //uintptr_t* oring_funcs = m_hook->GetOriginalFunctions();
+                //  for (int i = 0; i < m_hook->GetTotalFunctions(); i++) {
+                    //  SendWoWMessage(std::to_string(i));
+              //  uintptr_t func = oring_funcs[item] - m_base_address;
+               // WoWFunctions::setVisualKit(WoWFunctions::getUnitFromName("Player"), func, item_id, item_version_id, item_version_id, item_version_id);
+
+
+
                 morphItem(item, item_id, item_version_id);
             }
             else {
@@ -709,8 +683,6 @@ void Morpher::parseItem() {
     }
     m_lex.finish();
 }
-
-
 
 void Morpher::parseEnchant() {
     Token next = m_lex.nextToken();
@@ -765,7 +737,6 @@ void Morpher::parseTitle() {
     m_lex.finish();
 }
 
-
 void Morpher::parseShapeshift() {
     Token next = m_lex.nextToken();
     int form_id;
@@ -789,9 +760,8 @@ void Morpher::parseShapeshift() {
 
 void Morpher::resetMorpher() {
     m_player.resetPlayer();
-    WoWFunctions::executeLUA("player_shapeshift_event()");
-    forceUpdateModel();
-    //WoWFunctions::updateModel(m_player_ptr);
+    smartMorphShapeshift();
+    forceUpdateModel(); 
 
     // TODO: see if running the line below works well (i.e resetting mount while on it)
     //WoWFunctions::executeLUA("player_mount_event()");

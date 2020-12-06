@@ -12,6 +12,9 @@ namespace LiMorph {
 namespace WoWFunctions {
     typedef uintptr_t(__cdecl* GetUnitFromName)(const char*);
     typedef void(__fastcall* UpdateDisplayInfo)(uintptr_t);
+    typedef void(__fastcall* SetVisualKit)(uintptr_t, int64_t);
+    typedef void(__fastcall* SetVisualKitTwo)(uintptr_t);
+
     typedef void(__fastcall* UpdateMountDisplayInfo)(uintptr_t, unsigned int);
     typedef uintptr_t(__fastcall* FrameScriptExecute)(const char* script, const char* script_name, int64_t val);
     typedef bool(__fastcall* FrameScriptRegisterFunction)(const char*, uintptr_t);
@@ -43,6 +46,18 @@ namespace WoWFunctions {
         UpdateDisplayInfo _updateModel =
             reinterpret_cast<UpdateDisplayInfo>(morpher_ptr->getBaseAddress() + Offsets::update_display_info);
         _updateModel(player);
+    }
+
+    inline void setVisualKit(uintptr_t player, uintptr_t func, int visual_spell_id, int arg2, int arg3, int arg4) {
+        SetVisualKit _setVisualKit =
+            reinterpret_cast<SetVisualKit>(morpher_ptr->getBaseAddress() + func);
+        _setVisualKit(player, (int64_t)visual_spell_id);
+    }
+
+    inline void setVisualKitTwo(uintptr_t player, uintptr_t func) {
+        SetVisualKitTwo _setVisualKitTwo =
+            reinterpret_cast<SetVisualKitTwo>(morpher_ptr->getBaseAddress() + func);
+        _setVisualKitTwo(player);
     }
 
     inline void updateMountModel(uintptr_t player, int mountID) {

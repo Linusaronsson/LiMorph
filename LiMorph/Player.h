@@ -19,47 +19,39 @@ public:
 	// reset player to original IDs
 	void resetPlayer();
 
-	// restore player to current morph (used after loading screen 
+	// restore player to current morph (used after zoning, i.e not realod or initial login)
 	void restorePlayer();
 
-	int getMorphID();
-	int getMorphIDInMemory();
+	// getters
+	int getCurrentMorphID();
 	int getOriginalMorphID();
-	int getMountIDInMemory();
-
 	int getGenderID();
 	int getRaceID();
 	int getMountID();
-
+	bool mountMorphed();
 	int getShapeshiftID(ShapeshiftForm form);
 	int getOriginalShapeshiftID(ShapeshiftForm form);
 
+	// get from wow mem
+	int getMorphIDFromMemory();
+	uint8_t getShapeshiftFormIDFromMemory();
 
-	// set Player instance variable
+	// setters
+	void setCurrentMorphID(int id);
 	void setGenderID(int id);
 	void setRaceID(int id);
 	void setMountID(int id);
 	void setShapeshiftID(ShapeshiftForm form, int form_id);
+	void setCurrentOriginalShapeshiftID(ShapeshiftForm form, int morph_id=0);
+	void setPlayerPtr(uintptr_t player_ptr);
 
-	void setCurrentOriginalShapeshiftID(ShapeshiftForm form);
-
-	// check if mount was morphed
-	bool mountMorphed();
-
-	// set values in wow mem
-	void setCurrentMorphID(int id);
+	// set values in wow mem (items/title also set instance variables)
 	void setMorphIDInMemory(int morph_id);
 	void setCurrentMorphIDInMemory();
-
-
 	void setItemID(Items item, int id);
 	void setItemVersionID(Items item, int id);
 	void setItemEnchantID(Items item, int id);
 	void setTitleID(int id);
-
-	void setPlayerPtr(uintptr_t player_ptr) {
-		m_player_ptr = player_ptr;
-	}
 
 
 private:

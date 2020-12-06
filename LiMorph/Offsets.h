@@ -41,6 +41,8 @@ namespace Offsets {
 	constexpr uintptr_t morph_id = 0x1B88;
 	constexpr uintptr_t morph_id2 = 0x8A8;
 
+	constexpr uintptr_t shapeshift_id = 0x1D4B;
+
 	constexpr uintptr_t original_morph_id = 0x1CE8;
 
 	//constexpr uintptr_t bear_form_id = 0x19F8;

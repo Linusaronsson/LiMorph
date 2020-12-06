@@ -56,10 +56,8 @@ void Player::resetPlayer() {
 	for (int i = 0; i < m_shapeshift_ids.size(); i++) {
 		m_shapeshift_ids[i] = m_original_shapeshift_ids[i];
 	}
-
-	m_mount_morphed = false;
-	 
 	setCurrentMorphIDInMemory();
+	m_mount_morphed = false;
 	setTitleID(m_original_title_id);
 }
 
@@ -69,26 +67,16 @@ void Player::restorePlayer() {
 		setItemVersionID(ITEMS_LIST[j], m_item_ids[i + 1]);
 		setItemEnchantID(ITEMS_LIST[j], m_item_ids[i + 2]);
 	}
-	//setCurrentMorphIDInMemory();
 	setTitleID(m_title_id);
 }
 
-int Player::getMorphID() {
+int Player::getCurrentMorphID() {
 	return m_current_morph_id;
-}
-
-int Player::getMorphIDInMemory() {
-	return Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
-}
-
-int Player::getMountIDInMemory() {
-	return Memory::readMemory<int>(m_player_ptr + Offsets::mount_id1);
 }
 
 int Player::getOriginalMorphID() {
 	return m_current_original_morph_id;
 }
-
 
 int Player::getRaceID() {
 	return m_race_id;
@@ -102,6 +90,9 @@ int Player::getMountID() {
 	return m_mount_id;
 }
 
+bool Player::mountMorphed() {
+	return m_mount_morphed;
+}
 
 int Player::getShapeshiftID(ShapeshiftForm form) {
 	return m_shapeshift_ids[WoWUtils::shapeshiftToIndex(form)];
@@ -111,19 +102,16 @@ int Player::getOriginalShapeshiftID(ShapeshiftForm form) {
 	return m_original_shapeshift_ids[WoWUtils::shapeshiftToIndex(form)];
 }
 
-void Player::setCurrentOriginalShapeshiftID(ShapeshiftForm form) {
-	if (form == ShapeshiftForm::HUMANOID) {
-		m_current_original_morph_id = m_original_shapeshift_ids[WoWUtils::shapeshiftToIndex(form)];
-	}
-	else {
-		int morph_id = Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
-		m_original_shapeshift_ids[WoWUtils::shapeshiftToIndex(form)] = morph_id;
-		m_current_original_morph_id = morph_id;
-	}
+int Player::getMorphIDFromMemory() {
+	return Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
 }
 
-void Player::setShapeshiftID(ShapeshiftForm form, int form_id) {
-	m_shapeshift_ids[WoWUtils::shapeshiftToIndex(form)] = form_id;
+uint8_t Player::getShapeshiftFormIDFromMemory() {
+	return Memory::readMemory<uint8_t>(m_player_ptr + Offsets::shapeshift_id);
+}
+
+void Player::setCurrentMorphID(int morph_id) {
+	m_current_morph_id = morph_id;
 }
 
 void Player::setGenderID(int gender_id) {
@@ -139,25 +127,27 @@ void Player::setMountID(int mount_id) {
 	m_mount_morphed = true;
 }
 
-bool Player::mountMorphed() {
-	return m_mount_morphed;
+void Player::setShapeshiftID(ShapeshiftForm form, int form_id) {
+	m_shapeshift_ids[WoWUtils::shapeshiftToIndex(form)] = form_id;
 }
 
-void Player::setCurrentMorphID(int morph_id) {
-	m_current_morph_id = morph_id;
+void Player::setCurrentOriginalShapeshiftID(ShapeshiftForm form, int morph_id) {
+	m_original_shapeshift_ids[WoWUtils::shapeshiftToIndex(form)] = morph_id;
+	m_current_original_morph_id = morph_id;
+}
+
+void Player::setPlayerPtr(uintptr_t player_ptr) {
+	m_player_ptr = player_ptr;
 }
 
 // unused
 void Player::setMorphIDInMemory(int morph_id) {
 	Memory::writeMemory<int>(m_player_ptr + Offsets::morph_id, morph_id);
-	Memory::writeMemory<int>(m_player_ptr + Offsets::morph_id2, morph_id);
 }
 
 void Player::setCurrentMorphIDInMemory() {
 	Memory::writeMemory<int>(m_player_ptr + Offsets::morph_id, m_current_morph_id);
-	//Memory::writeMemory<int>(m_player_ptr + Offsets::morph_id2, m_current_morph_id);
 }
-
 
 void Player::setItemID(Items item, int item_id) {
 	m_item_ids[WoWUtils::itemToIndex(item) * 3] = item_id;
@@ -181,6 +171,4 @@ void Player::setTitleID(int title_id) {
 	m_title_id = title_id;
 	Memory::writeMemory<int>(m_player_ptr + Offsets::title_id, title_id);
 }
-
-
 } // namespace morph

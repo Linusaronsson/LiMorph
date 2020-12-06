@@ -31,6 +31,10 @@ public:
 	}
 
 private:
+	// printing in wow
+	void SendWoWMessage(const std::string& message, const std::string& color);
+	void reportParseError(const std::string& message);
+
 	// load lua code into c++
 	static const char* getMountEventLuaCode();
 	static const char* getShapeshiftEventLuaCode();
@@ -52,40 +56,39 @@ private:
 	static void registerFunctions();
 	static void registerLuaEvents();
 	static void zoningCallback();
-	static void zoningUpdateModelCallback();
 
-
-	// CGUnit_C__UpdateDisplayInfo callback
-	static void __fastcall updateDisplayInfoHook(uintptr_t unit);
-
-
+	// methods called by main thread callbacks
 	void zoning();
-	void zoningUpdateModel();
 	void initializeMorpher();
 	void hookUpdateDisplayInfo();
+
+	// CGUnit_C__UpdateDisplayInfo callback
+	static int __fastcall updateDisplayInfoHook(uintptr_t unit);
+	void updateDisplayInfoCustom(uintptr_t unit);
+
+	// update model
 	void updateModel();
 	void forceUpdateModel();
 
-	void SendWoWMessage(const std::string& message, const std::string& color);
+	// get pointer to player unit
 	uintptr_t getPlayerPtr();
 
-	// Morphing
-	void _morph(int morph_id);
+	// morphing (some of which are caleld by the LUA callbacks above)
+	void morphShapeshift(ShapeshiftForm form_id, int morph_id);
+	void smartMorphTransparentShapeshift(bool set_original = true);
+	void smartMorphShapeshift(bool set_original=true);
+	void _smartMorphShapeshift(ShapeshiftForm form_id);
 	void morphRace(int race_id);
 	void morphGender(int gender_id);
-	void updateGender(int gender);
+	void updateGender(int gender_id);
 	void morphItem(int item, int item_id, int item_version);
 	void morphEnchant(int item, int enchant_id);
 	void morphMount();
 	void morphMountByID(int mount_id);
 	void morphTitle(int title_id);
-	void morphShapeshift(ShapeshiftForm form_id, int morph_id);
-	void smartMorphShapeshift(uintptr_t lua_state);
-	void morphTransparentShapeshift(ShapeshiftForm form_id, bool force_morph);
 
-	// Parsing
+	// chat parsing
 	void parseChat(uintptr_t lua_state);
-	void reportParseError(const std::string& message);
 	void parseMorph();
 	void parseRace();
 	void parseGender();
@@ -102,6 +105,7 @@ private:
 	uintptr_t m_customization_ptr;
 	Player m_player;
 	Lexer m_lex;
+	VMTHook* m_hook;
 	int m_last_morphed_id = 0;
 };
 
