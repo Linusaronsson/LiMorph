@@ -8,6 +8,16 @@
 
 namespace LiMorph {
 
+// Customization logic:
+// Get ChrModelID from chrmodel.csv.
+// Get all customization options (i.e. a set of ChrCustomizationOptionIDs) for this ChrModelID in chrcustomizationoption.csv
+// For each of these ChrCustomizationOptionIDs retrieve all ChrCustomizationChoiceIDs from chrcustomizationchoice.csv
+
+// All indexing will actually be done through chrcustomizationconversion.csv:
+// Given race/gender: Get all unique OptionIDs from chrcustomizationconversion.csv.
+// For each OptionID -> get name_lang from chrcustomizationoption 
+
+
 class Player
 {
 public:
@@ -25,8 +35,8 @@ public:
 	// getters
 	int getCurrentMorphID();
 	int getOriginalMorphID();
-	int getGenderID();
-	int getRaceID();
+	uint8_t getGenderID();
+	uint8_t getRaceID();
 	int getMountID();
 	bool mountMorphed();
 	int getShapeshiftID(ShapeshiftForm form);
@@ -35,15 +45,17 @@ public:
 	// get from wow mem
 	int getMorphIDFromMemory();
 	uint8_t getShapeshiftFormIDFromMemory();
+	int getNativeMorphID();
 
 	// setters
 	void setCurrentMorphID(int id);
-	void setGenderID(int id);
-	void setRaceID(int id);
+	void setGenderID(uint8_t gender_id);
+	void setRaceID(uint8_t id);
 	void setMountID(int id);
 	void setShapeshiftID(ShapeshiftForm form, int form_id);
 	void setCurrentOriginalShapeshiftID(ShapeshiftForm form, int morph_id=0);
 	void setPlayerPtr(uintptr_t player_ptr);
+
 
 	// set values in wow mem (items/title also set instance variables)
 	void setMorphIDInMemory(int morph_id);
@@ -52,6 +64,10 @@ public:
 	void setItemVersionID(Items item, int id);
 	void setItemEnchantID(Items item, int id);
 	void setTitleID(int id);
+
+	// copy player
+	void copyPlayerItems(uintptr_t unit);
+	void copyPlayerItem(uintptr_t unit, int item);
 
 
 private:
@@ -71,12 +87,12 @@ private:
 	std::array<int, N_ITEMS * 3> m_original_item_ids;
 
 	// things not related to morphing the player model
-	int m_race_id;
-	int m_gender_id;
+	uint8_t m_race_id;
+	uint8_t m_gender_id;
 	int m_mount_id;
 	int m_title_id;
-	int m_original_race_id;
-	int m_original_gender_id;
+	uint8_t m_original_race_id;
+	uint8_t m_original_gender_id;
 	int m_original_mount_id;
 	int m_original_title_id;
 

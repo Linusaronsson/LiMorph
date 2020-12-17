@@ -151,12 +151,6 @@ local f7 = CreateFrame("Frame")
 
 local active
 
-if IsAddOnLoaded("Blizzard_Collections") then
-	f7:InitWardrobe()
-else
-	f7:RegisterEvent("ADDON_LOADED")
-end
-
 function f7:InitWardrobe()
 	-- only load once the appearances tab is opened
 	WardrobeCollectionFrame:HookScript("OnShow", function(frame)
@@ -181,6 +175,10 @@ f7:SetScript("OnEvent", function(self, event, arg1)
 	end
 end)
 
-
+if IsAddOnLoaded("Blizzard_Collections") then
+	f7:InitWardrobe()
+else
+	f7:RegisterEvent("ADDON_LOADED")
+end
 
 -- )lua";

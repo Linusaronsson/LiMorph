@@ -4,7 +4,7 @@
 
 namespace LiMorph {
 
-/*
+
 struct WGUID {
 	unsigned long long m_high;
 	unsigned long long m_low;
@@ -18,7 +18,7 @@ enum class ObjectType : uint8_t
 	OtherPlayers = 0x6,
 	Player = 0x7,
 };
-*/
+
 
 
 enum class ShapeshiftForm {

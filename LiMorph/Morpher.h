@@ -63,7 +63,7 @@ private:
 	void hookUpdateDisplayInfo();
 
 	// CGUnit_C__UpdateDisplayInfo callback
-	static int __fastcall updateDisplayInfoHook(uintptr_t unit);
+	static void __fastcall updateDisplayInfoHook(uintptr_t unit);
 	void updateDisplayInfoCustom(uintptr_t unit);
 
 	// update model
@@ -78,7 +78,6 @@ private:
 	void morphShapeshift(ShapeshiftForm form_id, int morph_id);
 	void smartMorphTransparentShapeshift(bool set_original = true);
 	void smartMorphShapeshift(bool set_original=true);
-	void _smartMorphShapeshift(ShapeshiftForm form_id);
 	void morphRace(int race_id);
 	void morphGender(int gender_id);
 	void updateGender(int gender_id);
@@ -103,6 +102,9 @@ private:
 	void parseNPCID();
 	void resetMorpher();
 
+	uintptr_t iterateObjMgr();
+
+	int m_func;
 
 	uintptr_t m_base_address;
 	uintptr_t m_player_ptr;

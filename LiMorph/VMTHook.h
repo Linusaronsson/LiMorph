@@ -23,7 +23,7 @@ public:
 
 		while (static_cast<std::uintptr_t*>(*this->baseclass)[this->total_functions])
 			++this->total_functions;
-
+		//total_functions = 1000;
 		const std::size_t table_size = this->total_functions * sizeof(std::uintptr_t);
 
 		this->original_vft = *this->baseclass;
@@ -47,13 +47,14 @@ public:
 	}
 
 	inline void PrintFunctions(uintptr_t base) {
-
-		for (int i = 0; i < this->total_functions; i++) {
+		
+		for (int i = 0; i < 1000; i++) {
 			std::stringstream stream;
 			stream << std::hex << this->original_vft[i] - base;
 			std::string result(stream.str());
 			LiMorph::Logging::Print(result + "\n");
 		}
+		
 	}
 
 	template <typename Function> inline const Function GetOriginalFunction(std::size_t function_index) {
@@ -62,8 +63,8 @@ public:
 
 	inline bool HookFunction(void* new_function, const std::size_t function_index) {
 		*this->baseclass = this->current_vft.get();
-		if (function_index > this->total_functions)
-			return false;
+		//if (function_index > this->total_functions)
+		//	return false;
 
 		this->current_vft[function_index] = reinterpret_cast<std::uintptr_t>(new_function);
 

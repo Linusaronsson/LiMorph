@@ -1,10 +1,19 @@
 #include "pch.h"
 #include "Lexer.h"
 
+#include <algorithm>
+
 namespace LiMorph {
+
+char asciitolower(char in) {
+	if (in <= 'Z' && in >= 'A')
+		return in - ('Z' - 'z');
+	return in;
+}
 
 void Lexer::setText(const std::string& source) {
 	m_source_code = source;
+	std::transform(m_source_code.begin(), m_source_code.end(), m_source_code.begin(), asciitolower);
 	m_cursor = m_start = m_source_code.c_str();
 	m_current_char = m_source_code[0];
 	m_current = 0;

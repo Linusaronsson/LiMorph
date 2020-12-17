@@ -108,7 +108,7 @@ void Morpher::hookUpdateDisplayInfoCallback() {
 void Morpher::registerFunctions() {
     WoWFunctions::registerFunction("ParseChat", (uintptr_t)chatCallback);
     WoWFunctions::registerFunction("MorphMount_", (uintptr_t)mountCallback);
-    WoWFunctions::registerFunction("MorphTransparentShapeshift", (uintptr_t)shapeshiftCallback);
+   //WoWFunctions::registerFunction("MorphTransparentShapeshift", (uintptr_t)shapeshiftCallback);
     WoWFunctions::registerFunction("MorphItem", (uintptr_t)morphItemCallback);
     WoWFunctions::registerFunction("MorphEnchant", (uintptr_t)morphEnchantCallback);
     WoWFunctions::registerFunction("MorphMount", (uintptr_t)morphMountCallback);
@@ -151,15 +151,18 @@ void Morpher::initializeMorpher() {
     m_player = Player(m_player_ptr);
     m_player.initializePlayer();
     m_last_morphed_id = m_player.getCurrentMorphID(); // maybe not needed or wrong
-
+    //m_hook = new VMTHook(reinterpret_cast<void*>(m_player_ptr));
+   // m_hook->PrintFunctions(m_base_address);
     hookUpdateDisplayInfo();
     registerFunctions();
     registerLuaEvents();
 
+    morphRace(m_player.getRaceID());
+
     //smartMorphShapeshift();
-
     SendWoWMessage("Loaded. Type .commands for usable commands.");
-
+    
+  
     /*
     std::stringstream stream;
     stream << std::hex << m_base_address;
@@ -167,10 +170,11 @@ void Morpher::initializeMorpher() {
     stream.str("");
     stream << std::hex << m_player_ptr;
     SendWoWMessage("Player_ptr address: " + stream.str());
-    SendWoWMessage("MorphID: " + std::to_string(m_player.getMorphID()));
-
-    SendWoWMessage("Loaded. Type .commands for usable commands.");
+    SendWoWMessage("raceID: " + std::to_string(m_player.getRaceID()));
+    SendWoWMessage("genderID: " + std::to_string(m_player.getGenderID()));
     */
+    
+
 }
 
 void Morpher::hookUpdateDisplayInfo() {
@@ -178,26 +182,26 @@ void Morpher::hookUpdateDisplayInfo() {
     hook->HookFunction(updateDisplayInfoHook, Offsets::update_display_info_vtable_offset);
 }
 
-//typedef int(__fastcall* testFunc)(uintptr_t, uint16_t, uint16_t, uint16_t);
-int __fastcall Morpher::updateDisplayInfoHook(uintptr_t unit) {
+typedef   int(__fastcall* testFuncT)(uintptr_t, uint32_t arg, uint32_t arg2, uint32_t arg3);
+void __fastcall Morpher::updateDisplayInfoHook(uintptr_t unit) {
     morpher_ptr->updateDisplayInfoCustom(unit);
 
-    // morpher_ptr->SendWoWMessage("HOOKED DISPLAY: " + std::to_string(arg) + ",   " + std::to_string(arg2) + ",     " + std::to_string(arg3));
-     //uint32_t ret = morpher_ptr->m_hook->GetOriginalFunction<testFunc>(119)(unit, arg, arg2, arg3);
+     //morpher_ptr->SendWoWMessage("HOOKED DISPLAY: " + std::to_string(arg) + ",   " + std::to_string(arg2) + ",     " + std::to_string(arg3));
+    // return morpher_ptr->m_hook->GetOriginalFunction<testFuncT>(morpher_ptr->m_func)(unit, 0, 27, arg3);
+  //   morpher_ptr->SendWoWMessage(ret);
      //morpher_ptr->SendWoWMessage("Return val: " + std::to_string(ret));
 
      //if (unit != WoWFunctions::getUnitFromName("Player")) {
      //    WoWFunctions::updateModel(unit);
      //}
 
-    // return ret;
-    return 0;
+    // return 0;
+    //return unit;
 }
 
 void Morpher::updateDisplayInfoCustom(uintptr_t unit) {
     //SendWoWMessage("Hello?");
     smartMorphShapeshift();
-    updateModel();
 }
 
 void Morpher::forceUpdateModel() {
@@ -244,21 +248,20 @@ void Morpher::morphShapeshift(ShapeshiftForm form_id, int morph_id) {
     case ShapeshiftForm::STEALTH:
     case ShapeshiftForm::FLIGHT:
     case ShapeshiftForm::MOONKIN:
+    {
+        int old_human_morph = m_player.getShapeshiftID(ShapeshiftForm::HUMANOID);
         m_player.setShapeshiftID(form_id, morph_id);
-        _smartMorphShapeshift(form_id);
+        ShapeshiftForm current_shapeshift_form =
+            static_cast<ShapeshiftForm>(m_player.getShapeshiftFormIDFromMemory());
+        if (current_shapeshift_form == form_id || (m_player.getCurrentMorphID() == old_human_morph)) {
+            smartMorphShapeshift(false);
+            updateModel();
+        }
         break;
+    }
     default:
         reportParseError("Invalid form id.");
         break;
-    }
-}
-
-void Morpher::_smartMorphShapeshift(ShapeshiftForm form_id) {
-    ShapeshiftForm current_shapeshift_form = 
-        static_cast<ShapeshiftForm>(m_player.getShapeshiftFormIDFromMemory());
-    if (current_shapeshift_form == form_id) {
-        smartMorphShapeshift(false);
-        updateModel();
     }
 }
 
@@ -266,37 +269,22 @@ void Morpher::smartMorphTransparentShapeshift(bool set_original) {
     ShapeshiftForm form_id =
         static_cast<ShapeshiftForm>(m_player.getShapeshiftFormIDFromMemory());
     int morph_id_in_mem = m_player.getMorphIDFromMemory();
+    //SendWoWMessage("shapeshift formasds: " + std::to_string((int)form_id));
     switch (form_id) {
-        // shapeshifts that only change transparancy (or nothing) by default need special treatment
-        // todo: allow any shapeshift to become "transparent", meaning that 
-        // it will have the same morph as HUMANOID by default (e.g., .mapshapeshift 5 0 for 
-        // mapping bear form to humanoid form
+    case ShapeshiftForm::MOONKIN: // can be transparent if glyph of stars is used
     case ShapeshiftForm::SHADOW:
     case ShapeshiftForm::STEALTH:
     {
         int form_morph_id = m_player.getShapeshiftID(form_id);
         // shapeshift has been morphed, morph into it
-        if (form_morph_id) {
-            // true transparent shapeshifts have the same original id as humanoid,
-            // a fake transparent shapeshift wouldnt (fix if this is implemented)
-            if(set_original)
-                m_player.setCurrentOriginalShapeshiftID(
-                    ShapeshiftForm::HUMANOID,
-                    m_player.getOriginalShapeshiftID(ShapeshiftForm::HUMANOID));
-            m_player.setCurrentMorphID(form_morph_id);
-            updateModel();
-            // _morph(current_id);
-        }
-        //otherwise use humanoid morph
-        else {
-            // This is run if .morph is done while in a transparent shapeshift.
-            // This will update the HUMANOID morph id, but we also want it to
-            // update the model of the transparent shapeshift in that case since it
-            // is the same as the HUMANOID by default.
-            if(set_original) //likely unecessary
-                m_player.setCurrentOriginalShapeshiftID(ShapeshiftForm::HUMANOID, morph_id_in_mem); 
-
-        }
+        // true transparent shapeshifts have the same original id as humanoid,
+        // a fake transparent shapeshift wouldnt (fix if this is implemented)
+        m_player.setCurrentOriginalShapeshiftID(
+            ShapeshiftForm::HUMANOID,
+            m_player.getOriginalShapeshiftID(ShapeshiftForm::HUMANOID));
+        m_player.setCurrentMorphID(form_morph_id);
+        m_player.setCurrentMorphID(form_morph_id ? form_morph_id : m_player.getShapeshiftID(ShapeshiftForm::HUMANOID));
+        updateModel();
     }
     break;
     default:
@@ -305,19 +293,30 @@ void Morpher::smartMorphTransparentShapeshift(bool set_original) {
     }
 }
 
-
 // Only responsible for setting the correct morph id as the current morph id
 void Morpher::smartMorphShapeshift(bool set_original) {
     ShapeshiftForm form_id =
         static_cast<ShapeshiftForm>(m_player.getShapeshiftFormIDFromMemory());
     int morph_id_in_mem = m_player.getMorphIDFromMemory();
-    //SendWoWMessage("shapeshift form: " + std::to_string((int)form_id));
+    int orig = morph_id_in_mem;
+    if (morph_id_in_mem == m_player.getNativeMorphID()) {
+        morph_id_in_mem = m_player.getOriginalShapeshiftID(ShapeshiftForm::HUMANOID);
+        m_player.setMorphIDInMemory(morph_id_in_mem); // make sure UpdateModel is called even for transparent shapeshifts
+    }
+  //  SendWoWMessage("shapeshift form: " + std::to_string((int)form_id));
     switch (form_id) {
     // transparent shapeshifts need special treatment
     case ShapeshiftForm::SHADOW:
     case ShapeshiftForm::STEALTH:
         smartMorphTransparentShapeshift(set_original);
         break;
+    case ShapeshiftForm::MOONKIN:
+        // if glyph of stars is used it is transparent
+        if (morph_id_in_mem == m_player.getOriginalShapeshiftID(ShapeshiftForm::HUMANOID)) {
+            //SendWoWMessage("testtest");
+            smartMorphTransparentShapeshift(set_original);
+            break;
+        }
     case ShapeshiftForm::HUMANOID:
     case ShapeshiftForm::CAT:
     case ShapeshiftForm::TREE_OF_LIFE:
@@ -327,16 +326,18 @@ void Morpher::smartMorphShapeshift(bool set_original) {
     case ShapeshiftForm::GHOST_WOLF:
     case ShapeshiftForm::SWIFT_FLIGHT:
     case ShapeshiftForm::FLIGHT:
-    case ShapeshiftForm::MOONKIN:
     {
         if(set_original)
             m_player.setCurrentOriginalShapeshiftID(form_id, morph_id_in_mem); // note: will be current for shadow/stealth too (as wanted)
         int form_morph_id = m_player.getShapeshiftID(form_id);
         m_player.setCurrentMorphID(form_morph_id ? form_morph_id : morph_id_in_mem);
+        updateModel();
         break;
     }   
     default:
-        SendWoWMessage("UNREACHABLE: smartMorphShapeshift()");
+        m_last_morphed_id = morph_id_in_mem;
+        WoWFunctions::updateModel(m_player_ptr);
+       // SendWoWMessage("UNREACHABLE: smartMorphShapeshift()");
         break;
     }
 }
@@ -418,6 +419,7 @@ void Morpher::morphGender(int gender_id) {
 // Replica Warlord's Satin Mantle: 77899
 // Pauldrons of Arcane Rage: 24024
 void Morpher::morphItem(int item, int item_id, int item_version = -1) {
+
     Items item_ = static_cast<Items>(item);
     switch (item_) {
     case Items::HEAD:
@@ -482,7 +484,6 @@ void Morpher::startMorpher() {
     // Reload: 1553, 1293, 1817, 1553
     // zoning: 1553, 1537, 1553
     // logout: 1553, 0
-
     bool morpher_loaded = false;
     uint16_t flag = Memory::readMemory<uint16_t>(m_base_address + Offsets::in_game_flag);
     uint16_t flag_updated = flag;
@@ -520,9 +521,11 @@ void Morpher::startMorpher() {
         else {
             // already in world, load morpher if not loaded already
             if (flag_updated == 1553 && flag == 1553) {
+
                 if (!morpher_loaded) { // todo: is this really needed? (wow doesnt allow the same dll to be injected again)
                     while (getPlayerPtr() == 0); 
                     ts.invokeInMainThread(initializeMorpherCallback);
+                   // iterateObjMgr();
                     morpher_loaded = true;
                 }
             }
@@ -602,22 +605,29 @@ void Morpher::parseCommands() {
     std::string optional_color = "28B463";
     SendWoWMessage("|cFF" + required_color + "Required|r |cFF" + optional_color + "Optional|r");
   //  SendWoWMessage("Existing commands: ");
-    SendWoWMessage(".morph |cFF" + required_color +  "morph_id|r");
-    SendWoWMessage(".race |cFF" + required_color + "race_id|r");
+    SendWoWMessage(".morph |cFF" + required_color +  "<morph_id>|r");
+    SendWoWMessage(".morph |cFF" + required_color + "target|r");
+    SendWoWMessage(".race |cFF" + required_color + "<race_id>|r");
     SendWoWMessage(".gender |cFF" + optional_color + "[0-1]|r");
-    SendWoWMessage(".item |cFF" + required_color + "item|r |cFF" + required_color + "item_id|r |cFF" + optional_color + "version_id|r");
-    SendWoWMessage(".mount |cFF" + required_color + "mount_id|r");
-    SendWoWMessage(".title |cFF" + required_color + "title_id|r");
-    SendWoWMessage(".enchant |cFF" + required_color + "[1-2]|r |cFF" + required_color + "enchant_id|r");
-    SendWoWMessage(".shapeshift |cFF" + required_color + "form_id|r |cFF" + required_color + "morph_id|r");
+    SendWoWMessage(".item |cFF" + required_color + "<item>|r |cFF" + required_color + "<item_id>|r |cFF" + optional_color + "<version_id>|r");
+    SendWoWMessage(".item |cFF" + required_color + "target|r");
+    SendWoWMessage(".item |cFF" + required_color + "<item>|r |cFF" + required_color + "target|r");
+    SendWoWMessage(".mount |cFF" + required_color + "<mount_id>|r");
+    SendWoWMessage(".title |cFF" + required_color + "<title_id>|r");
+    SendWoWMessage(".enchant |cFF" + required_color + "[1-2]|r |cFF" + required_color + "<enchant_id>|r");
+    SendWoWMessage(".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "<morph_id>|r");
+    SendWoWMessage(".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "target|r");
+
     SendWoWMessage(".reset");
+    SendWoWMessage("Note: You can alt-click items and mounts in the collection tab in order to morph them.");
+
     m_lex.finish();
 }
 
 // remember 93
 //remember 103
 // remember 109 ??
-// 110 (on spell press)
+// 110 (on spell press (end of spell or interrupt spell channel))
 // 114 (on model change)
 // 119 cast spell probly
 // 123 does something on shapeshift
@@ -625,10 +635,22 @@ void Morpher::parseCommands() {
 // 127 (on move key release)
 // 130 (consistent on spell press)
 
+typedef   bool(__fastcall* testFunc)(uint32_t, int, int64_t, int64_t, int64_t);
+// 21 - get type?
+// 49 seems to be type
 void Morpher::parseMorph() {
     Token next = m_lex.nextToken();
     if (next.type() == TokenType::NUMBER) {
-      //  m_hook->HookFunction(updateDisplayInfoHook, next.toNumber());
+      // m_func = next.toNumber();
+      // m_hook->HookFunction(updateDisplayInfoHook, next.toNumber());
+        //testFunc _getUnitFromName =
+        //    reinterpret_cast<testFunc>(morpher_ptr->getBaseAddress() + 0x1CDEC0);
+       // _getUnitFromName(next.toNumber(), 0, 0, 0, 0);
+       // SendWoWMessage("yoyo");
+
+       //uint16_t ret = morpher_ptr->m_hook->GetOriginalFunction<testFunc>(morpher_ptr->m_func)(m_player_ptr);
+       //morpher_ptr->SendWoWMessage("Returned: " + std::to_string(ret));
+       //return;
        morphShapeshift(ShapeshiftForm::HUMANOID, next.toNumber());
     }
     else if(next.type() == TokenType::STRING) {
@@ -669,7 +691,8 @@ void Morpher::parseGender() {
 }
 
 void Morpher::parseItem() {
-  //  m_hook->UnhookAllFunctions();
+    // m_hook->UnhookAllFunctions();
+    //return;
     Token next = m_lex.nextToken();
     int item;
     int item_id;
@@ -701,9 +724,39 @@ void Morpher::parseItem() {
                 morphItem(item, item_id);
             }
         }
+        else if(next.type() == TokenType::STRING) {
+            std::string arg = next.toString();
+            if (arg == "target") {
+                uintptr_t target_ptr = WoWFunctions::getUnitFromName("Target");
+                if (target_ptr) {
+                    m_player.copyPlayerItem(target_ptr, item);
+                    forceUpdateModel();
+                }
+                else {
+                    reportParseError("You need to target something first.");
+                }
+            }
+            else
+                reportParseError("Invalid .shapeshift second operand.");
+        }
         else {
             reportParseError("Invalid .item second operand (must be number).");
         }
+    }
+    else if (next.type() == TokenType::STRING) {
+        std::string arg = next.toString();
+        if (arg == "target") {
+            uintptr_t target_ptr = WoWFunctions::getUnitFromName("Target");
+            if (target_ptr) {
+                m_player.copyPlayerItems(target_ptr);
+                forceUpdateModel();
+            }
+            else {
+                reportParseError("You need to target something first.");
+            }
+        }
+        else
+            reportParseError("Invalid .shapeshift second operand.");
     }
     else {
         reportParseError("Invalid .item first operand (must be number).");
@@ -794,16 +847,17 @@ void Morpher::parseShapeshift() {
 }
 
 void Morpher::parseMorphNPC() {
-    morphShapeshift(ShapeshiftForm::HUMANOID, getTargetMorphID());
+    //morphShapeshift(ShapeshiftForm::HUMANOID, getTargetMorphID());
     m_lex.finish();
 }
 
 void Morpher::parseNPCID() {
-    SendWoWMessage(std::to_string(getTargetMorphID()));
+    int target_morph_id = getTargetMorphID();
+    if (target_morph_id) {
+        SendWoWMessage(std::to_string(target_morph_id));
+    }
     m_lex.finish();
 }
-
-
 
 void Morpher::resetMorpher() {
     m_player.resetPlayer();
@@ -815,10 +869,10 @@ void Morpher::resetMorpher() {
     m_lex.finish();
 }
 
-/*
+
 
 // iterating object manager (not used)
-uintptr_t Morpher::getPlayerPtr() {
+uintptr_t Morpher::iterateObjMgr() {
     uintptr_t obj_manager =
         Memory::readMemory<uintptr_t>(m_base_address + Offsets::object_manager);
     //outfile << "objManger: " << std::hex << objManager << "\n";
@@ -835,7 +889,23 @@ uintptr_t Morpher::getPlayerPtr() {
         //outfile << "currentObj: " << std::hex << currentObj << "\n";
         WGUID currentGUID =
             Memory::readMemory<WGUID>(current_object + Offsets::guid);
+        uint8_t type =
+            Memory::readMemory<uint8_t>(current_object + Offsets::object_type);
+       
+       // Logging::Print("Object_type: " + std::to_string(type) + "\n");
 
+        if (type == 8) {
+            //::Print("Object_type: " + std::to_string(type) + "\n");
+            SendWoWMessage("obj ptr: " + std::to_string(current_object));
+            SendWoWMessage("obj ptr2: " + std::to_string(getPlayerPtr()));
+          //  Logging::Print("obj ptr: " + std::to_string(current_object));
+          // Logging::Print("obj ptr2: " + std::to_string(getPlayerPtr()));
+
+
+            return 0;
+        }
+
+        /*
         if (currentGUID.m_high == active_player_GUID.m_high &&
             currentGUID.m_low == active_player_GUID.m_low)
         {
@@ -846,11 +916,12 @@ uintptr_t Morpher::getPlayerPtr() {
             //outfile << "GUID_low: " << activePlayerGUID.m_low << "\n";
             return current_object + Offsets::standard_offset;
         }
+        */
         current_object = Memory::readMemory<uintptr_t>(current_object);
     }
     return 0;
 }
 
-*/
+
 
 } //namespace morph

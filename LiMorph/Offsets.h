@@ -8,27 +8,27 @@ namespace LiMorph {
 namespace Offsets {
 
 	// Function offsets
-	constexpr uintptr_t update_display_info = 0x10C42B0;
-	constexpr uintptr_t update_mount_display_info = 0x10AFE80;
-	constexpr uintptr_t frame_script_execute = 0x7BE5E0;
-	constexpr uintptr_t frame_script_register_function = 0x7BF5D0;
-	constexpr uintptr_t frame_script_invalid_ptr_check = 0xFDC060;
-	constexpr uintptr_t lua_gettop = 0x28B220;
-	constexpr uintptr_t lua_pushnumber = 0x28BAC0;
-	constexpr uintptr_t lua_tolstring = 0x28C730;
-	constexpr uintptr_t lua_tonumber = 0x28C7D0;
-	constexpr uintptr_t get_unit_from_name = 0x1A69850;
+	constexpr uintptr_t update_display_info = 0x10C10B0;
+	constexpr uintptr_t update_mount_display_info = 0x10ACB30;
+	constexpr uintptr_t frame_script_execute = 0x7BBAA0;
+	constexpr uintptr_t frame_script_register_function = 0x7BCA90;
+	constexpr uintptr_t frame_script_invalid_ptr_check = 0xFD8EF0;
+	constexpr uintptr_t lua_gettop = 0x288E30;
+	constexpr uintptr_t lua_pushnumber = 0x2896D0;
+	constexpr uintptr_t lua_tolstring = 0x28A340;
+	constexpr uintptr_t lua_tonumber = 0x28A3E0;
+	constexpr uintptr_t get_unit_from_name = 0x1A6CF80;
 
 
 	// POINTER TO END OF .TEXT (change value at this address to make frame_script_register_function work)
-	constexpr uintptr_t invalid_ptr_limit = 0x2EA1F68;
+	constexpr uintptr_t invalid_ptr_limit = 0x2EADFF8;
 
 	// Generally useful offsets
-	constexpr uintptr_t game_version = 0x26297FC;
-	constexpr uintptr_t in_game_flag = 0x2FCAB3C;
+	constexpr uintptr_t game_version = 0x262873C;
+	constexpr uintptr_t in_game_flag = 0x2FD6BBC;
 
 	// Object manager
-	constexpr uintptr_t object_manager = 0x2F18650;
+	constexpr uintptr_t object_manager = 0x2F0A630;
 
 
 	// Object manager offsets
@@ -49,8 +49,11 @@ namespace Offsets {
 
 	//constexpr uintptr_t bear_form_id = 0x19F8;
 
-	constexpr uintptr_t race_id = 0x1CBC;
+	//constexpr uintptr_t race_id = 0x1CBC;
+
 	constexpr uintptr_t gender_id = 0x1C7B;
+	constexpr uintptr_t race_id = 0x1C78;
+
 	constexpr uintptr_t title_id = 0x2240;
 
 	//constexpr uintptr_t mount_id1 = 0x93C;
@@ -123,10 +126,12 @@ namespace Offsets {
 	constexpr uintptr_t transmog_off_hand = 0x44AC;
 	*/
 
-
-	constexpr uintptr_t customization_ptr = 0x8B0;
+	
+	constexpr uintptr_t customization_ptr = 0x21C0;
 
 	// Custimization offsets
+
+	constexpr uintptr_t player_buffs_ptr = 0x1808;
 
 
 

@@ -8,14 +8,28 @@ namespace LiMorph {
 void Player::initializePlayer() {
 	m_customization_ptr = m_player_ptr + Offsets::customization_ptr;
 
-	m_current_morph_id = Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
-	m_original_race_id = m_race_id = Memory::readMemory<int>(m_player_ptr + Offsets::race_id);
-	m_original_gender_id = m_gender_id = Memory::readMemory<int>(m_player_ptr + Offsets::gender_id);
+	m_original_race_id = m_race_id = Memory::readMemory<uint8_t>(m_player_ptr + Offsets::race_id);
+	m_original_gender_id = m_gender_id = Memory::readMemory<uint8_t>(m_player_ptr + Offsets::gender_id);
 	m_original_title_id = m_title_id = Memory::readMemory<int>(m_player_ptr + Offsets::title_id);
 
 	// initialzie humanoid shapeshift from memory
-	int morph_id = Memory::readMemory<int>(m_player_ptr + Offsets::original_morph_id);
+	//int morph_id = Memory::readMemory<int>(m_player_ptr + Offsets::original_morph_id);
+	RaceIDs id = static_cast<RaceIDs>(m_original_race_id);
+	int morph_id;
+	if (!m_original_gender_id)
+		morph_id = static_cast<int>(WoWUtils::race_male.at(id));
+	else
+		morph_id = static_cast<int>(WoWUtils::race_female.at(id));
+
+	if (getMorphIDFromMemory() == getNativeMorphID()) {
+		m_current_morph_id = morph_id;
+	}
+	else {
+		m_current_morph_id = Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
+	}
+
 	m_current_original_morph_id = m_current_morph_id;
+
 	m_original_shapeshift_ids[WoWUtils::shapeshiftToIndex(ShapeshiftForm::HUMANOID)] = morph_id;
 	m_shapeshift_ids[WoWUtils::shapeshiftToIndex(ShapeshiftForm::HUMANOID)] = morph_id;
 
@@ -53,8 +67,13 @@ void Player::resetPlayer() {
 	m_race_id = m_original_race_id;
 	m_title_id = m_original_title_id;
 
-	for (int i = 0; i < m_shapeshift_ids.size(); i++) {
-		m_shapeshift_ids[i] = m_original_shapeshift_ids[i];
+	m_shapeshift_ids[WoWUtils::shapeshiftToIndex(ShapeshiftForm::HUMANOID)] =
+		m_original_shapeshift_ids[WoWUtils::shapeshiftToIndex(ShapeshiftForm::HUMANOID)];
+
+	// Initialize all other shapeshifts to 0 for now
+	for (int i = 1; i < m_shapeshift_ids.size(); i++) {
+		m_original_shapeshift_ids[i] = 0;
+		m_shapeshift_ids[i] = 0;
 	}
 	setCurrentMorphIDInMemory();
 	m_mount_morphed = false;
@@ -78,11 +97,11 @@ int Player::getOriginalMorphID() {
 	return m_current_original_morph_id;
 }
 
-int Player::getRaceID() {
+uint8_t Player::getRaceID() {
 	return m_race_id;
 }
 
-int Player::getGenderID() {
+uint8_t Player::getGenderID() {
 	return m_gender_id;
 }
 
@@ -110,15 +129,20 @@ uint8_t Player::getShapeshiftFormIDFromMemory() {
 	return Memory::readMemory<uint8_t>(m_player_ptr + Offsets::shapeshift_id);
 }
 
+int Player::getNativeMorphID() {
+	return Memory::readMemory<int>(m_player_ptr + Offsets::original_morph_id);
+}
+
+
 void Player::setCurrentMorphID(int morph_id) {
 	m_current_morph_id = morph_id;
 }
 
-void Player::setGenderID(int gender_id) {
+void Player::setGenderID(uint8_t gender_id) {
 	m_gender_id = gender_id;
 }
 
-void Player::setRaceID(int race_id) {
+void Player::setRaceID(uint8_t race_id) {
 	m_race_id = race_id;
 }
 
@@ -171,4 +195,23 @@ void Player::setTitleID(int title_id) {
 	m_title_id = title_id;
 	Memory::writeMemory<int>(m_player_ptr + Offsets::title_id, title_id);
 }
+
+void Player::copyPlayerItem(uintptr_t unit, int item) {
+	Items item_ = static_cast<Items>(item);
+	int32_t unit_item = Memory::readMemory<int32_t>(unit + Offsets::transmog_display_ids + (static_cast<int>(item) * 12));
+	int8_t unit_version = Memory::readMemory<int8_t>(unit + Offsets::transmog_display_ids + (static_cast<int>(item) * 12) + 8);
+	int16_t unit_enchant = Memory::readMemory<int16_t>(unit + Offsets::transmog_display_ids + (static_cast<int>(item) * 12) + 12);
+	setItemID(item_, unit_item);
+	setItemVersionID(item_, unit_version);
+	setItemEnchantID(item_, unit_enchant);
+	
+}
+
+void Player::copyPlayerItems(uintptr_t unit) {
+	for (int i = 0, j = 0; i < m_item_ids.size(); i += 3, j++) {
+		copyPlayerItem(unit, static_cast<int>(ITEMS_LIST[j]));
+	}
+	
+}
+
 } // namespace morph
