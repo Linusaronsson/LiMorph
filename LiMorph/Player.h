@@ -39,6 +39,8 @@ public:
 	uint8_t getRaceID();
 	int getMountID();
 	bool mountMorphed();
+	bool isShapeshiftTransparent(ShapeshiftForm form);
+	bool isShapeshiftTransparentByDefault(ShapeshiftForm form);
 	int getShapeshiftID(ShapeshiftForm form);
 	int getOriginalShapeshiftID(ShapeshiftForm form);
 
@@ -53,6 +55,7 @@ public:
 	void setRaceID(uint8_t id);
 	void setMountID(int id);
 	void setShapeshiftID(ShapeshiftForm form, int form_id);
+	void setShapeshiftTransparency(ShapeshiftForm form, bool transparent);
 	void setCurrentOriginalShapeshiftID(ShapeshiftForm form, int morph_id=0);
 	void setPlayerPtr(uintptr_t player_ptr);
 
@@ -81,6 +84,8 @@ private:
 	//shapeshifting
 	std::array<int, N_SHAPESHIFTS> m_shapeshift_ids;
 	std::array<int, N_SHAPESHIFTS> m_original_shapeshift_ids;
+	std::array<bool, N_SHAPESHIFTS> m_is_shapeshift_transparent;
+
 
 	//items (all stored in array because they exist at executive bytes in memory)
 	std::array<int, N_ITEMS * 3> m_item_ids;

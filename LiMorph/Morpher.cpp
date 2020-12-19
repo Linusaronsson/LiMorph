@@ -32,11 +32,6 @@ const char* Morpher::getMountEventLuaCode() {
     #include "MountEvent.lua"
 }
 
-const char* Morpher::getShapeshiftEventLuaCode() {
-    auto dummy = 0;
-    #include "ShapeshiftEvent.lua"
-}
-
 const char* Morpher::getParseChatLuaCode() {
     auto dummy = 0;
     #include "ParseChat.lua"
@@ -59,11 +54,6 @@ int __cdecl Morpher::chatCallback(uintptr_t lua_state) {
 
 int __cdecl Morpher::mountCallback(uintptr_t lua_state) {
     morpher_ptr->morphMount();
-    return 0;
-}
-
-int __cdecl Morpher::shapeshiftCallback(uintptr_t lua_state) {
-    morpher_ptr->smartMorphTransparentShapeshift();
     return 0;
 }
 
@@ -118,7 +108,7 @@ void Morpher::registerFunctions() {
 
 void Morpher::registerLuaEvents() {
     WoWFunctions::executeLUA(getMountEventLuaCode());
-    WoWFunctions::executeLUA(getShapeshiftEventLuaCode());
+    //WoWFunctions::executeLUA(getShapeshiftEventLuaCode());
     WoWFunctions::executeLUA(getParseChatLuaCode());
     WoWFunctions::executeLUA(getClickMorphingCode());
     WoWFunctions::executeLUA(getClickMountMorphingCode());
@@ -158,6 +148,7 @@ void Morpher::initializeMorpher() {
     registerLuaEvents();
 
     morphRace(m_player.getRaceID());
+    smartMorphShapeshift();
 
     //smartMorphShapeshift();
     SendWoWMessage("Loaded. Type .commands for usable commands.");
@@ -249,13 +240,15 @@ void Morpher::morphShapeshift(ShapeshiftForm form_id, int morph_id) {
     case ShapeshiftForm::FLIGHT:
     case ShapeshiftForm::MOONKIN:
     {
-        int old_human_morph = m_player.getShapeshiftID(ShapeshiftForm::HUMANOID);
-        m_player.setShapeshiftID(form_id, morph_id);
+        if (morph_id == 0) 
+            m_player.setShapeshiftTransparency(form_id, true);
+         m_player.setShapeshiftID(form_id, morph_id);
+        
         ShapeshiftForm current_shapeshift_form =
             static_cast<ShapeshiftForm>(m_player.getShapeshiftFormIDFromMemory());
-        if (current_shapeshift_form == form_id || (m_player.getCurrentMorphID() == old_human_morph)) {
+        if (current_shapeshift_form == form_id ||
+            (form_id == ShapeshiftForm::HUMANOID && m_player.isShapeshiftTransparent(current_shapeshift_form))) {
             smartMorphShapeshift(false);
-            updateModel();
         }
         break;
     }
@@ -265,58 +258,41 @@ void Morpher::morphShapeshift(ShapeshiftForm form_id, int morph_id) {
     }
 }
 
-void Morpher::smartMorphTransparentShapeshift(bool set_original) {
-    ShapeshiftForm form_id =
-        static_cast<ShapeshiftForm>(m_player.getShapeshiftFormIDFromMemory());
-    int morph_id_in_mem = m_player.getMorphIDFromMemory();
-    //SendWoWMessage("shapeshift formasds: " + std::to_string((int)form_id));
-    switch (form_id) {
-    case ShapeshiftForm::MOONKIN: // can be transparent if glyph of stars is used
-    case ShapeshiftForm::SHADOW:
-    case ShapeshiftForm::STEALTH:
-    {
-        int form_morph_id = m_player.getShapeshiftID(form_id);
-        // shapeshift has been morphed, morph into it
-        // true transparent shapeshifts have the same original id as humanoid,
-        // a fake transparent shapeshift wouldnt (fix if this is implemented)
-        m_player.setCurrentOriginalShapeshiftID(
-            ShapeshiftForm::HUMANOID,
-            m_player.getOriginalShapeshiftID(ShapeshiftForm::HUMANOID));
-        m_player.setCurrentMorphID(form_morph_id);
-        m_player.setCurrentMorphID(form_morph_id ? form_morph_id : m_player.getShapeshiftID(ShapeshiftForm::HUMANOID));
-        updateModel();
-    }
-    break;
-    default:
-        //SendWoWMessage("UNREACHABLE: smartMorphTransparentShapeshift())");
-        break;
-    }
-}
-
 // Only responsible for setting the correct morph id as the current morph id
 void Morpher::smartMorphShapeshift(bool set_original) {
     ShapeshiftForm form_id =
         static_cast<ShapeshiftForm>(m_player.getShapeshiftFormIDFromMemory());
+
     int morph_id_in_mem = m_player.getMorphIDFromMemory();
     int orig = morph_id_in_mem;
     if (morph_id_in_mem == m_player.getNativeMorphID()) {
         morph_id_in_mem = m_player.getOriginalShapeshiftID(ShapeshiftForm::HUMANOID);
         m_player.setMorphIDInMemory(morph_id_in_mem); // make sure UpdateModel is called even for transparent shapeshifts
+
+        // native morph in mem but not humanoid - means its a transparent shapeshift (shadow, stealth or astral)
+        if (form_id != ShapeshiftForm::HUMANOID) {
+            m_player.setShapeshiftTransparency(form_id, true);
+            is_moonkin_transparent = true; // astral form special case stuff
+        }
+      
     }
-  //  SendWoWMessage("shapeshift form: " + std::to_string((int)form_id));
+    else {
+        if (form_id == ShapeshiftForm::HUMANOID && set_original) {
+            m_last_morphed_id = morph_id_in_mem;
+            WoWFunctions::updateModel(m_player_ptr);
+            return;
+        }
+    }
+
     switch (form_id) {
-    // transparent shapeshifts need special treatment
+    case ShapeshiftForm::MOONKIN:
+        // astral form special case stuff
+        if (orig != m_player.getNativeMorphID() && set_original && is_moonkin_transparent) {
+            m_player.setShapeshiftTransparency(form_id, false);
+            is_moonkin_transparent = false;
+        }
     case ShapeshiftForm::SHADOW:
     case ShapeshiftForm::STEALTH:
-        smartMorphTransparentShapeshift(set_original);
-        break;
-    case ShapeshiftForm::MOONKIN:
-        // if glyph of stars is used it is transparent
-        if (morph_id_in_mem == m_player.getOriginalShapeshiftID(ShapeshiftForm::HUMANOID)) {
-            //SendWoWMessage("testtest");
-            smartMorphTransparentShapeshift(set_original);
-            break;
-        }
     case ShapeshiftForm::HUMANOID:
     case ShapeshiftForm::CAT:
     case ShapeshiftForm::TREE_OF_LIFE:
@@ -327,8 +303,12 @@ void Morpher::smartMorphShapeshift(bool set_original) {
     case ShapeshiftForm::SWIFT_FLIGHT:
     case ShapeshiftForm::FLIGHT:
     {
-        if(set_original)
-            m_player.setCurrentOriginalShapeshiftID(form_id, morph_id_in_mem); // note: will be current for shadow/stealth too (as wanted)
+        int original = morph_id_in_mem;
+        if (m_player.isShapeshiftTransparent(form_id)) 
+            morph_id_in_mem = m_player.getShapeshiftID(ShapeshiftForm::HUMANOID);
+        
+        if (set_original)
+            m_player.setCurrentOriginalShapeshiftID(form_id, original); // note: will be current for shadow/stealth too (as wanted)
         int form_morph_id = m_player.getShapeshiftID(form_id);
         m_player.setCurrentMorphID(form_morph_id ? form_morph_id : morph_id_in_mem);
         updateModel();
@@ -617,8 +597,11 @@ void Morpher::parseCommands() {
     SendWoWMessage(".enchant |cFF" + required_color + "[1-2]|r |cFF" + required_color + "<enchant_id>|r");
     SendWoWMessage(".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "<morph_id>|r");
     SendWoWMessage(".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "target|r");
+    SendWoWMessage(".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "0|r");
 
+    SendWoWMessage(".npcid");
     SendWoWMessage(".reset");
+
     SendWoWMessage("Note: You can alt-click items and mounts in the collection tab in order to morph them.");
 
     m_lex.finish();

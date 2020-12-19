@@ -37,6 +37,7 @@ void Player::initializePlayer() {
 	for (int i = 1; i < m_shapeshift_ids.size(); i++) {
 		m_original_shapeshift_ids[i] = 0;
 		m_shapeshift_ids[i] = 0;
+		m_is_shapeshift_transparent[i] = false;
 	}
 
 	// read item related things
@@ -70,12 +71,17 @@ void Player::resetPlayer() {
 	m_shapeshift_ids[WoWUtils::shapeshiftToIndex(ShapeshiftForm::HUMANOID)] =
 		m_original_shapeshift_ids[WoWUtils::shapeshiftToIndex(ShapeshiftForm::HUMANOID)];
 
-	// Initialize all other shapeshifts to 0 for now
 	for (int i = 1; i < m_shapeshift_ids.size(); i++) {
 		m_original_shapeshift_ids[i] = 0;
 		m_shapeshift_ids[i] = 0;
+		m_is_shapeshift_transparent[i] = false;
 	}
-	setCurrentMorphIDInMemory();
+
+	if (m_current_morph_id == getOriginalShapeshiftID(ShapeshiftForm::HUMANOID))
+		setMorphIDInMemory(getNativeMorphID());
+	else
+		setCurrentMorphIDInMemory();
+
 	m_mount_morphed = false;
 	setTitleID(m_original_title_id);
 }
@@ -112,6 +118,15 @@ int Player::getMountID() {
 bool Player::mountMorphed() {
 	return m_mount_morphed;
 }
+
+bool Player::isShapeshiftTransparent(ShapeshiftForm form_id) {
+	return m_is_shapeshift_transparent[WoWUtils::shapeshiftToIndex(form_id)];
+}
+
+bool Player::isShapeshiftTransparentByDefault(ShapeshiftForm form) {
+	return getMorphIDFromMemory() == getNativeMorphID() && form != ShapeshiftForm::HUMANOID;
+}
+
 
 int Player::getShapeshiftID(ShapeshiftForm form) {
 	return m_shapeshift_ids[WoWUtils::shapeshiftToIndex(form)];
@@ -155,8 +170,13 @@ void Player::setShapeshiftID(ShapeshiftForm form, int form_id) {
 	m_shapeshift_ids[WoWUtils::shapeshiftToIndex(form)] = form_id;
 }
 
+void Player::setShapeshiftTransparency(ShapeshiftForm form, bool transparent) {
+	m_is_shapeshift_transparent[WoWUtils::shapeshiftToIndex(form)] = transparent;
+}
+
+
 void Player::setCurrentOriginalShapeshiftID(ShapeshiftForm form, int morph_id) {
-	m_original_shapeshift_ids[WoWUtils::shapeshiftToIndex(form)] = morph_id;
+	m_original_shapeshift_ids[WoWUtils::shapeshiftToIndex(form)] = morph_id; //todo: this is not needed if HUMANOID since the original is set from initialization
 	m_current_original_morph_id = morph_id;
 }
 

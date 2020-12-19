@@ -37,7 +37,6 @@ private:
 
 	// load lua code into c++
 	static const char* getMountEventLuaCode();
-	static const char* getShapeshiftEventLuaCode();
 	static const char* getParseChatLuaCode();
 	static const char* getClickMorphingCode();
 	static const char* getClickMountMorphingCode();
@@ -45,7 +44,6 @@ private:
 	// lua callbacks (for LUA API)
 	static int chatCallback(uintptr_t lua_state);
 	static int mountCallback(uintptr_t lua_state);
-	static int shapeshiftCallback(uintptr_t lua_state);
 	static int morphItemCallback(uintptr_t lua_state);
 	static int morphEnchantCallback(uintptr_t lua_state);
 	static int morphMountCallback(uintptr_t lua_state);
@@ -76,7 +74,6 @@ private:
 
 	// morphing (some of which are caleld by the LUA callbacks above)
 	void morphShapeshift(ShapeshiftForm form_id, int morph_id);
-	void smartMorphTransparentShapeshift(bool set_original = true);
 	void smartMorphShapeshift(bool set_original=true);
 	void morphRace(int race_id);
 	void morphGender(int gender_id);
@@ -112,6 +109,8 @@ private:
 	Player m_player;
 	Lexer m_lex;
 	VMTHook* m_hook;
+
+	bool is_moonkin_transparent = false;
 	int m_last_morphed_id = 0;
 };
 
