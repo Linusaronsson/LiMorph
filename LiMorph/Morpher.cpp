@@ -192,7 +192,7 @@ void __fastcall Morpher::updateDisplayInfoHook(uintptr_t unit) {
 
 void Morpher::updateDisplayInfoCustom(uintptr_t unit) {
     //SendWoWMessage("Hello?");
-    smartMorphShapeshift();
+    smartMorphShapeshift(true);
 }
 
 void Morpher::forceUpdateModel() {
@@ -277,7 +277,7 @@ void Morpher::smartMorphShapeshift(bool set_original) {
       
     }
     else {
-        if (form_id == ShapeshiftForm::HUMANOID && set_original) {
+        if (m_player.isShapeshiftTransparentByDefault(form_id) && set_original) {
             m_last_morphed_id = morph_id_in_mem;
             WoWFunctions::updateModel(m_player_ptr);
             return;

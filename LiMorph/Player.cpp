@@ -124,7 +124,9 @@ bool Player::isShapeshiftTransparent(ShapeshiftForm form_id) {
 }
 
 bool Player::isShapeshiftTransparentByDefault(ShapeshiftForm form) {
-	return getMorphIDFromMemory() == getNativeMorphID() && form != ShapeshiftForm::HUMANOID;
+	//return getMorphIDFromMemory() == getNativeMorphID() && form != ShapeshiftForm::HUMANOID;
+	return form == ShapeshiftForm::HUMANOID || form == ShapeshiftForm::SHADOW || form == ShapeshiftForm::STEALTH;
+
 }
 
 
