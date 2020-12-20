@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "Player.h"
+#include "Customizations.h"
 
-#include "WoWUtils.h"
 
 namespace LiMorph {
+
 
 void Player::initializePlayer() {
 	m_customization_ptr = m_player_ptr + Offsets::customization_ptr;
@@ -51,6 +52,24 @@ void Player::initializePlayer() {
 			Memory::readMemory<int16_t>(m_player_ptr + item_offset_j + 10); //item_enchant
 	}
 
+	for (int i = 0; i < N_RACES; i++) {
+		int race = static_cast<int>(RACES[i]);
+		for (int j = 0; j < 2; j++) {
+			RaceMorphIDs race_gender = WoWUtils::getRaceMorphID(race, j);
+			m_customizations[race_gender] = Customizations::getNativeCustomizations(race, j);
+		}
+	}
+
+	// customizations init
+	RaceMorphIDs race_gender = WoWUtils::getRaceMorphID(m_race_id, m_gender_id);
+	//m_customizations[race_gender] = Customizations::getNativeCustomizations(m_race_id, m_gender_id);
+	for (int i = 0; i < Customizations::getNumberOfCustomizations(m_race_id, m_gender_id); i++) {
+		int32_t c = Memory::readMemory<int32_t>(getCustomizationPtr() + 4 + (i * 8));
+		m_native_customizations[i] = c;
+		m_customizations[race_gender][i] = c; // item_id
+	}
+
+
 	m_mount_id = 0;
 	m_mount_morphed = false;
 }
@@ -68,6 +87,25 @@ void Player::resetPlayer() {
 	m_race_id = m_original_race_id;
 	m_title_id = m_original_title_id;
 
+	for (int i = 0; i < N_RACES; i++) {
+		int race = static_cast<int>(RACES[i]);
+		for (int j = 0; j < 2; j++) {
+			RaceMorphIDs race_gender = WoWUtils::getRaceMorphID(race, j);
+			m_customizations[race_gender] = Customizations::getNativeCustomizations(race, j);
+		}
+	}
+
+	RaceMorphIDs race_gender = WoWUtils::getRaceMorphID(m_race_id, m_gender_id);
+	for (int i = 0; i < Customizations::getNumberOfCustomizations(m_race_id, m_gender_id); i++) {
+		Memory::writeMemory<int32_t>(getCustomizationPtr() + 4 + (i * 8), m_native_customizations[i]);
+
+		auto& options_ids = Customizations::getCustomizationOptionIDs(m_race_id, m_gender_id);
+		Memory::writeMemory<int32_t>(getCustomizationPtr() + (i * 8), options_ids[i]); 
+
+		m_customizations[race_gender][i] = m_native_customizations[i]; 
+	}
+
+	
 	m_shapeshift_ids[WoWUtils::shapeshiftToIndex(ShapeshiftForm::HUMANOID)] =
 		m_original_shapeshift_ids[WoWUtils::shapeshiftToIndex(ShapeshiftForm::HUMANOID)];
 
@@ -91,6 +129,13 @@ void Player::restorePlayer() {
 		setItemID(ITEMS_LIST[j], m_item_ids[i]);
 		setItemVersionID(ITEMS_LIST[j], m_item_ids[i + 1]);
 		setItemEnchantID(ITEMS_LIST[j], m_item_ids[i + 2]);
+	}
+
+	RaceMorphIDs race_gender = WoWUtils::getRaceMorphID(m_race_id, m_gender_id);
+	for (int i = 0; i < Customizations::getNumberOfCustomizations(m_race_id, m_gender_id); i++) {
+		Memory::writeMemory<int32_t>(getCustomizationPtr() + 4 + (i * 8), m_customizations[race_gender][i]); // item_id
+		auto& options_ids = Customizations::getCustomizationOptionIDs(m_race_id, m_gender_id);
+		Memory::writeMemory<int32_t>(getCustomizationPtr() + (i * 8), options_ids[i]);
 	}
 	setTitleID(m_title_id);
 }
@@ -138,6 +183,18 @@ int Player::getOriginalShapeshiftID(ShapeshiftForm form) {
 	return m_original_shapeshift_ids[WoWUtils::shapeshiftToIndex(form)];
 }
 
+std::map<std::string, int>& Player::getCustomizations() {
+	return Customizations::getCustomizations(m_race_id, m_gender_id);
+}
+
+int Player::getNumberOfChoices(int option) {
+	return Customizations::getNumberOfChoices(m_race_id, m_gender_id, option);
+}
+
+int Player::getChoiceID(int option, int choice) {
+	return Customizations::getChoiceID(m_race_id, m_gender_id, option, choice);
+}
+
 int Player::getMorphIDFromMemory() {
 	return Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
 }
@@ -150,6 +207,11 @@ int Player::getNativeMorphID() {
 	return Memory::readMemory<int>(m_player_ptr + Offsets::original_morph_id);
 }
 
+uintptr_t Player::getCustomizationPtr() {
+	return Memory::readMemory<uintptr_t>(m_player_ptr + Offsets::customization_ptr);
+}
+
+
 
 void Player::setCurrentMorphID(int morph_id) {
 	m_current_morph_id = morph_id;
@@ -157,10 +219,24 @@ void Player::setCurrentMorphID(int morph_id) {
 
 void Player::setGenderID(uint8_t gender_id) {
 	m_gender_id = gender_id;
+	Memory::writeMemory<uint8_t>(m_player_ptr + Offsets::gender_id, gender_id);
+	RaceMorphIDs race_gender = WoWUtils::getRaceMorphID(m_race_id, m_gender_id);
+	for (int i = 0; i < Customizations::getNumberOfCustomizations(m_race_id, m_gender_id); i++) {
+		Memory::writeMemory<int32_t>(getCustomizationPtr() + 4 + (i * 8), m_customizations[race_gender][i]); // item_id
+		auto& options_ids = Customizations::getCustomizationOptionIDs(m_race_id, m_gender_id);
+		Memory::writeMemory<int32_t>(getCustomizationPtr() + (i * 8), options_ids[i]);
+	}
 }
 
 void Player::setRaceID(uint8_t race_id) {
 	m_race_id = race_id;
+	Memory::writeMemory<uint8_t>(m_player_ptr + Offsets::race_id, race_id);
+	RaceMorphIDs race_gender = WoWUtils::getRaceMorphID(m_race_id, m_gender_id);
+	for (int i = 0; i < Customizations::getNumberOfCustomizations(m_race_id, m_gender_id); i++) {
+		Memory::writeMemory<int32_t>(getCustomizationPtr() + 4 + (i * 8), m_customizations[race_gender][i]); // item_id
+		auto& options_ids = Customizations::getCustomizationOptionIDs(m_race_id, m_gender_id);
+		Memory::writeMemory<int32_t>(getCustomizationPtr() + (i * 8), options_ids[i]);
+	}
 }
 
 void Player::setMountID(int mount_id) {
@@ -216,6 +292,17 @@ void Player::setItemEnchantID(Items item, int enchant_id) {
 void Player::setTitleID(int title_id) {
 	m_title_id = title_id;
 	Memory::writeMemory<int>(m_player_ptr + Offsets::title_id, title_id);
+}
+
+void Player::setCustomizationChoice(int option, int choice) {
+	uintptr_t customization_ptr = Memory::readMemory<uintptr_t>(m_player_ptr + Offsets::customization_ptr);
+	Memory::writeMemory<uint32_t>(customization_ptr + 4 + (option * 8), choice);
+	RaceMorphIDs race_gender = WoWUtils::getRaceMorphID(m_race_id, m_gender_id);
+	m_customizations[race_gender][option] = choice; // item_id
+}
+
+void Player::setCustomizationChoices() {
+
 }
 
 void Player::copyPlayerItem(uintptr_t unit, int item) {

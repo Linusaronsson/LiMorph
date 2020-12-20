@@ -105,6 +105,7 @@ Token Lexer::identifier() {
 	if (result == "reset") return constructToken(TokenType::RESET);
 	if (result == "npc") return constructToken(TokenType::NPC);
 	if (result == "npcid") return constructToken(TokenType::NPCID);
+	if (result == "customizations") return constructToken(TokenType::CUSTOMIZATIONS);
 
 	return constructToken(TokenType::STRING);
 }

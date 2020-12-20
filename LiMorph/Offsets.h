@@ -6,7 +6,7 @@
 namespace LiMorph {
 
 namespace Offsets {
-
+	
 	// Function offsets
 	constexpr uintptr_t update_display_info = 0x10C10B0;
 	constexpr uintptr_t update_mount_display_info = 0x10ACB30;

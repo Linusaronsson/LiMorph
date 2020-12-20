@@ -20,6 +20,7 @@ enum class TokenType : uint8_t
 	NUMBER,
 	STRING,
 	NPC,
+	CUSTOMIZATIONS,
 	NPCID,
 	END,
 	UNKNOWN
@@ -55,6 +56,8 @@ public:
 			return "NPC";
 		case TokenType::NPCID:
 			return "NPCID";
+		case TokenType::CUSTOMIZATIONS:
+			return "CUSTOMIZATONS";
 		case TokenType::END:
 			return "END";
 		case TokenType::UNKNOWN:

@@ -1,10 +1,9 @@
 #include "pch.h"
 #include "Morpher.h"
-
+#include "Functions.h"
 #include <sstream>
 
 #include "Logging.h"
-#include "Functions.h"
 #include "Token.h"
 
 //extern uintptr_t base_address;
@@ -137,7 +136,9 @@ void Morpher::zoning() {
 }
 
 void Morpher::initializeMorpher() {
+    
     m_player_ptr = getPlayerPtr();
+    
     m_player = Player(m_player_ptr);
     m_player.initializePlayer();
     m_last_morphed_id = m_player.getCurrentMorphID(); // maybe not needed or wrong
@@ -153,8 +154,8 @@ void Morpher::initializeMorpher() {
     //smartMorphShapeshift();
     SendWoWMessage("Loaded. Type .commands for usable commands.");
     
-  
-    /*
+  /*
+    
     std::stringstream stream;
     stream << std::hex << m_base_address;
     SendWoWMessage("Base address: " + stream.str());
@@ -163,9 +164,8 @@ void Morpher::initializeMorpher() {
     SendWoWMessage("Player_ptr address: " + stream.str());
     SendWoWMessage("raceID: " + std::to_string(m_player.getRaceID()));
     SendWoWMessage("genderID: " + std::to_string(m_player.getGenderID()));
-    */
-    
 
+    */
 }
 
 void Morpher::hookUpdateDisplayInfo() {
@@ -561,6 +561,9 @@ void Morpher::parseChat(uintptr_t lua_state) {
             case TokenType::SHAPESHIFT:
                 parseShapeshift();
                 return;
+            case TokenType::CUSTOMIZATIONS:
+                parseCustomizations();
+                return;
             case TokenType::NUMBER:
                 reportParseError("Command can not start with number.");
                 return;
@@ -568,7 +571,7 @@ void Morpher::parseChat(uintptr_t lua_state) {
                 reportParseError("UNREACHABLE END");
                 return;
             case TokenType::STRING:
-                reportParseError("Unknown command. Type .commands to see available commands.");
+                parseCustomizationOption(t.toString());
                 return;
             default:
                 reportParseError("UNREACHABLE: parseChat()");
@@ -838,6 +841,47 @@ void Morpher::parseNPCID() {
     int target_morph_id = getTargetMorphID();
     if (target_morph_id) {
         SendWoWMessage(std::to_string(target_morph_id));
+    }
+    m_lex.finish();
+}
+
+void Morpher::parseCustomizations() {
+    //SendWoWMessage("asd");
+    auto& customizations = m_player.getCustomizations();
+    for (const auto& p : customizations) {
+        SendWoWMessage("." + p.first + " <0-" +
+            std::to_string(m_player.getNumberOfChoices(p.second)-1) + ">");
+    }
+    m_lex.finish();
+}
+
+void Morpher::parseCustomizationOption(const std::string& str) {
+    auto& customizations = m_player.getCustomizations();
+    if (customizations.find(str) != customizations.end()) {
+        Token next = m_lex.nextToken();
+        if (next.type() == TokenType::NUMBER) {
+            int choice = next.toNumber();
+
+            int n_choices = m_player.getNumberOfChoices(customizations[str]);
+
+            if (choice < 0 || choice > n_choices-1) {
+                reportParseError("Invalid ." + str + " first operand. Value must be in range <0-" + std::to_string(n_choices-1) + ">");
+                m_lex.finish();
+                return;
+            }
+
+           // SendWoWMessage("HERE:; " + std::to_string(customizations[str]));
+            int choice_id = m_player.getChoiceID(customizations[str], choice);
+            SendWoWMessage(std::to_string(choice_id));
+            m_player.setCustomizationChoice(customizations[str], choice_id);
+            WoWFunctions::updateModel(m_player_ptr);
+        }
+        else {
+            reportParseError("Invalid ." + str + " first operand.");
+        }
+    }
+    else {
+        reportParseError("Unknown command. Type .commands to see available commands.");
     }
     m_lex.finish();
 }

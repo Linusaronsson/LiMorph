@@ -3,18 +3,16 @@
 #include "Offsets.h"
 #include "Memory.h"
 #include "MainThread.h"
-#include "Player.h"
 #include "Lexer.h"
 #include "WoWUtils.h"
 #include "VMTHook.h"
+#include "Player.h"
 
 
 //12E0
-
 namespace LiMorph {
 
 // { "maxWoWAddress", "48 8B 05 ? ? ? 01 48 85 D2 74 09 48 85 C0 0F 85 ? 00 00 00", SignatureType::NORMAL, 0x3, 0x0 },
-
 class Morpher
 {
 public:
@@ -97,6 +95,8 @@ private:
 	void parseCommands();
 	void parseMorphNPC();
 	void parseNPCID();
+	void parseCustomizations();
+	void parseCustomizationOption(const std::string& str);
 	void resetMorpher();
 
 	uintptr_t iterateObjMgr();
@@ -105,7 +105,6 @@ private:
 
 	uintptr_t m_base_address;
 	uintptr_t m_player_ptr;
-	uintptr_t m_customization_ptr;
 	Player m_player;
 	Lexer m_lex;
 	VMTHook* m_hook;

@@ -5,6 +5,7 @@
 #include "Memory.h"
 #include "Offsets.h"
 #include "WoWUtils.h"
+#include <vector>
 
 namespace LiMorph {
 
@@ -43,11 +44,16 @@ public:
 	bool isShapeshiftTransparentByDefault(ShapeshiftForm form);
 	int getShapeshiftID(ShapeshiftForm form);
 	int getOriginalShapeshiftID(ShapeshiftForm form);
+	std::map<std::string, int>& getCustomizations();
+	int getNumberOfChoices(int option);
+	int getChoiceID(int option, int choice);
+
 
 	// get from wow mem
 	int getMorphIDFromMemory();
 	uint8_t getShapeshiftFormIDFromMemory();
 	int getNativeMorphID();
+	uintptr_t getCustomizationPtr();
 
 	// setters
 	void setCurrentMorphID(int id);
@@ -67,6 +73,8 @@ public:
 	void setItemVersionID(Items item, int id);
 	void setItemEnchantID(Items item, int id);
 	void setTitleID(int id);
+	void setCustomizationChoice(int option, int choice);
+	void setCustomizationChoices();
 
 	// copy player
 	void copyPlayerItems(uintptr_t unit);
@@ -90,6 +98,10 @@ private:
 	//items (all stored in array because they exist at executive bytes in memory)
 	std::array<int, N_ITEMS * 3> m_item_ids;
 	std::array<int, N_ITEMS * 3> m_original_item_ids;
+
+	// customizations
+	std::map<RaceMorphIDs, std::array<uint32_t, 32>> m_customizations;
+	std::array<uint32_t, 32> m_native_customizations;
 
 	// things not related to morphing the player model
 	uint8_t m_race_id;

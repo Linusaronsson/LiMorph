@@ -123,6 +123,16 @@ enum class RaceIDs {
 	MECHAGNOME = 37
 };
 
+constexpr uint8_t N_RACES = 23;
+
+const RaceIDs RACES[N_RACES] = {
+	RaceIDs::HUMAN, RaceIDs::ORC, RaceIDs::DWARF, RaceIDs::NELF, RaceIDs::UNDEAD, RaceIDs::TAUREN, RaceIDs::GNOME, RaceIDs::TROLL,
+	RaceIDs::GOBLIN, RaceIDs::BELF, RaceIDs::DRAENEI, RaceIDs::WORGEN, RaceIDs::PANDAREN, RaceIDs::NIGHTBORNE,
+	RaceIDs::HIGHMOUNTAIN_TAUREN, RaceIDs::VOID_ELF, RaceIDs::LIGHTFORGED_DRAENEI,
+	RaceIDs::ZANDALARI_TROLL, RaceIDs::KUL_TIRAN, RaceIDs::DARK_IRON_DWARF, RaceIDs::VULPERA,
+	RaceIDs::MAGHAR_ORC, RaceIDs::MECHAGNOME
+};
+
 
 
 enum class RaceMorphIDs {
@@ -291,5 +301,14 @@ namespace WoWUtils {
 		{RaceIDs::MAGHAR_ORC, RaceMorphIDs::MAGHAR_ORC_F},
 		{RaceIDs::MECHAGNOME, RaceMorphIDs::MECHAGNOME_F},
 	};
+
+
+	inline RaceMorphIDs getRaceMorphID(int race_id, int gender) {
+		if (gender)
+			return race_female.at(static_cast<RaceIDs>(race_id));
+		else
+			return race_male.at(static_cast<RaceIDs>(race_id));
+	}
+
 }
 };
