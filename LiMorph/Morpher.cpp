@@ -28,22 +28,22 @@ void Morpher::reportParseError(const std::string& message) {
 
 const char* Morpher::getMountEventLuaCode() {
     auto dummy = 0;
-    #include "MountEvent.lua"
+    #include "Lua/MountEvent.lua"
 }
 
 const char* Morpher::getParseChatLuaCode() {
     auto dummy = 0;
-    #include "ParseChat.lua"
+    #include "Lua/ParseChat.lua"
 }
 
 const char* Morpher::getClickMorphingCode() {
     auto dummy = 0;
-    #include "ClickMorphing.lua"
+    #include "Lua/ClickMorphing.lua"
 }
 
 const char* Morpher::getClickMountMorphingCode() {
     auto dummy = 0;
-    #include "ClickMountMorphing.lua"
+    #include "Lua/ClickMountMorphing.lua"
 }
 
 int __cdecl Morpher::chatCallback(uintptr_t lua_state) {

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LiMorph", "LiMorph\LiMorph.vcxproj", "{EDC95298-8FA7-4C66-80B9-C5C85DEA45A0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LiMorphLoader", "LiMorphLoader\LiMorphLoader.vcxproj", "{2285CE73-01FC-48C1-B599-0B19881EFC4D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LiMorphLoader", "LiMorphLoader\injector.vcxproj", "{BD0F13A6-DC70-40A9-B53E-33933DCC98AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +23,14 @@ Global
 		{EDC95298-8FA7-4C66-80B9-C5C85DEA45A0}.Release|x64.Build.0 = Release|x64
 		{EDC95298-8FA7-4C66-80B9-C5C85DEA45A0}.Release|x86.ActiveCfg = Release|Win32
 		{EDC95298-8FA7-4C66-80B9-C5C85DEA45A0}.Release|x86.Build.0 = Release|Win32
-		{2285CE73-01FC-48C1-B599-0B19881EFC4D}.Debug|x64.ActiveCfg = Debug|x64
-		{2285CE73-01FC-48C1-B599-0B19881EFC4D}.Debug|x64.Build.0 = Debug|x64
-		{2285CE73-01FC-48C1-B599-0B19881EFC4D}.Debug|x86.ActiveCfg = Debug|Win32
-		{2285CE73-01FC-48C1-B599-0B19881EFC4D}.Debug|x86.Build.0 = Debug|Win32
-		{2285CE73-01FC-48C1-B599-0B19881EFC4D}.Release|x64.ActiveCfg = Release|x64
-		{2285CE73-01FC-48C1-B599-0B19881EFC4D}.Release|x64.Build.0 = Release|x64
-		{2285CE73-01FC-48C1-B599-0B19881EFC4D}.Release|x86.ActiveCfg = Release|Win32
-		{2285CE73-01FC-48C1-B599-0B19881EFC4D}.Release|x86.Build.0 = Release|Win32
+		{BD0F13A6-DC70-40A9-B53E-33933DCC98AE}.Debug|x64.ActiveCfg = Debug|x64
+		{BD0F13A6-DC70-40A9-B53E-33933DCC98AE}.Debug|x64.Build.0 = Debug|x64
+		{BD0F13A6-DC70-40A9-B53E-33933DCC98AE}.Debug|x86.ActiveCfg = Debug|Win32
+		{BD0F13A6-DC70-40A9-B53E-33933DCC98AE}.Debug|x86.Build.0 = Debug|Win32
+		{BD0F13A6-DC70-40A9-B53E-33933DCC98AE}.Release|x64.ActiveCfg = Release|x64
+		{BD0F13A6-DC70-40A9-B53E-33933DCC98AE}.Release|x64.Build.0 = Release|x64
+		{BD0F13A6-DC70-40A9-B53E-33933DCC98AE}.Release|x86.ActiveCfg = Release|Win32
+		{BD0F13A6-DC70-40A9-B53E-33933DCC98AE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

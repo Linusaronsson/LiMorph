@@ -189,14 +189,11 @@
     <ClCompile Include="Token.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClickMorphing.lua" />
-    <None Include="ClickMountMorphing.lua" />
-    <None Include="MountEvent.lua" />
-    <None Include="ParseChat.lua" />
-    <None Include="ShapeshiftEvent.lua" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="test.txt" />
+    <None Include="Lua\ClickMorphing.lua" />
+    <None Include="Lua\ClickMountMorphing.lua" />
+    <None Include="Lua\MountEvent.lua" />
+    <None Include="Lua\ParseChat.lua" />
+    <None Include="Lua\ShapeshiftEvent.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

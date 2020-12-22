@@ -94,25 +94,20 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ParseChat.lua">
+    <None Include="Lua\ClickMorphing.lua">
       <Filter>Lua</Filter>
     </None>
-    <None Include="MountEvent.lua">
+    <None Include="Lua\ClickMountMorphing.lua">
       <Filter>Lua</Filter>
     </None>
-    <None Include="ShapeshiftEvent.lua">
+    <None Include="Lua\MountEvent.lua">
       <Filter>Lua</Filter>
     </None>
-    <None Include="ClickMorphing.lua">
+    <None Include="Lua\ParseChat.lua">
       <Filter>Lua</Filter>
     </None>
-    <None Include="ClickMountMorphing.lua">
+    <None Include="Lua\ShapeshiftEvent.lua">
       <Filter>Lua</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="test.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
   </ItemGroup>
 </Project>
