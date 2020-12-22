@@ -72,6 +72,7 @@ void Player::initializePlayer() {
 
 	m_mount_id = 0;
 	m_mount_morphed = false;
+	m_meta_disabled = false;
 }
 
 void Player::resetPlayer() {
@@ -121,6 +122,7 @@ void Player::resetPlayer() {
 		setCurrentMorphIDInMemory();
 
 	m_mount_morphed = false;
+	m_meta_disabled = false;
 	setTitleID(m_original_title_id);
 }
 
@@ -195,6 +197,10 @@ int Player::getChoiceID(int option, int choice) {
 	return Customizations::getChoiceID(m_race_id, m_gender_id, option, choice);
 }
 
+bool Player::getDisableMeta() {
+	return m_meta_disabled;
+}
+
 int Player::getMorphIDFromMemory() {
 	return Memory::readMemory<int>(m_player_ptr + Offsets::morph_id);
 }
@@ -219,7 +225,7 @@ void Player::setCurrentMorphID(int morph_id) {
 
 void Player::setGenderID(uint8_t gender_id) {
 	m_gender_id = gender_id;
-	Memory::writeMemory<uint8_t>(m_player_ptr + Offsets::gender_id, gender_id);
+	//Memory::writeMemory<uint8_t>(m_player_ptr + Offsets::gender_id, gender_id);
 	RaceMorphIDs race_gender = WoWUtils::getRaceMorphID(m_race_id, m_gender_id);
 	for (int i = 0; i < Customizations::getNumberOfCustomizations(m_race_id, m_gender_id); i++) {
 		Memory::writeMemory<int32_t>(getCustomizationPtr() + 4 + (i * 8), m_customizations[race_gender][i]); // item_id
@@ -230,7 +236,7 @@ void Player::setGenderID(uint8_t gender_id) {
 
 void Player::setRaceID(uint8_t race_id) {
 	m_race_id = race_id;
-	Memory::writeMemory<uint8_t>(m_player_ptr + Offsets::race_id, race_id);
+	//Memory::writeMemory<uint8_t>(m_player_ptr + Offsets::race_id, race_id);
 	RaceMorphIDs race_gender = WoWUtils::getRaceMorphID(m_race_id, m_gender_id);
 	for (int i = 0; i < Customizations::getNumberOfCustomizations(m_race_id, m_gender_id); i++) {
 		Memory::writeMemory<int32_t>(getCustomizationPtr() + 4 + (i * 8), m_customizations[race_gender][i]); // item_id
@@ -260,6 +266,10 @@ void Player::setCurrentOriginalShapeshiftID(ShapeshiftForm form, int morph_id) {
 
 void Player::setPlayerPtr(uintptr_t player_ptr) {
 	m_player_ptr = player_ptr;
+}
+
+void Player::setMetaDisabled(bool meta) {
+	m_meta_disabled = meta;
 }
 
 // unused

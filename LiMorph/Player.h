@@ -47,7 +47,7 @@ public:
 	std::map<std::string, int>& getCustomizations();
 	int getNumberOfChoices(int option);
 	int getChoiceID(int option, int choice);
-
+	bool getDisableMeta();
 
 	// get from wow mem
 	int getMorphIDFromMemory();
@@ -64,6 +64,7 @@ public:
 	void setShapeshiftTransparency(ShapeshiftForm form, bool transparent);
 	void setCurrentOriginalShapeshiftID(ShapeshiftForm form, int morph_id=0);
 	void setPlayerPtr(uintptr_t player_ptr);
+	void setMetaDisabled(bool meta);
 
 
 	// set values in wow mem (items/title also set instance variables)
@@ -115,6 +116,7 @@ private:
 
 	// other stuff
 	bool m_mount_morphed;
+	bool m_meta_disabled;
 };
 
 

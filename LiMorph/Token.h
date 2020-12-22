@@ -21,6 +21,7 @@ enum class TokenType : uint8_t
 	STRING,
 	NPC,
 	CUSTOMIZATIONS,
+	DISABLEMETA,
 	NPCID,
 	END,
 	UNKNOWN

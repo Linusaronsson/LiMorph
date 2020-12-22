@@ -110,4 +110,9 @@
       <Filter>Lua</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="test.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

@@ -106,6 +106,7 @@ Token Lexer::identifier() {
 	if (result == "npc") return constructToken(TokenType::NPC);
 	if (result == "npcid") return constructToken(TokenType::NPCID);
 	if (result == "customizations") return constructToken(TokenType::CUSTOMIZATIONS);
+	if (result == "disablemeta") return constructToken(TokenType::DISABLEMETA);
 
 	return constructToken(TokenType::STRING);
 }

@@ -192,6 +192,12 @@ void __fastcall Morpher::updateDisplayInfoHook(uintptr_t unit) {
 
 void Morpher::updateDisplayInfoCustom(uintptr_t unit) {
     //SendWoWMessage("Hello?");
+    switch (m_player.getMorphIDFromMemory()) {
+    case 68670:
+        if (m_player.getDisableMeta())
+            return;
+        break;
+    }
     smartMorphShapeshift(true);
 }
 
@@ -262,6 +268,7 @@ void Morpher::morphShapeshift(ShapeshiftForm form_id, int morph_id) {
 void Morpher::smartMorphShapeshift(bool set_original) {
     ShapeshiftForm form_id =
         static_cast<ShapeshiftForm>(m_player.getShapeshiftFormIDFromMemory());
+    //SendWoWMessage(std::to_string((int)form_id));
 
     int morph_id_in_mem = m_player.getMorphIDFromMemory();
     int orig = morph_id_in_mem;
@@ -323,7 +330,6 @@ void Morpher::smartMorphShapeshift(bool set_original) {
 }
 
 void Morpher::morphRace(int race_id) {
-    m_player.setRaceID(race_id);
     RaceIDs id = static_cast<RaceIDs>(race_id);
     switch (id) {
     case RaceIDs::HUMAN:
@@ -349,6 +355,7 @@ void Morpher::morphRace(int race_id) {
     case RaceIDs::VULPERA:
     case RaceIDs::MAGHAR_ORC:
     case RaceIDs::MECHAGNOME:
+        m_player.setRaceID(race_id);
         if (!m_player.getGenderID())
             morphShapeshift(ShapeshiftForm::HUMANOID, 
                 static_cast<int>(WoWUtils::race_male.at(id)));
@@ -564,6 +571,16 @@ void Morpher::parseChat(uintptr_t lua_state) {
             case TokenType::CUSTOMIZATIONS:
                 parseCustomizations();
                 return;
+            case TokenType::DISABLEMETA:
+                if (m_player.getDisableMeta()) {
+                    m_player.setMetaDisabled(false);
+                    SendWoWMessage("Metamorphosis enabled.");
+                } else {
+                    m_player.setMetaDisabled(true);
+                    SendWoWMessage("Metamorphosis disabled.");
+                }
+                m_lex.finish();
+                return;
             case TokenType::NUMBER:
                 reportParseError("Command can not start with number.");
                 return;
@@ -601,6 +618,9 @@ void Morpher::parseCommands() {
     SendWoWMessage(".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "<morph_id>|r");
     SendWoWMessage(".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "target|r");
     SendWoWMessage(".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "0|r");
+    SendWoWMessage(".customizations");
+    SendWoWMessage(".disablemeta");
+
 
     SendWoWMessage(".npcid");
     SendWoWMessage(".reset");
@@ -872,7 +892,7 @@ void Morpher::parseCustomizationOption(const std::string& str) {
 
            // SendWoWMessage("HERE:; " + std::to_string(customizations[str]));
             int choice_id = m_player.getChoiceID(customizations[str], choice);
-            SendWoWMessage(std::to_string(choice_id));
+            //SendWoWMessage(std::to_string(choice_id));
             m_player.setCustomizationChoice(customizations[str], choice_id);
             WoWFunctions::updateModel(m_player_ptr);
         }
