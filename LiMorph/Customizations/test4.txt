@@ -1,0 +1,117 @@
+switch(race_id) {
+	case RaceIDs::HUMAN:
+	if(gender) 
+		return Customizations::HUMAN_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::HUMAN_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::ORC:
+	if(gender) 
+		return Customizations::ORC_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::ORC_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::DWARF:
+	if(gender) 
+		return Customizations::DWARF_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::DWARF_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::NELF:
+	if(gender) 
+		return Customizations::NELF_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::NELF_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::UNDEAD:
+	if(gender) 
+		return Customizations::UNDEAD_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::UNDEAD_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::TAUREN:
+	if(gender) 
+		return Customizations::TAUREN_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::TAUREN_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::GNOME:
+	if(gender) 
+		return Customizations::GNOME_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::GNOME_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::TROLL:
+	if(gender) 
+		return Customizations::TROLL_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::TROLL_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::GOBLIN:
+	if(gender) 
+		return Customizations::GOBLIN_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::GOBLIN_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::BELF:
+	if(gender) 
+		return Customizations::BELF_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::BELF_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::DRAENEI:
+	if(gender) 
+		return Customizations::DRAENEI_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::DRAENEI_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::WORGEN:
+	if(gender) 
+		return Customizations::WORGEN_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::WORGEN_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::PANDAREN:
+	if(gender) 
+		return Customizations::PANDAREN_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::PANDAREN_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::NIGHTBORNE:
+	if(gender) 
+		return Customizations::NIGHTBORNE_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::NIGHTBORNE_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::HIGHMOUNTAIN_TAUREN:
+	if(gender) 
+		return Customizations::HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::VOID_ELF:
+	if(gender) 
+		return Customizations::VOID_ELF_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::VOID_ELF_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::LIGHTFORGED_DRAENEI:
+	if(gender) 
+		return Customizations::LIGHTFORGED_DRAENEI_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::LIGHTFORGED_DRAENEI_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::ZANDALARI_TROLL:
+	if(gender) 
+		return Customizations::ZANDALARI_TROLL_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::ZANDALARI_TROLL_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::KUL_TIRAN:
+	if(gender) 
+		return Customizations::KUL_TIRAN_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::KUL_TIRAN_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::DARK_IRON_DWARF:
+	if(gender) 
+		return Customizations::DARK_IRON_DWARF_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::DARK_IRON_DWARF_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::VULPERA:
+	if(gender) 
+		return Customizations::VULPERA_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::VULPERA_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::MAGHAR_ORC:
+	if(gender) 
+		return Customizations::MAGHAR_ORC_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::MAGHAR_ORC_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::MECHAGNOME:
+	if(gender) 
+		return Customizations::MECHAGNOME_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::MECHAGNOME_M_CUSTOMIZATION_CHOICES[option][choice];
+}
