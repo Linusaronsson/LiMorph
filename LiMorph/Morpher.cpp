@@ -876,13 +876,13 @@ void Morpher::parseCustomizations() {
 }
 
 void Morpher::parseCustomizationOption(const std::string& str) {
-    auto& customizations = m_player.getCustomizations();
+    const auto& customizations = m_player.getCustomizations();
     if (customizations.find(str) != customizations.end()) {
         Token next = m_lex.nextToken();
         if (next.type() == TokenType::NUMBER) {
             int choice = next.toNumber();
 
-            int n_choices = m_player.getNumberOfChoices(customizations[str]);
+            int n_choices = m_player.getNumberOfChoices(customizations.at(str));
 
             if (choice < 0 || choice > n_choices-1) {
                 reportParseError("Invalid ." + str + " first operand. Value must be in range <0-" + std::to_string(n_choices-1) + ">");
@@ -891,9 +891,9 @@ void Morpher::parseCustomizationOption(const std::string& str) {
             }
 
            // SendWoWMessage("HERE:; " + std::to_string(customizations[str]));
-            int choice_id = m_player.getChoiceID(customizations[str], choice);
+            int choice_id = m_player.getChoiceID(customizations.at(str), choice);
             //SendWoWMessage(std::to_string(choice_id));
-            m_player.setCustomizationChoice(customizations[str], choice_id);
+            m_player.setCustomizationChoice(customizations.at(str), choice_id);
             WoWFunctions::updateModel(m_player_ptr);
         }
         else {

@@ -1,5 +1,17 @@
+#pragma once
+
+#include <string>
+#include <map>
+#include <unordered_map>
+#include <array>
+
+enum class RaceIDs;
+
+namespace LiMorph {
+namespace Customizations {
+
 const uint8_t HUMAN_M_N_CUSTOMIZATIONS = 10;
-std::map<std::string, int> HUMAN_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> HUMAN_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -12,7 +24,7 @@ std::map<std::string, int> HUMAN_M_CUSTOMIZATIONS {
 	{"eyebrows", 9},
 };
 
-std::array<uint32_t, 32> HUMAN_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> HUMAN_M_NATIVE_CUSTOMIZATIONS {
 	1,
 	20,
 	44,
@@ -25,11 +37,11 @@ std::array<uint32_t, 32> HUMAN_M_NATIVE_CUSTOMIZATIONS {
 	9915,
 };
 
-std::array<int, 10> HUMAN_M_CUSTOMIZATION_N_CHOICES {24, 36, 26, 43, 8, 28, 3, 7, 3, 12, };
+const std::array<int, 10> HUMAN_M_CUSTOMIZATION_N_CHOICES {24, 36, 26, 43, 8, 28, 3, 7, 3, 12, };
 
-std::array<uint32_t, 32> HUMAN_M_CUSTOMIZATION_OPTION_IDS {9, 10, 11, 12, 13, 463, 525, 888, 889, 890, };
+const std::array<uint32_t, 32> HUMAN_M_CUSTOMIZATION_OPTION_IDS {9, 10, 11, 12, 13, 463, 525, 888, 889, 890, };
 
-std::vector<std::vector<int>> HUMAN_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 10> HUMAN_M_CUSTOMIZATION_CHOICES {
 	{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 4957, 4958, 4972, 4975, 4978, 4979, },
 	{20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 15416, 15417, 15418, 15419, 15420, 15421, 15422, 15423, 15424, 15425, 15426, 15427, 15428, 15429, 15430, 15431, 15432, 15433, 15434, 15435, 15436, 15437, 15438, 15439, },
 	{44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 4988, 4989, 4990, 4991, 4992, 4993, 4994, 4995, 4996, },
@@ -42,10 +54,8 @@ std::vector<std::vector<int>> HUMAN_M_CUSTOMIZATION_CHOICES {
 	{9915, 9916, 9917, 9918, 9919, 9920, 9921, 9922, 9923, 9924, 9925, 9926, },
 };
 
-
-
 const uint8_t HUMAN_F_N_CUSTOMIZATIONS = 10;
-std::map<std::string, int> HUMAN_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> HUMAN_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -58,7 +68,7 @@ std::map<std::string, int> HUMAN_F_CUSTOMIZATIONS {
 	{"eyebrows", 9},
 };
 
-std::array<uint32_t, 32> HUMAN_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> HUMAN_F_NATIVE_CUSTOMIZATIONS {
 	85,
 	102,
 	132,
@@ -71,11 +81,11 @@ std::array<uint32_t, 32> HUMAN_F_NATIVE_CUSTOMIZATIONS {
 	15672,
 };
 
-std::array<int, 10> HUMAN_F_CUSTOMIZATION_N_CHOICES {23, 45, 34, 43, 29, 15, 9, 7, 3, 26, };
+const std::array<int, 10> HUMAN_F_CUSTOMIZATION_N_CHOICES {23, 45, 34, 43, 29, 15, 9, 7, 3, 26, };
 
-std::array<uint32_t, 32> HUMAN_F_CUSTOMIZATION_OPTION_IDS {14, 15, 16, 17, 464, 501, 510, 516, 526, 970, };
+const std::array<uint32_t, 32> HUMAN_F_CUSTOMIZATION_OPTION_IDS {14, 15, 16, 17, 464, 501, 510, 516, 526, 970, };
 
-std::vector<std::vector<int>> HUMAN_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 10> HUMAN_F_CUSTOMIZATION_CHOICES {
 	{85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 4961, 4962, 4964, 4967, 4970, 4971, },
 	{102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 15698, 15699, 15700, 15701, 15702, 15703, 15704, 15705, 15706, 15707, 15708, 15709, 15710, 15711, 15712, 15713, 15714, 15715, 15716, 15717, 15718, 15719, 15720, 15721, 15722, 15723, 15724, 15725, 15726, 15727, },
 	{132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 4980, 4981, 4982, 4983, 4984, 4985, 4986, 4987, 7473, 15741, },
@@ -88,10 +98,8 @@ std::vector<std::vector<int>> HUMAN_F_CUSTOMIZATION_CHOICES {
 	{15672, 15673, 15674, 15675, 15676, 15677, 15678, 15679, 15680, 15681, 15682, 15683, 15684, 15685, 15686, 15687, 15688, 15689, 15690, 15691, 15692, 15693, 15694, 15695, 15696, 15697, },
 };
 
-
-
 const uint8_t ORC_M_N_CUSTOMIZATIONS = 16;
-std::map<std::string, int> ORC_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> ORC_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -110,7 +118,7 @@ std::map<std::string, int> ORC_M_CUSTOMIZATIONS {
 	{"grime", 15},
 };
 
-std::array<uint32_t, 32> ORC_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> ORC_M_NATIVE_CUSTOMIZATIONS {
 	353,
 	384,
 	402,
@@ -129,11 +137,11 @@ std::array<uint32_t, 32> ORC_M_NATIVE_CUSTOMIZATIONS {
 	9825,
 };
 
-std::array<int, 16> ORC_M_CUSTOMIZATION_N_CHOICES {34, 18, 18, 15, 14, 2, 22, 4, 4, 4, 4, 6, 4, 4, 9, 3, };
+const std::array<int, 16> ORC_M_CUSTOMIZATION_N_CHOICES {34, 18, 18, 15, 14, 2, 22, 4, 4, 4, 4, 6, 4, 4, 9, 3, };
 
-std::array<uint32_t, 32> ORC_M_CUSTOMIZATION_OPTION_IDS {19, 20, 21, 22, 23, 24, 824, 826, 827, 828, 829, 836, 874, 875, 876, 877, };
+const std::array<uint32_t, 32> ORC_M_CUSTOMIZATION_OPTION_IDS {19, 20, 21, 22, 23, 24, 824, 826, 827, 828, 829, 836, 874, 875, 876, 877, };
 
-std::vector<std::vector<int>> ORC_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 16> ORC_M_CUSTOMIZATION_CHOICES {
 	{353, 354, 355, 356, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366, 367, 368, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 381, 382, 383, 9350, 9351, 9352, },
 	{384, 385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, },
 	{402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 9337, 9338, 9339, 9340, 9341, },
@@ -152,10 +160,8 @@ std::vector<std::vector<int>> ORC_M_CUSTOMIZATION_CHOICES {
 	{9825, 9826, 9827, },
 };
 
-
-
 const uint8_t ORC_F_N_CUSTOMIZATIONS = 12;
-std::map<std::string, int> ORC_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> ORC_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -170,7 +176,7 @@ std::map<std::string, int> ORC_F_CUSTOMIZATIONS {
 	{"nosering", 11},
 };
 
-std::array<uint32_t, 32> ORC_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> ORC_F_NATIVE_CUSTOMIZATIONS {
 	440,
 	472,
 	490,
@@ -185,11 +191,11 @@ std::array<uint32_t, 32> ORC_F_NATIVE_CUSTOMIZATIONS {
 	9491,
 };
 
-std::array<int, 12> ORC_F_CUSTOMIZATION_N_CHOICES {35, 18, 20, 15, 14, 22, 5, 4, 4, 4, 3, 3, };
+const std::array<int, 12> ORC_F_CUSTOMIZATION_N_CHOICES {35, 18, 20, 15, 14, 22, 5, 4, 4, 4, 3, 3, };
 
-std::array<uint32_t, 32> ORC_F_CUSTOMIZATION_OPTION_IDS {25, 26, 27, 28, 29, 825, 830, 831, 832, 833, 841, 847, };
+const std::array<uint32_t, 32> ORC_F_CUSTOMIZATION_OPTION_IDS {25, 26, 27, 28, 29, 825, 830, 831, 832, 833, 841, 847, };
 
-std::vector<std::vector<int>> ORC_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 12> ORC_F_CUSTOMIZATION_CHOICES {
 	{440, 441, 442, 443, 444, 445, 446, 447, 448, 449, 450, 451, 452, 453, 454, 455, 456, 457, 458, 459, 460, 461, 462, 463, 464, 465, 466, 467, 468, 469, 470, 471, 9356, 9357, 9358, },
 	{472, 473, 474, 475, 476, 477, 478, 479, 480, 481, 482, 483, 484, 485, 486, 487, 488, 489, },
 	{490, 491, 492, 493, 494, 495, 496, 497, 498, 499, 500, 501, 502, 503, 504, 9342, 9343, 9344, 9345, 9346, },
@@ -204,10 +210,8 @@ std::vector<std::vector<int>> ORC_F_CUSTOMIZATION_CHOICES {
 	{9491, 9492, 9812, },
 };
 
-
-
 const uint8_t DWARF_M_N_CUSTOMIZATIONS = 12;
-std::map<std::string, int> DWARF_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> DWARF_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -222,7 +226,7 @@ std::map<std::string, int> DWARF_M_CUSTOMIZATIONS {
 	{"eyebrows", 11},
 };
 
-std::array<uint32_t, 32> DWARF_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> DWARF_M_NATIVE_CUSTOMIZATIONS {
 	524,
 	551,
 	571,
@@ -237,11 +241,11 @@ std::array<uint32_t, 32> DWARF_M_NATIVE_CUSTOMIZATIONS {
 	15451,
 };
 
-std::array<int, 12> DWARF_M_CUSTOMIZATION_N_CHOICES {30, 20, 22, 21, 11, 29, 8, 6, 4, 8, 10, 1, };
+const std::array<int, 12> DWARF_M_CUSTOMIZATION_N_CHOICES {30, 20, 22, 21, 11, 29, 8, 6, 4, 8, 10, 1, };
 
-std::array<uint32_t, 32> DWARF_M_CUSTOMIZATION_OPTION_IDS {30, 31, 32, 33, 34, 544, 600, 604, 610, 611, 936, 937, };
+const std::array<uint32_t, 32> DWARF_M_CUSTOMIZATION_OPTION_IDS {30, 31, 32, 33, 34, 544, 600, 604, 610, 611, 936, 937, };
 
-std::vector<std::vector<int>> DWARF_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 12> DWARF_M_CUSTOMIZATION_CHOICES {
 	{524, 525, 526, 527, 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541, 542, 543, 544, 545, 546, 547, 548, 549, 550, 7141, 7142, 7143, },
 	{551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, },
 	{571, 572, 573, 574, 575, 576, 577, 578, 579, 580, 581, 582, 583, 584, 585, 586, 587, 588, 589, 7125, 7126, 7127, },
@@ -256,10 +260,8 @@ std::vector<std::vector<int>> DWARF_M_CUSTOMIZATION_CHOICES {
 	{15451, },
 };
 
-
-
 const uint8_t DWARF_F_N_CUSTOMIZATIONS = 9;
-std::map<std::string, int> DWARF_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> DWARF_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -271,7 +273,7 @@ std::map<std::string, int> DWARF_F_CUSTOMIZATIONS {
 	{"tattoo", 8},
 };
 
-std::array<uint32_t, 32> DWARF_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> DWARF_F_NATIVE_CUSTOMIZATIONS {
 	615,
 	634,
 	654,
@@ -283,11 +285,11 @@ std::array<uint32_t, 32> DWARF_F_NATIVE_CUSTOMIZATIONS {
 	6894,
 };
 
-std::array<int, 9> DWARF_F_CUSTOMIZATION_N_CHOICES {22, 20, 26, 21, 29, 8, 6, 4, 8, };
+const std::array<int, 9> DWARF_F_CUSTOMIZATION_N_CHOICES {22, 20, 26, 21, 29, 8, 6, 4, 8, };
 
-std::array<uint32_t, 32> DWARF_F_CUSTOMIZATION_OPTION_IDS {35, 36, 37, 38, 545, 601, 605, 607, 608, };
+const std::array<uint32_t, 32> DWARF_F_CUSTOMIZATION_OPTION_IDS {35, 36, 37, 38, 545, 601, 605, 607, 608, };
 
-std::vector<std::vector<int>> DWARF_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 9> DWARF_F_CUSTOMIZATION_CHOICES {
 	{615, 616, 617, 618, 619, 620, 621, 622, 623, 624, 625, 626, 627, 628, 629, 630, 631, 632, 633, 7134, 7135, 7137, },
 	{634, 635, 636, 637, 638, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 653, },
 	{654, 655, 656, 657, 658, 659, 660, 661, 662, 663, 664, 665, 666, 667, 668, 669, 670, 671, 672, 673, 674, 7128, 7129, 7130, 7131, 7472, },
@@ -299,10 +301,8 @@ std::vector<std::vector<int>> DWARF_F_CUSTOMIZATION_CHOICES {
 	{6894, 6885, 6886, 6887, 6888, 6889, 6890, 6891, },
 };
 
-
-
 const uint8_t NELF_M_N_CUSTOMIZATIONS = 23;
-std::map<std::string, int> NELF_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> NELF_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -328,7 +328,7 @@ std::map<std::string, int> NELF_M_CUSTOMIZATIONS {
 	{"moonkinform", 22},
 };
 
-std::array<uint32_t, 32> NELF_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> NELF_M_NATIVE_CUSTOMIZATIONS {
 	695,
 	719,
 	737,
@@ -354,11 +354,11 @@ std::array<uint32_t, 32> NELF_M_NATIVE_CUSTOMIZATIONS {
 	15392,
 };
 
-std::array<int, 23> NELF_M_CUSTOMIZATION_N_CHOICES {27, 18, 17, 19, 8, 7, 7, 12, 12, 30, 33, 5, 4, 5, 17, 2, 5, 5, 9, 5, 5, 6, 2, };
+const std::array<int, 23> NELF_M_CUSTOMIZATION_N_CHOICES {27, 18, 17, 19, 8, 7, 7, 12, 12, 30, 33, 5, 4, 5, 17, 2, 5, 5, 9, 5, 5, 6, 2, };
 
-std::array<uint32_t, 32> NELF_M_CUSTOMIZATION_OPTION_IDS {40, 41, 42, 43, 44, 46, 47, 48, 376, 565, 625, 635, 639, 643, 682, 728, 730, 734, 738, 739, 740, 742, 924, };
+const std::array<uint32_t, 32> NELF_M_CUSTOMIZATION_OPTION_IDS {40, 41, 42, 43, 44, 46, 47, 48, 376, 565, 625, 635, 639, 643, 682, 728, 730, 734, 738, 739, 740, 742, 924, };
 
-std::vector<std::vector<int>> NELF_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 23> NELF_M_CUSTOMIZATION_CHOICES {
 	{695, 696, 697, 698, 699, 700, 701, 702, 703, 704, 705, 706, 707, 708, 709, 710, 711, 712, 713, 714, 715, 716, 717, 718, 8303, 8304, 8305, },
 	{719, 720, 721, 722, 723, 724, 725, 726, 727, 728, 729, 730, 731, 732, 733, 734, 735, 736, },
 	{737, 738, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 7488, 7997, 7998, 7999, 8000, },
@@ -384,10 +384,8 @@ std::vector<std::vector<int>> NELF_M_CUSTOMIZATION_CHOICES {
 	{15392, 15404, },
 };
 
-
-
 const uint8_t NELF_F_N_CUSTOMIZATIONS = 26;
-std::map<std::string, int> NELF_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> NELF_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -416,7 +414,7 @@ std::map<std::string, int> NELF_F_CUSTOMIZATIONS {
 	{"moonkinform", 25},
 };
 
-std::array<uint32_t, 32> NELF_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> NELF_F_NATIVE_CUSTOMIZATIONS {
 	801,
 	825,
 	843,
@@ -445,11 +443,11 @@ std::array<uint32_t, 32> NELF_F_NATIVE_CUSTOMIZATIONS {
 	15393,
 };
 
-std::array<int, 26> NELF_F_CUSTOMIZATION_N_CHOICES {27, 18, 20, 18, 10, 7, 7, 12, 7, 30, 33, 5, 4, 5, 16, 4, 4, 4, 3, 2, 5, 5, 4, 6, 10, 2, };
+const std::array<int, 26> NELF_F_CUSTOMIZATION_N_CHOICES {27, 18, 20, 18, 10, 7, 7, 12, 7, 30, 33, 5, 4, 5, 16, 4, 4, 4, 3, 2, 5, 5, 4, 6, 10, 2, };
 
-std::array<uint32_t, 32> NELF_F_CUSTOMIZATION_OPTION_IDS {49, 50, 51, 52, 53, 55, 56, 57, 377, 566, 624, 634, 638, 642, 683, 708, 710, 712, 714, 724, 726, 732, 736, 744, 745, 925, };
+const std::array<uint32_t, 32> NELF_F_CUSTOMIZATION_OPTION_IDS {49, 50, 51, 52, 53, 55, 56, 57, 377, 566, 624, 634, 638, 642, 683, 708, 710, 712, 714, 724, 726, 732, 736, 744, 745, 925, };
 
-std::vector<std::vector<int>> NELF_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 26> NELF_F_CUSTOMIZATION_CHOICES {
 	{801, 802, 803, 804, 805, 806, 807, 808, 809, 810, 811, 812, 813, 814, 815, 816, 817, 818, 819, 820, 821, 822, 823, 824, 8294, 8295, 8296, },
 	{825, 826, 827, 828, 829, 830, 831, 832, 833, 834, 835, 836, 837, 838, 839, 840, 841, 842, },
 	{843, 844, 845, 846, 847, 848, 849, 850, 851, 852, 853, 854, 855, 856, 857, 7474, 7983, 7984, 7985, 7986, },
@@ -478,10 +476,8 @@ std::vector<std::vector<int>> NELF_F_CUSTOMIZATION_CHOICES {
 	{15393, 15405, },
 };
 
-
-
 const uint8_t UNDEAD_M_N_CUSTOMIZATIONS = 8;
-std::map<std::string, int> UNDEAD_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> UNDEAD_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -492,7 +488,7 @@ std::map<std::string, int> UNDEAD_M_CUSTOMIZATIONS {
 	{"skintype", 7},
 };
 
-std::array<uint32_t, 32> UNDEAD_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> UNDEAD_M_NATIVE_CUSTOMIZATIONS {
 	913,
 	920,
 	940,
@@ -503,11 +499,11 @@ std::array<uint32_t, 32> UNDEAD_M_NATIVE_CUSTOMIZATIONS {
 	6527,
 };
 
-std::array<int, 8> UNDEAD_M_CUSTOMIZATION_N_CHOICES {34, 11, 21, 18, 11, 10, 5, 3, };
+const std::array<int, 8> UNDEAD_M_CUSTOMIZATION_N_CHOICES {34, 11, 21, 18, 11, 10, 5, 3, };
 
-std::array<uint32_t, 32> UNDEAD_M_CUSTOMIZATION_OPTION_IDS {58, 59, 60, 61, 62, 534, 563, 567, };
+const std::array<uint32_t, 32> UNDEAD_M_CUSTOMIZATION_OPTION_IDS {58, 59, 60, 61, 62, 534, 563, 567, };
 
-std::vector<std::vector<int>> UNDEAD_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 8> UNDEAD_M_CUSTOMIZATION_CHOICES {
 	{913, 914, 915, 916, 917, 918, 919, 6420, 6421, 6422, 6423, 6424, 6425, 6426, 6427, 6428, 6429, 6430, 6431, 6432, 6433, 6434, 6435, 6436, 6437, 6438, 6439, 6440, 6441, 6442, 6443, 6444, 6445, 6446, },
 	{920, 921, 922, 923, 924, 925, 926, 927, 928, 929, 6606, },
 	{940, 941, 942, 943, 944, 945, 946, 947, 948, 949, 950, 951, 952, 953, 954, 955, 5724, 5726, 5727, 5728, 5729, },
@@ -518,10 +514,8 @@ std::vector<std::vector<int>> UNDEAD_M_CUSTOMIZATION_CHOICES {
 	{6527, 6528, 6529, },
 };
 
-
-
 const uint8_t UNDEAD_F_N_CUSTOMIZATIONS = 8;
-std::map<std::string, int> UNDEAD_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> UNDEAD_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -532,7 +526,7 @@ std::map<std::string, int> UNDEAD_F_CUSTOMIZATIONS {
 	{"skintype", 7},
 };
 
-std::array<uint32_t, 32> UNDEAD_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> UNDEAD_F_NATIVE_CUSTOMIZATIONS {
 	984,
 	991,
 	1011,
@@ -543,11 +537,11 @@ std::array<uint32_t, 32> UNDEAD_F_NATIVE_CUSTOMIZATIONS {
 	6524,
 };
 
-std::array<int, 8> UNDEAD_F_CUSTOMIZATION_N_CHOICES {34, 10, 19, 18, 5, 10, 4, 3, };
+const std::array<int, 8> UNDEAD_F_CUSTOMIZATION_N_CHOICES {34, 10, 19, 18, 5, 10, 4, 3, };
 
-std::array<uint32_t, 32> UNDEAD_F_CUSTOMIZATION_OPTION_IDS {63, 64, 65, 66, 67, 535, 559, 568, };
+const std::array<uint32_t, 32> UNDEAD_F_CUSTOMIZATION_OPTION_IDS {63, 64, 65, 66, 67, 535, 559, 568, };
 
-std::vector<std::vector<int>> UNDEAD_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 8> UNDEAD_F_CUSTOMIZATION_CHOICES {
 	{984, 985, 986, 987, 988, 989, 990, 6366, 6367, 6368, 6369, 6370, 6371, 6372, 6373, 6374, 6375, 6376, 6377, 6378, 6379, 6380, 6381, 6382, 6383, 6384, 6385, 6386, 6387, 6388, 6389, 6390, 6391, 6392, },
 	{991, 992, 993, 994, 995, 996, 997, 998, 999, 1000, },
 	{1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1020, 1021, 1022, 1023, 1024, 1025, 5730, 5731, 5732, 7475, },
@@ -558,10 +552,8 @@ std::vector<std::vector<int>> UNDEAD_F_CUSTOMIZATION_CHOICES {
 	{6524, 6525, 6526, },
 };
 
-
-
 const uint8_t TAUREN_M_N_CUSTOMIZATIONS = 22;
-std::map<std::string, int> TAUREN_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> TAUREN_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"hornstyle", 1},
 	{"horncolor", 2},
@@ -586,7 +578,7 @@ std::map<std::string, int> TAUREN_M_CUSTOMIZATIONS {
 	{"flightform", 21},
 };
 
-std::array<uint32_t, 32> TAUREN_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> TAUREN_M_NATIVE_CUSTOMIZATIONS {
 	1045,
 	1084,
 	1100,
@@ -611,11 +603,11 @@ std::array<uint32_t, 32> TAUREN_M_NATIVE_CUSTOMIZATIONS {
 	15562,
 };
 
-std::array<int, 22> TAUREN_M_CUSTOMIZATION_N_CHOICES {32, 20, 7, 13, 10, 9, 3, 3, 5, 4, 4, 6, 11, 4, 2, 1, 30, 33, 2, 5, 4, 5, };
+const std::array<int, 22> TAUREN_M_CUSTOMIZATION_N_CHOICES {32, 20, 7, 13, 10, 9, 3, 3, 5, 4, 4, 6, 11, 4, 2, 1, 30, 33, 2, 5, 4, 5, };
 
-std::array<uint32_t, 32> TAUREN_M_CUSTOMIZATION_OPTION_IDS {68, 71, 72, 73, 378, 646, 653, 657, 661, 663, 667, 669, 671, 672, 801, 803, 893, 903, 926, 938, 948, 958, };
+const std::array<uint32_t, 32> TAUREN_M_CUSTOMIZATION_OPTION_IDS {68, 71, 72, 73, 378, 646, 653, 657, 661, 663, 667, 669, 671, 672, 801, 803, 893, 903, 926, 938, 948, 958, };
 
-std::vector<std::vector<int>> TAUREN_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 22> TAUREN_M_CUSTOMIZATION_CHOICES {
 	{1045, 1046, 1047, 1048, 1049, 1050, 1051, 1052, 1053, 1054, 1055, 1056, 1057, 1058, 1059, 1060, 1061, 1062, 1063, 1064, 1065, 1066, 1067, 1068, 1069, 1070, 1071, 1072, 1073, 7439, 7440, 7441, },
 	{1084, 1085, 1086, 1087, 1088, 1089, 1090, 1091, 1092, 1093, 1094, 1095, 1096, 1097, 1098, 1099, 7389, 7390, 7391, 7392, },
 	{1100, 1101, 1102, 1103, 1104, 1105, 1106, },
@@ -640,10 +632,8 @@ std::vector<std::vector<int>> TAUREN_M_CUSTOMIZATION_CHOICES {
 	{15562, 15563, 15564, 15565, 15566, },
 };
 
-
-
 const uint8_t TAUREN_F_N_CUSTOMIZATIONS = 22;
-std::map<std::string, int> TAUREN_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> TAUREN_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"hornstyle", 1},
 	{"horncolor", 2},
@@ -668,7 +658,7 @@ std::map<std::string, int> TAUREN_F_CUSTOMIZATIONS {
 	{"flightform", 21},
 };
 
-std::array<uint32_t, 32> TAUREN_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> TAUREN_F_NATIVE_CUSTOMIZATIONS {
 	1114,
 	1143,
 	1161,
@@ -693,11 +683,11 @@ std::array<uint32_t, 32> TAUREN_F_NATIVE_CUSTOMIZATIONS {
 	15567,
 };
 
-std::array<int, 22> TAUREN_F_CUSTOMIZATION_N_CHOICES {24, 23, 8, 15, 8, 9, 5, 4, 3, 4, 4, 4, 6, 3, 1, 2, 30, 33, 2, 5, 4, 5, };
+const std::array<int, 22> TAUREN_F_CUSTOMIZATION_N_CHOICES {24, 23, 8, 15, 8, 9, 5, 4, 3, 4, 4, 4, 6, 3, 1, 2, 30, 33, 2, 5, 4, 5, };
 
-std::array<uint32_t, 32> TAUREN_F_CUSTOMIZATION_OPTION_IDS {74, 77, 78, 79, 379, 647, 649, 651, 655, 659, 662, 666, 668, 673, 805, 842, 894, 904, 927, 939, 949, 959, };
+const std::array<uint32_t, 32> TAUREN_F_CUSTOMIZATION_OPTION_IDS {74, 77, 78, 79, 379, 647, 649, 651, 655, 659, 662, 666, 668, 673, 805, 842, 894, 904, 927, 939, 949, 959, };
 
-std::vector<std::vector<int>> TAUREN_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 22> TAUREN_F_CUSTOMIZATION_CHOICES {
 	{1114, 1115, 1116, 1117, 1118, 1119, 1120, 1121, 1122, 1123, 1124, 1125, 1126, 1127, 1128, 1129, 1130, 1131, 1132, 1133, 1134, 7436, 7437, 7438, },
 	{1143, 1144, 1145, 1146, 1147, 1148, 1149, 1150, 1151, 1152, 1153, 1154, 1155, 1156, 1157, 1158, 1159, 1160, 7393, 7394, 7395, 7396, 7397, },
 	{1161, 1162, 1163, 1164, 1165, 1166, 1167, 1168, },
@@ -722,10 +712,8 @@ std::vector<std::vector<int>> TAUREN_F_CUSTOMIZATION_CHOICES {
 	{15567, 15568, 15569, 15570, 15571, },
 };
 
-
-
 const uint8_t GNOME_M_N_CUSTOMIZATIONS = 8;
-std::map<std::string, int> GNOME_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> GNOME_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -736,7 +724,7 @@ std::map<std::string, int> GNOME_M_CUSTOMIZATIONS {
 	{"eyebrows", 7},
 };
 
-std::array<uint32_t, 32> GNOME_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> GNOME_M_NATIVE_CUSTOMIZATIONS {
 	1174,
 	1185,
 	1199,
@@ -747,11 +735,11 @@ std::array<uint32_t, 32> GNOME_M_NATIVE_CUSTOMIZATIONS {
 	8765,
 };
 
-std::array<int, 8> GNOME_M_CUSTOMIZATION_N_CHOICES {14, 14, 18, 19, 9, 16, 11, 9, };
+const std::array<int, 8> GNOME_M_CUSTOMIZATION_N_CHOICES {14, 14, 18, 19, 9, 16, 11, 9, };
 
-std::array<uint32_t, 32> GNOME_M_CUSTOMIZATION_OPTION_IDS {80, 81, 82, 83, 84, 548, 783, 784, };
+const std::array<uint32_t, 32> GNOME_M_CUSTOMIZATION_OPTION_IDS {80, 81, 82, 83, 84, 548, 783, 784, };
 
-std::vector<std::vector<int>> GNOME_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 8> GNOME_M_CUSTOMIZATION_CHOICES {
 	{1174, 1175, 1176, 1177, 1178, 1179, 1180, 1181, 1182, 1183, 1184, 8787, 8788, 8789, },
 	{1185, 1186, 1187, 1188, 1189, 1190, 1191, 1192, 1193, 1194, 1195, 1196, 1197, 1198, },
 	{1199, 1200, 1201, 1202, 1203, 1204, 1205, 1206, 1207, 1208, 1209, 1210, 1211, 1212, 1213, 8730, 8731, 8732, },
@@ -762,10 +750,8 @@ std::vector<std::vector<int>> GNOME_M_CUSTOMIZATION_CHOICES {
 	{8765, 8766, 8767, 8768, 8769, 8770, 8771, 8772, 8777, },
 };
 
-
-
 const uint8_t GNOME_F_N_CUSTOMIZATIONS = 7;
-std::map<std::string, int> GNOME_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> GNOME_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -775,7 +761,7 @@ std::map<std::string, int> GNOME_F_CUSTOMIZATIONS {
 	{"earringcolor", 6},
 };
 
-std::array<uint32_t, 32> GNOME_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> GNOME_F_NATIVE_CUSTOMIZATIONS {
 	1235,
 	1246,
 	1260,
@@ -785,11 +771,11 @@ std::array<uint32_t, 32> GNOME_F_NATIVE_CUSTOMIZATIONS {
 	8795,
 };
 
-std::array<int, 7> GNOME_F_CUSTOMIZATION_N_CHOICES {14, 14, 20, 19, 15, 16, 16, };
+const std::array<int, 7> GNOME_F_CUSTOMIZATION_N_CHOICES {14, 14, 20, 19, 15, 16, 16, };
 
-std::array<uint32_t, 32> GNOME_F_CUSTOMIZATION_OPTION_IDS {85, 86, 87, 88, 89, 549, 786, };
+const std::array<uint32_t, 32> GNOME_F_CUSTOMIZATION_OPTION_IDS {85, 86, 87, 88, 89, 549, 786, };
 
-std::vector<std::vector<int>> GNOME_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 7> GNOME_F_CUSTOMIZATION_CHOICES {
 	{1235, 1236, 1237, 1238, 1239, 1240, 1241, 1242, 1243, 1244, 1245, 8781, 8782, 8783, },
 	{1246, 1247, 1248, 1249, 1250, 1251, 1252, 1253, 1254, 1255, 1256, 1257, 1258, 1259, },
 	{1260, 1261, 1262, 1263, 1264, 1265, 1266, 1267, 1268, 1269, 1270, 1271, 1272, 1273, 1274, 1275, 7477, 8727, 8728, 8729, },
@@ -799,10 +785,8 @@ std::vector<std::vector<int>> GNOME_F_CUSTOMIZATION_CHOICES {
 	{8795, 8796, 8797, 8798, 8799, 15656, 15657, 15658, 15659, 15660, 15666, 15667, 15668, 15669, 15670, 15671, },
 };
 
-
-
 const uint8_t TROLL_M_N_CUSTOMIZATIONS = 18;
-std::map<std::string, int> TROLL_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> TROLL_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -823,7 +807,7 @@ std::map<std::string, int> TROLL_M_CUSTOMIZATIONS {
 	{"flightform", 17},
 };
 
-std::array<uint32_t, 32> TROLL_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> TROLL_M_NATIVE_CUSTOMIZATIONS {
 	1296,
 	1315,
 	1325,
@@ -844,11 +828,11 @@ std::array<uint32_t, 32> TROLL_M_NATIVE_CUSTOMIZATIONS {
 	15572,
 };
 
-std::array<int, 18> TROLL_M_CUSTOMIZATION_N_CHOICES {22, 10, 18, 17, 10, 18, 3, 6, 10, 21, 4, 7, 30, 33, 2, 5, 4, 5, };
+const std::array<int, 18> TROLL_M_CUSTOMIZATION_N_CHOICES {22, 10, 18, 17, 10, 18, 3, 6, 10, 21, 4, 7, 30, 33, 2, 5, 4, 5, };
 
-std::array<uint32_t, 32> TROLL_M_CUSTOMIZATION_OPTION_IDS {90, 91, 92, 93, 94, 756, 761, 764, 767, 768, 769, 770, 895, 905, 928, 940, 950, 960, };
+const std::array<uint32_t, 32> TROLL_M_CUSTOMIZATION_OPTION_IDS {90, 91, 92, 93, 94, 756, 761, 764, 767, 768, 769, 770, 895, 905, 928, 940, 950, 960, };
 
-std::vector<std::vector<int>> TROLL_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 18> TROLL_M_CUSTOMIZATION_CHOICES {
 	{1296, 1297, 1298, 1299, 1300, 1301, 1302, 1303, 1304, 1305, 1306, 1307, 1308, 1309, 1310, 1311, 1312, 1313, 1314, 8610, 8611, 8612, },
 	{1315, 1316, 1317, 1318, 1319, 1320, 1321, 1322, 1323, 1324, },
 	{1325, 1326, 1327, 1328, 1329, 1330, 1331, 1332, 1333, 1334, 1335, 1336, 1337, 8517, 8518, 8519, 8520, 8521, },
@@ -869,10 +853,8 @@ std::vector<std::vector<int>> TROLL_M_CUSTOMIZATION_CHOICES {
 	{15572, 15573, 15574, 15575, 15576, },
 };
 
-
-
 const uint8_t TROLL_F_N_CUSTOMIZATIONS = 18;
-std::map<std::string, int> TROLL_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> TROLL_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -893,7 +875,7 @@ std::map<std::string, int> TROLL_F_CUSTOMIZATIONS {
 	{"flightform", 17},
 };
 
-std::array<uint32_t, 32> TROLL_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> TROLL_F_NATIVE_CUSTOMIZATIONS {
 	1363,
 	1382,
 	1394,
@@ -914,11 +896,11 @@ std::array<uint32_t, 32> TROLL_F_NATIVE_CUSTOMIZATIONS {
 	15577,
 };
 
-std::array<int, 18> TROLL_F_CUSTOMIZATION_N_CHOICES {22, 12, 17, 17, 6, 18, 3, 8, 4, 7, 4, 7, 30, 33, 2, 5, 4, 5, };
+const std::array<int, 18> TROLL_F_CUSTOMIZATION_N_CHOICES {22, 12, 17, 17, 6, 18, 3, 8, 4, 7, 4, 7, 30, 33, 2, 5, 4, 5, };
 
-std::array<uint32_t, 32> TROLL_F_CUSTOMIZATION_OPTION_IDS {95, 96, 97, 98, 99, 757, 759, 766, 771, 772, 773, 774, 896, 906, 929, 941, 951, 961, };
+const std::array<uint32_t, 32> TROLL_F_CUSTOMIZATION_OPTION_IDS {95, 96, 97, 98, 99, 757, 759, 766, 771, 772, 773, 774, 896, 906, 929, 941, 951, 961, };
 
-std::vector<std::vector<int>> TROLL_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 18> TROLL_F_CUSTOMIZATION_CHOICES {
 	{1363, 1364, 1365, 1366, 1367, 1368, 1369, 1370, 1371, 1372, 1373, 1374, 1375, 1376, 1377, 1378, 1379, 1380, 1381, 8604, 8605, 8606, },
 	{1382, 1383, 1384, 1385, 1386, 1387, 1388, 1389, 1390, 1391, 1392, 1393, },
 	{1394, 1395, 1396, 1397, 1398, 1399, 1400, 1401, 1402, 1403, 1404, 1405, 7478, 8522, 8523, 8524, 8525, },
@@ -939,10 +921,8 @@ std::vector<std::vector<int>> TROLL_F_CUSTOMIZATION_CHOICES {
 	{15577, 15578, 15579, 15580, 15581, },
 };
 
-
-
 const uint8_t GOBLIN_M_N_CUSTOMIZATIONS = 11;
-std::map<std::string, int> GOBLIN_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> GOBLIN_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -956,7 +936,7 @@ std::map<std::string, int> GOBLIN_M_CUSTOMIZATIONS {
 	{"jewelrycolor", 10},
 };
 
-std::array<uint32_t, 32> GOBLIN_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> GOBLIN_M_NATIVE_CUSTOMIZATIONS {
 	1426,
 	1446,
 	1456,
@@ -970,11 +950,11 @@ std::array<uint32_t, 32> GOBLIN_M_NATIVE_CUSTOMIZATIONS {
 	9179,
 };
 
-std::array<int, 11> GOBLIN_M_CUSTOMIZATION_N_CHOICES {23, 10, 22, 19, 10, 12, 11, 6, 8, 5, 8, };
+const std::array<int, 11> GOBLIN_M_CUSTOMIZATION_N_CHOICES {23, 10, 22, 19, 10, 12, 11, 6, 8, 5, 8, };
 
-std::array<uint32_t, 32> GOBLIN_M_CUSTOMIZATION_OPTION_IDS {100, 101, 102, 103, 104, 552, 806, 807, 815, 817, 819, };
+const std::array<uint32_t, 32> GOBLIN_M_CUSTOMIZATION_OPTION_IDS {100, 101, 102, 103, 104, 552, 806, 807, 815, 817, 819, };
 
-std::vector<std::vector<int>> GOBLIN_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 11> GOBLIN_M_CUSTOMIZATION_CHOICES {
 	{1426, 1427, 1428, 1429, 1430, 1431, 1432, 1433, 1434, 1435, 1436, 1437, 1438, 1439, 1440, 1441, 1442, 1443, 1444, 1445, 9215, 9216, 9217, },
 	{1446, 1447, 1448, 1449, 1450, 1451, 1452, 1453, 1454, 1455, },
 	{1456, 1457, 1458, 1459, 1460, 1461, 1462, 1463, 1464, 1465, 1466, 1467, 1468, 1469, 1470, 1471, 1472, 1473, 1474, 9084, 9085, 9086, },
@@ -988,10 +968,8 @@ std::vector<std::vector<int>> GOBLIN_M_CUSTOMIZATION_CHOICES {
 	{9179, 9180, 9181, 9182, 9183, 9184, 9185, 9186, },
 };
 
-
-
 const uint8_t GOBLIN_F_N_CUSTOMIZATIONS = 11;
-std::map<std::string, int> GOBLIN_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> GOBLIN_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1005,7 +983,7 @@ std::map<std::string, int> GOBLIN_F_CUSTOMIZATIONS {
 	{"jewelrycolor", 10},
 };
 
-std::array<uint32_t, 32> GOBLIN_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> GOBLIN_F_NATIVE_CUSTOMIZATIONS {
 	1513,
 	1526,
 	1544,
@@ -1019,11 +997,11 @@ std::array<uint32_t, 32> GOBLIN_F_NATIVE_CUSTOMIZATIONS {
 	9195,
 };
 
-std::array<int, 11> GOBLIN_F_CUSTOMIZATION_N_CHOICES {16, 20, 21, 19, 6, 12, 9, 6, 13, 7, 8, };
+const std::array<int, 11> GOBLIN_F_CUSTOMIZATION_N_CHOICES {16, 20, 21, 19, 6, 12, 9, 6, 13, 7, 8, };
 
-std::array<uint32_t, 32> GOBLIN_F_CUSTOMIZATION_OPTION_IDS {105, 106, 107, 108, 109, 553, 808, 809, 811, 813, 821, };
+const std::array<uint32_t, 32> GOBLIN_F_CUSTOMIZATION_OPTION_IDS {105, 106, 107, 108, 109, 553, 808, 809, 811, 813, 821, };
 
-std::vector<std::vector<int>> GOBLIN_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 11> GOBLIN_F_CUSTOMIZATION_CHOICES {
 	{1513, 1514, 1515, 1516, 1517, 1518, 1519, 1520, 1521, 1522, 1523, 1524, 1525, 9209, 9210, 9211, },
 	{1526, 1527, 1528, 1529, 1530, 1531, 1532, 1533, 1534, 1535, 1536, 1537, 1538, 1539, 1540, 1541, 1542, 1543, 15729, 15730, },
 	{1544, 1545, 1546, 1547, 1548, 1549, 1550, 1551, 1552, 1553, 1554, 1555, 1556, 1557, 1558, 1559, 1560, 7481, 9087, 9088, 9089, },
@@ -1037,10 +1015,8 @@ std::vector<std::vector<int>> GOBLIN_F_CUSTOMIZATION_CHOICES {
 	{9195, 9196, 9197, 9198, 9199, 9200, 9201, 9202, },
 };
 
-
-
 const uint8_t BELF_M_N_CUSTOMIZATIONS = 11;
-std::map<std::string, int> BELF_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> BELF_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1054,7 +1030,7 @@ std::map<std::string, int> BELF_M_CUSTOMIZATIONS {
 	{"ears", 10},
 };
 
-std::array<uint32_t, 32> BELF_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> BELF_M_NATIVE_CUSTOMIZATIONS {
 	1599,
 	1626,
 	1649,
@@ -1068,11 +1044,11 @@ std::array<uint32_t, 32> BELF_M_NATIVE_CUSTOMIZATIONS {
 	6714,
 };
 
-std::array<int, 11> BELF_M_CUSTOMIZATION_N_CHOICES {31, 20, 21, 17, 13, 7, 7, 12, 7, 21, 3, };
+const std::array<int, 11> BELF_M_CUSTOMIZATION_N_CHOICES {31, 20, 21, 17, 13, 7, 7, 12, 7, 21, 3, };
 
-std::array<uint32_t, 32> BELF_M_CUSTOMIZATION_OPTION_IDS {110, 111, 112, 113, 114, 116, 117, 118, 380, 571, 582, };
+const std::array<uint32_t, 32> BELF_M_CUSTOMIZATION_OPTION_IDS {110, 111, 112, 113, 114, 116, 117, 118, 380, 571, 582, };
 
-std::vector<std::vector<int>> BELF_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 11> BELF_M_CUSTOMIZATION_CHOICES {
 	{1599, 1600, 1601, 1602, 1603, 1604, 1605, 1606, 1607, 1608, 1609, 1610, 1611, 1612, 1613, 1614, 1615, 1616, 1617, 1618, 1619, 1620, 1621, 1622, 1623, 1624, 1625, 6698, 6697, 6696, 6695, },
 	{1626, 1627, 1628, 1629, 1630, 1631, 1632, 1633, 1634, 1635, 1636, 1637, 1638, 1639, 1640, 1641, 1642, 1643, 1644, 1645, },
 	{1649, 1650, 1651, 1652, 1653, 1654, 1655, 1656, 1657, 1658, 1659, 1660, 1661, 1662, 1663, 1664, 1665, 6641, 6642, 6643, 7489, },
@@ -1086,10 +1062,8 @@ std::vector<std::vector<int>> BELF_M_CUSTOMIZATION_CHOICES {
 	{6714, 6715, 6716, },
 };
 
-
-
 const uint8_t BELF_F_N_CUSTOMIZATIONS = 15;
-std::map<std::string, int> BELF_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> BELF_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1107,7 +1081,7 @@ std::map<std::string, int> BELF_F_CUSTOMIZATIONS {
 	{"armbands", 14},
 };
 
-std::array<uint32_t, 32> BELF_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> BELF_F_NATIVE_CUSTOMIZATIONS {
 	1732,
 	1758,
 	1781,
@@ -1125,11 +1099,11 @@ std::array<uint32_t, 32> BELF_F_NATIVE_CUSTOMIZATIONS {
 	9932,
 };
 
-std::array<int, 15> BELF_F_CUSTOMIZATION_N_CHOICES {30, 20, 25, 17, 14, 7, 7, 12, 7, 21, 4, 3, 7, 2, 4, };
+const std::array<int, 15> BELF_F_CUSTOMIZATION_N_CHOICES {30, 20, 25, 17, 14, 7, 7, 12, 7, 21, 4, 3, 7, 2, 4, };
 
-std::array<uint32_t, 32> BELF_F_CUSTOMIZATION_OPTION_IDS {119, 120, 121, 122, 123, 125, 126, 127, 381, 572, 575, 583, 631, 776, 891, };
+const std::array<uint32_t, 32> BELF_F_CUSTOMIZATION_OPTION_IDS {119, 120, 121, 122, 123, 125, 126, 127, 381, 572, 575, 583, 631, 776, 891, };
 
-std::vector<std::vector<int>> BELF_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 15> BELF_F_CUSTOMIZATION_CHOICES {
 	{1732, 1733, 1734, 1735, 1736, 1737, 1738, 1739, 1740, 1741, 1742, 1743, 1744, 1745, 1746, 1747, 1748, 1749, 1750, 1751, 1752, 1753, 1754, 1755, 1756, 1757, 6690, 6689, 6688, 6687, },
 	{1758, 1759, 1760, 1761, 1762, 1763, 1764, 1765, 1766, 1767, 1768, 1769, 1770, 1771, 1772, 1773, 1774, 1775, 1776, 1777, },
 	{1781, 1782, 1783, 1784, 1785, 1786, 1787, 1788, 1789, 1790, 1791, 1792, 1793, 1794, 1795, 1796, 1797, 1798, 1799, 1800, 6637, 6638, 6639, 6640, 7482, },
@@ -1147,10 +1121,8 @@ std::vector<std::vector<int>> BELF_F_CUSTOMIZATION_CHOICES {
 	{9932, 9933, 9934, 9935, },
 };
 
-
-
 const uint8_t DRAENEI_M_N_CUSTOMIZATIONS = 11;
-std::map<std::string, int> DRAENEI_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> DRAENEI_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1164,7 +1136,7 @@ std::map<std::string, int> DRAENEI_M_CUSTOMIZATIONS {
 	{"jewelrycolor", 10},
 };
 
-std::array<uint32_t, 32> DRAENEI_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> DRAENEI_M_NATIVE_CUSTOMIZATIONS {
 	1869,
 	1890,
 	1910,
@@ -1178,11 +1150,11 @@ std::array<uint32_t, 32> DRAENEI_M_NATIVE_CUSTOMIZATIONS {
 	8701,
 };
 
-std::array<int, 11> DRAENEI_M_CUSTOMIZATION_N_CHOICES {24, 20, 23, 15, 11, 4, 2, 8, 2, 3, 31, };
+const std::array<int, 11> DRAENEI_M_CUSTOMIZATION_N_CHOICES {24, 20, 23, 15, 11, 4, 2, 8, 2, 3, 31, };
 
-std::array<uint32_t, 32> DRAENEI_M_CUSTOMIZATION_OPTION_IDS {128, 129, 130, 131, 132, 618, 691, 695, 703, 705, 782, };
+const std::array<uint32_t, 32> DRAENEI_M_CUSTOMIZATION_OPTION_IDS {128, 129, 130, 131, 132, 618, 691, 695, 703, 705, 782, };
 
-std::vector<std::vector<int>> DRAENEI_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 11> DRAENEI_M_CUSTOMIZATION_CHOICES {
 	{1869, 1870, 1871, 1872, 1873, 1874, 1875, 1876, 1877, 1878, 1879, 1880, 1881, 1882, 1883, 1884, 1885, 1886, 1887, 1888, 1889, 7836, 7837, 7838, },
 	{1890, 1891, 1892, 1893, 1894, 1895, 1896, 1897, 1898, 1899, 1900, 1901, 1902, 1903, 1904, 1905, 1906, 1907, 1908, 1909, },
 	{1910, 1911, 1912, 1913, 1914, 1915, 1916, 1917, 1918, 1919, 1920, 1921, 1922, 1923, 7770, 7771, 7772, 7773, 7774, 7775, 7776, 7777, 7778, },
@@ -1196,10 +1168,8 @@ std::vector<std::vector<int>> DRAENEI_M_CUSTOMIZATION_CHOICES {
 	{8701, 8702, 8703, 8704, 8705, 8706, 8707, 8708, 8709, 8710, 8711, 8712, 8713, 8714, 8715, 8716, 15760, 15746, 15747, 15748, 15749, 15750, 15751, 15753, 15754, 15752, 15755, 15756, 15757, 15758, 15759, },
 };
 
-
-
 const uint8_t DRAENEI_F_N_CUSTOMIZATIONS = 11;
-std::map<std::string, int> DRAENEI_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> DRAENEI_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1213,7 +1183,7 @@ std::map<std::string, int> DRAENEI_F_CUSTOMIZATIONS {
 	{"jewelrycolor", 10},
 };
 
-std::array<uint32_t, 32> DRAENEI_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> DRAENEI_F_NATIVE_CUSTOMIZATIONS {
 	1944,
 	1963,
 	1983,
@@ -1227,11 +1197,11 @@ std::array<uint32_t, 32> DRAENEI_F_NATIVE_CUSTOMIZATIONS {
 	8637,
 };
 
-std::array<int, 11> DRAENEI_F_CUSTOMIZATION_N_CHOICES {22, 20, 24, 14, 12, 4, 6, 2, 2, 3, 16, };
+const std::array<int, 11> DRAENEI_F_CUSTOMIZATION_N_CHOICES {22, 20, 24, 14, 12, 4, 6, 2, 2, 3, 16, };
 
-std::array<uint32_t, 32> DRAENEI_F_CUSTOMIZATION_OPTION_IDS {133, 134, 135, 136, 137, 619, 689, 697, 699, 701, 778, };
+const std::array<uint32_t, 32> DRAENEI_F_CUSTOMIZATION_OPTION_IDS {133, 134, 135, 136, 137, 619, 689, 697, 699, 701, 778, };
 
-std::vector<std::vector<int>> DRAENEI_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 11> DRAENEI_F_CUSTOMIZATION_CHOICES {
 	{1944, 1945, 1946, 1947, 1948, 1949, 1950, 1951, 1952, 1953, 1954, 1955, 1956, 1957, 1958, 1959, 1960, 1961, 1962, 7824, 7825, 7826, },
 	{1963, 1964, 1965, 1966, 1967, 1968, 1969, 1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981, 1982, },
 	{1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 7484, 7779, 7780, 7781, 7782, 7783, 7784, },
@@ -1245,10 +1215,8 @@ std::vector<std::vector<int>> DRAENEI_F_CUSTOMIZATION_CHOICES {
 	{8637, 8638, 8639, 8640, 8641, 8642, 8643, 8644, 8645, 8646, 8647, 8648, 8649, 8650, 8651, 8652, },
 };
 
-
-
 const uint8_t WORGEN_M_N_CUSTOMIZATIONS = 12;
-std::map<std::string, int> WORGEN_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> WORGEN_M_CUSTOMIZATIONS {
 	{"furcolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1263,7 +1231,7 @@ std::map<std::string, int> WORGEN_M_CUSTOMIZATIONS {
 	{"moonkinform", 11},
 };
 
-std::array<uint32_t, 32> WORGEN_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> WORGEN_M_NATIVE_CUSTOMIZATIONS {
 	2232,
 	2241,
 	2260,
@@ -1278,11 +1246,11 @@ std::array<uint32_t, 32> WORGEN_M_NATIVE_CUSTOMIZATIONS {
 	15398,
 };
 
-std::array<int, 12> WORGEN_M_CUSTOMIZATION_N_CHOICES {15, 19, 13, 12, 32, 30, 33, 5, 4, 5, 12, 2, };
+const std::array<int, 12> WORGEN_M_CUSTOMIZATION_N_CHOICES {15, 19, 13, 12, 32, 30, 33, 5, 4, 5, 12, 2, };
 
-std::array<uint32_t, 32> WORGEN_M_CUSTOMIZATION_OPTION_IDS {203, 204, 205, 207, 622, 626, 628, 633, 637, 641, 675, 930, };
+const std::array<uint32_t, 32> WORGEN_M_CUSTOMIZATION_OPTION_IDS {203, 204, 205, 207, 622, 626, 628, 633, 637, 641, 675, 930, };
 
-std::vector<std::vector<int>> WORGEN_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 12> WORGEN_M_CUSTOMIZATION_CHOICES {
 	{2232, 2233, 2234, 2235, 2236, 2237, 2238, 2239, 2240, 7458, 7459, 7460, 7461, 7462, 7463, },
 	{2241, 2242, 2243, 2244, 2245, 2246, 2247, 2248, 2249, 2250, 2251, 2252, 2253, 2254, 2255, 2256, 2257, 2258, 2259, },
 	{2260, 2261, 2262, 2263, 2264, 2265, 2266, 2267, 2268, 2269, 2270, 2271, 2272, },
@@ -1297,10 +1265,8 @@ std::vector<std::vector<int>> WORGEN_M_CUSTOMIZATION_CHOICES {
 	{15398, 15410, },
 };
 
-
-
 const uint8_t WORGEN_F_N_CUSTOMIZATIONS = 11;
-std::map<std::string, int> WORGEN_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> WORGEN_F_CUSTOMIZATIONS {
 	{"furcolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1314,7 +1280,7 @@ std::map<std::string, int> WORGEN_F_CUSTOMIZATIONS {
 	{"moonkinform", 10},
 };
 
-std::array<uint32_t, 32> WORGEN_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> WORGEN_F_NATIVE_CUSTOMIZATIONS {
 	2303,
 	2316,
 	2348,
@@ -1328,11 +1294,11 @@ std::array<uint32_t, 32> WORGEN_F_NATIVE_CUSTOMIZATIONS {
 	15399,
 };
 
-std::array<int, 11> WORGEN_F_CUSTOMIZATION_N_CHOICES {19, 32, 16, 12, 32, 30, 33, 5, 4, 5, 2, };
+const std::array<int, 11> WORGEN_F_CUSTOMIZATION_N_CHOICES {19, 32, 16, 12, 32, 30, 33, 5, 4, 5, 2, };
 
-std::array<uint32_t, 32> WORGEN_F_CUSTOMIZATION_OPTION_IDS {208, 209, 210, 212, 623, 627, 629, 632, 636, 640, 931, };
+const std::array<uint32_t, 32> WORGEN_F_CUSTOMIZATION_OPTION_IDS {208, 209, 210, 212, 623, 627, 629, 632, 636, 640, 931, };
 
-std::vector<std::vector<int>> WORGEN_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 11> WORGEN_F_CUSTOMIZATION_CHOICES {
 	{2303, 2304, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 2312, 2313, 2314, 2315, 7466, 7467, 7468, 7469, 7470, 7471, },
 	{2316, 2317, 2318, 2319, 2320, 2321, 2322, 2323, 2324, 2325, 2326, 2327, 2328, 2329, 2330, 2331, 2332, 2333, 2334, 2335, 2336, 2337, 2338, 2339, 2340, 2341, 2342, 2343, 2344, 2345, 2346, 2347, },
 	{2348, 2349, 2350, 2351, 2352, 2353, 2354, 2355, 2356, 2357, 2358, 2359, 2360, 2361, 2362, 2363, },
@@ -1346,10 +1312,8 @@ std::vector<std::vector<int>> WORGEN_F_CUSTOMIZATION_CHOICES {
 	{15399, 15411, },
 };
 
-
-
 const uint8_t PANDAREN_M_N_CUSTOMIZATIONS = 7;
-std::map<std::string, int> PANDAREN_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> PANDAREN_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1359,7 +1323,7 @@ std::map<std::string, int> PANDAREN_M_CUSTOMIZATIONS {
 	{"eyebrows", 6},
 };
 
-std::array<uint32_t, 32> PANDAREN_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> PANDAREN_M_NATIVE_CUSTOMIZATIONS {
 	2528,
 	2543,
 	2564,
@@ -1369,11 +1333,11 @@ std::array<uint32_t, 32> PANDAREN_M_NATIVE_CUSTOMIZATIONS {
 	8394,
 };
 
-std::array<int, 7> PANDAREN_M_CUSTOMIZATION_N_CHOICES {18, 21, 22, 20, 13, 7, 5, };
+const std::array<int, 7> PANDAREN_M_CUSTOMIZATION_N_CHOICES {18, 21, 22, 20, 13, 7, 5, };
 
-std::array<uint32_t, 32> PANDAREN_M_CUSTOMIZATION_OPTION_IDS {383, 384, 385, 386, 747, 752, 753, };
+const std::array<uint32_t, 32> PANDAREN_M_CUSTOMIZATION_OPTION_IDS {383, 384, 385, 386, 747, 752, 753, };
 
-std::vector<std::vector<int>> PANDAREN_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 7> PANDAREN_M_CUSTOMIZATION_CHOICES {
 	{2528, 2529, 2530, 2531, 2532, 2533, 2534, 2535, 2536, 2537, 2538, 2539, 2540, 2541, 2542, 8374, 8375, 8376, },
 	{2543, 2544, 2545, 2546, 2547, 2548, 2549, 2550, 2551, 2552, 2553, 2554, 2555, 2556, 2557, 2558, 2559, 2560, 2561, 2562, 2563, },
 	{2564, 2565, 2566, 2567, 2568, 2569, 2570, 2571, 2572, 2573, 2574, 2575, 2576, 2577, 2578, 2579, 2580, 2581, 2582, 8368, 8369, 8370, },
@@ -1383,10 +1347,8 @@ std::vector<std::vector<int>> PANDAREN_M_CUSTOMIZATION_CHOICES {
 	{8394, 8395, 8396, 8397, 8400, },
 };
 
-
-
 const uint8_t PANDAREN_F_N_CUSTOMIZATIONS = 7;
-std::map<std::string, int> PANDAREN_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> PANDAREN_F_CUSTOMIZATIONS {
 	{"hairstyle", 0},
 	{"haircolor", 1},
 	{"earrings", 2},
@@ -1396,7 +1358,7 @@ std::map<std::string, int> PANDAREN_F_CUSTOMIZATIONS {
 	{"tail", 6},
 };
 
-std::array<uint32_t, 32> PANDAREN_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> PANDAREN_F_NATIVE_CUSTOMIZATIONS {
 	2653,
 	2670,
 	2683,
@@ -1406,11 +1368,11 @@ std::array<uint32_t, 32> PANDAREN_F_NATIVE_CUSTOMIZATIONS {
 	8363,
 };
 
-std::array<int, 7> PANDAREN_F_CUSTOMIZATION_N_CHOICES {20, 16, 6, 18, 20, 13, 2, };
+const std::array<int, 7> PANDAREN_F_CUSTOMIZATION_N_CHOICES {20, 16, 6, 18, 20, 13, 2, };
 
-std::array<uint32_t, 32> PANDAREN_F_CUSTOMIZATION_OPTION_IDS {230, 231, 232, 387, 388, 750, 751, };
+const std::array<uint32_t, 32> PANDAREN_F_CUSTOMIZATION_OPTION_IDS {230, 231, 232, 387, 388, 750, 751, };
 
-std::vector<std::vector<int>> PANDAREN_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 7> PANDAREN_F_CUSTOMIZATION_CHOICES {
 	{2653, 2654, 2655, 2656, 2657, 2658, 2659, 2660, 2661, 2662, 2663, 2664, 2665, 2666, 2667, 2668, 2669, 8365, 8366, 8367, },
 	{2670, 2671, 2672, 2673, 2674, 2675, 2676, 2677, 2678, 2679, 2680, 2681, 2682, 8386, 8387, 8388, },
 	{2683, 2684, 2685, 2686, 2687, 2688, },
@@ -1420,10 +1382,8 @@ std::vector<std::vector<int>> PANDAREN_F_CUSTOMIZATION_CHOICES {
 	{8363, 8364, },
 };
 
-
-
 const uint8_t NIGHTBORNE_M_N_CUSTOMIZATIONS = 7;
-std::map<std::string, int> NIGHTBORNE_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> NIGHTBORNE_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1433,7 +1393,7 @@ std::map<std::string, int> NIGHTBORNE_M_CUSTOMIZATIONS {
 	{"eyecolor", 6},
 };
 
-std::array<uint32_t, 32> NIGHTBORNE_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> NIGHTBORNE_M_NATIVE_CUSTOMIZATIONS {
 	2689,
 	2693,
 	2699,
@@ -1443,11 +1403,11 @@ std::array<uint32_t, 32> NIGHTBORNE_M_NATIVE_CUSTOMIZATIONS {
 	9589,
 };
 
-std::array<int, 7> NIGHTBORNE_M_CUSTOMIZATION_N_CHOICES {4, 6, 7, 7, 7, 4, 3, };
+const std::array<int, 7> NIGHTBORNE_M_CUSTOMIZATION_N_CHOICES {4, 6, 7, 7, 7, 4, 3, };
 
-std::array<uint32_t, 32> NIGHTBORNE_M_CUSTOMIZATION_OPTION_IDS {233, 234, 235, 236, 237, 389, 858, };
+const std::array<uint32_t, 32> NIGHTBORNE_M_CUSTOMIZATION_OPTION_IDS {233, 234, 235, 236, 237, 389, 858, };
 
-std::vector<std::vector<int>> NIGHTBORNE_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 7> NIGHTBORNE_M_CUSTOMIZATION_CHOICES {
 	{2689, 2690, 2691, 2692, },
 	{2693, 2694, 2695, 2696, 2697, 2698, },
 	{2699, 2700, 2701, 2702, 2703, 2704, 2705, },
@@ -1457,10 +1417,8 @@ std::vector<std::vector<int>> NIGHTBORNE_M_CUSTOMIZATION_CHOICES {
 	{9589, 9590, 9593, },
 };
 
-
-
 const uint8_t NIGHTBORNE_F_N_CUSTOMIZATIONS = 7;
-std::map<std::string, int> NIGHTBORNE_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> NIGHTBORNE_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1470,7 +1428,7 @@ std::map<std::string, int> NIGHTBORNE_F_CUSTOMIZATIONS {
 	{"eyecolor", 6},
 };
 
-std::array<uint32_t, 32> NIGHTBORNE_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> NIGHTBORNE_F_NATIVE_CUSTOMIZATIONS {
 	2724,
 	2728,
 	2734,
@@ -1480,11 +1438,11 @@ std::array<uint32_t, 32> NIGHTBORNE_F_NATIVE_CUSTOMIZATIONS {
 	9591,
 };
 
-std::array<int, 7> NIGHTBORNE_F_CUSTOMIZATION_N_CHOICES {4, 6, 7, 7, 8, 4, 3, };
+const std::array<int, 7> NIGHTBORNE_F_CUSTOMIZATION_N_CHOICES {4, 6, 7, 7, 8, 4, 3, };
 
-std::array<uint32_t, 32> NIGHTBORNE_F_CUSTOMIZATION_OPTION_IDS {239, 240, 241, 242, 243, 390, 859, };
+const std::array<uint32_t, 32> NIGHTBORNE_F_CUSTOMIZATION_OPTION_IDS {239, 240, 241, 242, 243, 390, 859, };
 
-std::vector<std::vector<int>> NIGHTBORNE_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 7> NIGHTBORNE_F_CUSTOMIZATION_CHOICES {
 	{2724, 2725, 2726, 2727, },
 	{2728, 2729, 2730, 2731, 2732, 2733, },
 	{2734, 2735, 2736, 2737, 2738, 2739, 7485, },
@@ -1494,10 +1452,8 @@ std::vector<std::vector<int>> NIGHTBORNE_F_CUSTOMIZATION_CHOICES {
 	{9591, 9592, 9594, },
 };
 
-
-
 const uint8_t HIGHMOUNTAIN_TAUREN_M_N_CUSTOMIZATIONS = 14;
-std::map<std::string, int> HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATIONS {
 	{"hornstyle", 0},
 	{"hornmarkings", 1},
 	{"skincolor", 2},
@@ -1514,7 +1470,7 @@ std::map<std::string, int> HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATIONS {
 	{"flightform", 13},
 };
 
-std::array<uint32_t, 32> HIGHMOUNTAIN_TAUREN_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> HIGHMOUNTAIN_TAUREN_M_NATIVE_CUSTOMIZATIONS {
 	2769,
 	2774,
 	2759,
@@ -1531,11 +1487,11 @@ std::array<uint32_t, 32> HIGHMOUNTAIN_TAUREN_M_NATIVE_CUSTOMIZATIONS {
 	15582,
 };
 
-std::array<int, 14> HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATION_N_CHOICES {5, 3, 5, 5, 5, 3, 9, 4, 29, 32, 2, 5, 4, 4, };
+const std::array<int, 14> HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATION_N_CHOICES {5, 3, 5, 5, 5, 3, 9, 4, 29, 32, 2, 5, 4, 4, };
 
-std::array<uint32_t, 32> HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATION_OPTION_IDS {247, 248, 391, 392, 393, 394, 862, 865, 897, 907, 932, 942, 952, 962, };
+const std::array<uint32_t, 32> HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATION_OPTION_IDS {247, 248, 391, 392, 393, 394, 862, 865, 897, 907, 932, 942, 952, 962, };
 
-std::vector<std::vector<int>> HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 14> HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATION_CHOICES {
 	{2769, 2770, 2771, 2772, 2773, },
 	{2774, 2775, 2776, },
 	{2759, 2760, 2761, 2762, 2763, },
@@ -1552,10 +1508,8 @@ std::vector<std::vector<int>> HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATION_CHOICES {
 	{15582, 15583, 15584, 15586, },
 };
 
-
-
 const uint8_t HIGHMOUNTAIN_TAUREN_F_N_CUSTOMIZATIONS = 15;
-std::map<std::string, int> HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATIONS {
 	{"hornstyle", 0},
 	{"hornmarkings", 1},
 	{"hair", 2},
@@ -1573,7 +1527,7 @@ std::map<std::string, int> HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATIONS {
 	{"flightform", 14},
 };
 
-std::array<uint32_t, 32> HIGHMOUNTAIN_TAUREN_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> HIGHMOUNTAIN_TAUREN_F_NATIVE_CUSTOMIZATIONS {
 	2801,
 	2806,
 	2809,
@@ -1591,11 +1545,11 @@ std::array<uint32_t, 32> HIGHMOUNTAIN_TAUREN_F_NATIVE_CUSTOMIZATIONS {
 	15587,
 };
 
-std::array<int, 15> HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATION_N_CHOICES {5, 3, 5, 5, 4, 3, 9, 2, 4, 29, 32, 2, 5, 4, 4, };
+const std::array<int, 15> HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATION_N_CHOICES {5, 3, 5, 5, 4, 3, 9, 2, 4, 29, 32, 2, 5, 4, 4, };
 
-std::array<uint32_t, 32> HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATION_OPTION_IDS {254, 255, 256, 395, 396, 397, 863, 864, 866, 898, 908, 933, 943, 953, 963, };
+const std::array<uint32_t, 32> HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATION_OPTION_IDS {254, 255, 256, 395, 396, 397, 863, 864, 866, 898, 908, 933, 943, 953, 963, };
 
-std::vector<std::vector<int>> HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 15> HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATION_CHOICES {
 	{2801, 2802, 2803, 2804, 2805, },
 	{2806, 2807, 2808, },
 	{2809, 2810, 2811, 2812, 2813, },
@@ -1613,10 +1567,8 @@ std::vector<std::vector<int>> HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATION_CHOICES {
 	{15587, 15588, 15589, 15591, },
 };
 
-
-
 const uint8_t VOID_ELF_M_N_CUSTOMIZATIONS = 8;
-std::map<std::string, int> VOID_ELF_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> VOID_ELF_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1627,7 +1579,7 @@ std::map<std::string, int> VOID_ELF_M_CUSTOMIZATIONS {
 	{"secondaryhaircolor", 7},
 };
 
-std::array<uint32_t, 32> VOID_ELF_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> VOID_ELF_M_NATIVE_CUSTOMIZATIONS {
 	2824,
 	2832,
 	2840,
@@ -1638,11 +1590,11 @@ std::array<uint32_t, 32> VOID_ELF_M_NATIVE_CUSTOMIZATIONS {
 	6723,
 };
 
-std::array<int, 8> VOID_ELF_M_CUSTOMIZATION_N_CHOICES {25, 28, 13, 10, 8, 10, 1, 1, };
+const std::array<int, 8> VOID_ELF_M_CUSTOMIZATION_N_CHOICES {25, 28, 13, 10, 8, 10, 1, 1, };
 
-std::array<uint32_t, 32> VOID_ELF_M_CUSTOMIZATION_OPTION_IDS {259, 260, 261, 262, 263, 578, 585, 586, };
+const std::array<uint32_t, 32> VOID_ELF_M_CUSTOMIZATION_OPTION_IDS {259, 260, 261, 262, 263, 578, 585, 586, };
 
-std::vector<std::vector<int>> VOID_ELF_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 8> VOID_ELF_M_CUSTOMIZATION_CHOICES {
 	{2824, 2825, 2826, 2827, 2828, 2829, 2830, 2831, 9687, 9688, 9689, 9690, 9691, 9692, 9693, 9694, 9695, 9696, 9697, 9698, 9699, 9700, 9701, 9702, 9703, },
 	{2832, 2833, 2834, 2835, 2836, 2837, 2838, 2839, 9761, 9762, 9763, 9764, 9765, 9766, 9767, 9768, 9769, 9770, 9771, 9772, 9773, 9774, 9775, 9776, 9777, 9778, 9779, 9780, },
 	{2840, 2841, 2842, 2843, 2844, 2845, 2846, 2847, 2848, 2849, 2850, 2851, 7490, },
@@ -1653,10 +1605,8 @@ std::vector<std::vector<int>> VOID_ELF_M_CUSTOMIZATION_CHOICES {
 	{6723, },
 };
 
-
-
 const uint8_t VOID_ELF_F_N_CUSTOMIZATIONS = 9;
-std::map<std::string, int> VOID_ELF_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> VOID_ELF_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1668,7 +1618,7 @@ std::map<std::string, int> VOID_ELF_F_CUSTOMIZATIONS {
 	{"jewelrycolor", 8},
 };
 
-std::array<uint32_t, 32> VOID_ELF_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> VOID_ELF_F_NATIVE_CUSTOMIZATIONS {
 	2870,
 	2878,
 	2886,
@@ -1680,11 +1630,11 @@ std::array<uint32_t, 32> VOID_ELF_F_NATIVE_CUSTOMIZATIONS {
 	9936,
 };
 
-std::array<int, 9> VOID_ELF_F_CUSTOMIZATION_N_CHOICES {25, 28, 11, 10, 5, 10, 1, 1, 1, };
+const std::array<int, 9> VOID_ELF_F_CUSTOMIZATION_N_CHOICES {25, 28, 11, 10, 5, 10, 1, 1, 1, };
 
-std::array<uint32_t, 32> VOID_ELF_F_CUSTOMIZATION_OPTION_IDS {264, 265, 266, 267, 268, 579, 588, 589, 892, };
+const std::array<uint32_t, 32> VOID_ELF_F_CUSTOMIZATION_OPTION_IDS {264, 265, 266, 267, 268, 579, 588, 589, 892, };
 
-std::vector<std::vector<int>> VOID_ELF_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 9> VOID_ELF_F_CUSTOMIZATION_CHOICES {
 	{2870, 2871, 2872, 2873, 2874, 2875, 2876, 2877, 9704, 9705, 9706, 9707, 9708, 9709, 9710, 9711, 9712, 9713, 9714, 9715, 9716, 9717, 9718, 9719, 9720, },
 	{2878, 2879, 2880, 2881, 2882, 2883, 2884, 2885, 9781, 9782, 9783, 9784, 9785, 9786, 9787, 9788, 9789, 9790, 9791, 9792, 9793, 9794, 9795, 9796, 9797, 9798, 9799, 9800, },
 	{2886, 2887, 2888, 2889, 2890, 2891, 2892, 2893, 2894, 2895, 7486, },
@@ -1696,10 +1646,8 @@ std::vector<std::vector<int>> VOID_ELF_F_CUSTOMIZATION_CHOICES {
 	{9936, },
 };
 
-
-
 const uint8_t LIGHTFORGED_DRAENEI_M_N_CUSTOMIZATIONS = 10;
-std::map<std::string, int> LIGHTFORGED_DRAENEI_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> LIGHTFORGED_DRAENEI_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1712,7 +1660,7 @@ std::map<std::string, int> LIGHTFORGED_DRAENEI_M_CUSTOMIZATIONS {
 	{"eyebrows", 9},
 };
 
-std::array<uint32_t, 32> LIGHTFORGED_DRAENEI_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> LIGHTFORGED_DRAENEI_M_NATIVE_CUSTOMIZATIONS {
 	2911,
 	2915,
 	2925,
@@ -1725,11 +1673,11 @@ std::array<uint32_t, 32> LIGHTFORGED_DRAENEI_M_NATIVE_CUSTOMIZATIONS {
 	9502,
 };
 
-std::array<int, 10> LIGHTFORGED_DRAENEI_M_CUSTOMIZATION_N_CHOICES {4, 10, 7, 6, 5, 6, 4, 3, 7, 1, };
+const std::array<int, 10> LIGHTFORGED_DRAENEI_M_CUSTOMIZATION_N_CHOICES {4, 10, 7, 6, 5, 6, 4, 3, 7, 1, };
 
-std::array<uint32_t, 32> LIGHTFORGED_DRAENEI_M_CUSTOMIZATION_OPTION_IDS {269, 270, 271, 272, 273, 275, 398, 845, 848, 849, };
+const std::array<uint32_t, 32> LIGHTFORGED_DRAENEI_M_CUSTOMIZATION_OPTION_IDS {269, 270, 271, 272, 273, 275, 398, 845, 848, 849, };
 
-std::vector<std::vector<int>> LIGHTFORGED_DRAENEI_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 10> LIGHTFORGED_DRAENEI_M_CUSTOMIZATION_CHOICES {
 	{2911, 2912, 2913, 2914, },
 	{2915, 2916, 2917, 2918, 2919, 2920, 2921, 2922, 2923, 2924, },
 	{2925, 2926, 2927, 2928, 2929, 2930, 7491, },
@@ -1742,10 +1690,8 @@ std::vector<std::vector<int>> LIGHTFORGED_DRAENEI_M_CUSTOMIZATION_CHOICES {
 	{9502, },
 };
 
-
-
 const uint8_t LIGHTFORGED_DRAENEI_F_N_CUSTOMIZATIONS = 8;
-std::map<std::string, int> LIGHTFORGED_DRAENEI_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> LIGHTFORGED_DRAENEI_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1756,7 +1702,7 @@ std::map<std::string, int> LIGHTFORGED_DRAENEI_F_CUSTOMIZATIONS {
 	{"eyecolor", 7},
 };
 
-std::array<uint32_t, 32> LIGHTFORGED_DRAENEI_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> LIGHTFORGED_DRAENEI_F_NATIVE_CUSTOMIZATIONS {
 	2956,
 	2960,
 	2970,
@@ -1767,11 +1713,11 @@ std::array<uint32_t, 32> LIGHTFORGED_DRAENEI_F_NATIVE_CUSTOMIZATIONS {
 	9487,
 };
 
-std::array<int, 8> LIGHTFORGED_DRAENEI_F_CUSTOMIZATION_N_CHOICES {4, 10, 8, 6, 6, 6, 4, 3, };
+const std::array<int, 8> LIGHTFORGED_DRAENEI_F_CUSTOMIZATION_N_CHOICES {4, 10, 8, 6, 6, 6, 4, 3, };
 
-std::array<uint32_t, 32> LIGHTFORGED_DRAENEI_F_CUSTOMIZATION_OPTION_IDS {276, 277, 278, 279, 280, 282, 399, 846, };
+const std::array<uint32_t, 32> LIGHTFORGED_DRAENEI_F_CUSTOMIZATION_OPTION_IDS {276, 277, 278, 279, 280, 282, 399, 846, };
 
-std::vector<std::vector<int>> LIGHTFORGED_DRAENEI_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 8> LIGHTFORGED_DRAENEI_F_CUSTOMIZATION_CHOICES {
 	{2956, 2957, 2958, 2959, },
 	{2960, 2961, 2962, 2963, 2964, 2965, 2966, 2967, 2968, 2969, },
 	{2970, 2971, 2972, 2973, 2974, 2975, 2976, 7483, },
@@ -1782,10 +1728,8 @@ std::vector<std::vector<int>> LIGHTFORGED_DRAENEI_F_CUSTOMIZATION_CHOICES {
 	{9487, 9488, 9490, },
 };
 
-
-
 const uint8_t ZANDALARI_TROLL_M_N_CUSTOMIZATIONS = 15;
-std::map<std::string, int> ZANDALARI_TROLL_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> ZANDALARI_TROLL_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1803,7 +1747,7 @@ std::map<std::string, int> ZANDALARI_TROLL_M_CUSTOMIZATIONS {
 	{"flightform", 14},
 };
 
-std::array<uint32_t, 32> ZANDALARI_TROLL_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> ZANDALARI_TROLL_M_NATIVE_CUSTOMIZATIONS {
 	2999,
 	3007,
 	3013,
@@ -1821,11 +1765,11 @@ std::array<uint32_t, 32> ZANDALARI_TROLL_M_NATIVE_CUSTOMIZATIONS {
 	15592,
 };
 
-std::array<int, 15> ZANDALARI_TROLL_M_CUSTOMIZATION_N_CHOICES {8, 6, 12, 7, 7, 6, 4, 9, 3, 29, 32, 2, 8, 4, 5, };
+const std::array<int, 15> ZANDALARI_TROLL_M_CUSTOMIZATION_N_CHOICES {8, 6, 12, 7, 7, 6, 4, 9, 3, 29, 32, 2, 8, 4, 5, };
 
-std::array<uint32_t, 32> ZANDALARI_TROLL_M_CUSTOMIZATION_OPTION_IDS {283, 284, 285, 286, 288, 289, 400, 869, 873, 899, 909, 934, 944, 954, 964, };
+const std::array<uint32_t, 32> ZANDALARI_TROLL_M_CUSTOMIZATION_OPTION_IDS {283, 284, 285, 286, 288, 289, 400, 869, 873, 899, 909, 934, 944, 954, 964, };
 
-std::vector<std::vector<int>> ZANDALARI_TROLL_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 15> ZANDALARI_TROLL_M_CUSTOMIZATION_CHOICES {
 	{2999, 3000, 3001, 3002, 3003, 3004, 3005, 3006, },
 	{3007, 3008, 3009, 3010, 3011, 3012, },
 	{3013, 3014, 3015, 3016, 3017, 3018, 3019, 3020, 3021, 3022, 3023, 3024, },
@@ -1843,10 +1787,8 @@ std::vector<std::vector<int>> ZANDALARI_TROLL_M_CUSTOMIZATION_CHOICES {
 	{15592, 15593, 15594, 15595, 15596, },
 };
 
-
-
 const uint8_t ZANDALARI_TROLL_F_N_CUSTOMIZATIONS = 17;
-std::map<std::string, int> ZANDALARI_TROLL_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> ZANDALARI_TROLL_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1866,7 +1808,7 @@ std::map<std::string, int> ZANDALARI_TROLL_F_CUSTOMIZATIONS {
 	{"flightform", 16},
 };
 
-std::array<uint32_t, 32> ZANDALARI_TROLL_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> ZANDALARI_TROLL_F_NATIVE_CUSTOMIZATIONS {
 	3049,
 	3057,
 	3063,
@@ -1886,11 +1828,11 @@ std::array<uint32_t, 32> ZANDALARI_TROLL_F_NATIVE_CUSTOMIZATIONS {
 	15597,
 };
 
-std::array<int, 17> ZANDALARI_TROLL_F_CUSTOMIZATION_N_CHOICES {8, 6, 11, 7, 3, 7, 2, 4, 9, 2, 4, 29, 32, 2, 8, 4, 5, };
+const std::array<int, 17> ZANDALARI_TROLL_F_CUSTOMIZATION_N_CHOICES {8, 6, 11, 7, 3, 7, 2, 4, 9, 2, 4, 29, 32, 2, 8, 4, 5, };
 
-std::array<uint32_t, 32> ZANDALARI_TROLL_F_CUSTOMIZATION_OPTION_IDS {290, 291, 292, 293, 294, 296, 297, 401, 870, 871, 872, 900, 910, 935, 945, 955, 965, };
+const std::array<uint32_t, 32> ZANDALARI_TROLL_F_CUSTOMIZATION_OPTION_IDS {290, 291, 292, 293, 294, 296, 297, 401, 870, 871, 872, 900, 910, 935, 945, 955, 965, };
 
-std::vector<std::vector<int>> ZANDALARI_TROLL_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 17> ZANDALARI_TROLL_F_CUSTOMIZATION_CHOICES {
 	{3049, 3050, 3051, 3052, 3053, 3054, 3055, 3056, },
 	{3057, 3058, 3059, 3060, 3061, 3062, },
 	{3063, 3064, 3065, 3066, 3067, 3068, 3069, 3070, 3071, 3072, 7479, },
@@ -1910,10 +1852,8 @@ std::vector<std::vector<int>> ZANDALARI_TROLL_F_CUSTOMIZATION_CHOICES {
 	{15597, 15598, 15599, 15600, 15601, },
 };
 
-
-
 const uint8_t KUL_TIRAN_M_N_CUSTOMIZATIONS = 13;
-std::map<std::string, int> KUL_TIRAN_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> KUL_TIRAN_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1929,7 +1869,7 @@ std::map<std::string, int> KUL_TIRAN_M_CUSTOMIZATIONS {
 	{"flightform", 12},
 };
 
-std::array<uint32_t, 32> KUL_TIRAN_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> KUL_TIRAN_M_NATIVE_CUSTOMIZATIONS {
 	3100,
 	3107,
 	3114,
@@ -1945,11 +1885,11 @@ std::array<uint32_t, 32> KUL_TIRAN_M_NATIVE_CUSTOMIZATIONS {
 	15602,
 };
 
-std::array<int, 13> KUL_TIRAN_M_CUSTOMIZATION_N_CHOICES {7, 7, 6, 8, 6, 20, 4, 29, 32, 5, 8, 7, 5, };
+const std::array<int, 13> KUL_TIRAN_M_CUSTOMIZATION_N_CHOICES {7, 7, 6, 8, 6, 20, 4, 29, 32, 5, 8, 7, 5, };
 
-std::array<uint32_t, 32> KUL_TIRAN_M_CUSTOMIZATION_OPTION_IDS {298, 299, 300, 301, 302, 686, 706, 901, 911, 922, 946, 956, 966, };
+const std::array<uint32_t, 32> KUL_TIRAN_M_CUSTOMIZATION_OPTION_IDS {298, 299, 300, 301, 302, 686, 706, 901, 911, 922, 946, 956, 966, };
 
-std::vector<std::vector<int>> KUL_TIRAN_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 13> KUL_TIRAN_M_CUSTOMIZATION_CHOICES {
 	{3100, 3101, 3102, 3103, 3104, 3105, 3106, },
 	{3107, 3108, 3109, 3110, 3111, 3112, 3113, },
 	{3114, 3115, 3116, 3117, 3118, 3119, },
@@ -1965,10 +1905,8 @@ std::vector<std::vector<int>> KUL_TIRAN_M_CUSTOMIZATION_CHOICES {
 	{15602, 15603, 15604, 15605, 15606, },
 };
 
-
-
 const uint8_t KUL_TIRAN_F_N_CUSTOMIZATIONS = 13;
-std::map<std::string, int> KUL_TIRAN_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> KUL_TIRAN_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -1984,7 +1922,7 @@ std::map<std::string, int> KUL_TIRAN_F_CUSTOMIZATIONS {
 	{"flightform", 12},
 };
 
-std::array<uint32_t, 32> KUL_TIRAN_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> KUL_TIRAN_F_NATIVE_CUSTOMIZATIONS {
 	3140,
 	3147,
 	3154,
@@ -2000,11 +1938,11 @@ std::array<uint32_t, 32> KUL_TIRAN_F_NATIVE_CUSTOMIZATIONS {
 	15607,
 };
 
-std::array<int, 13> KUL_TIRAN_F_CUSTOMIZATION_N_CHOICES {7, 7, 10, 8, 7, 7, 20, 29, 32, 5, 8, 7, 5, };
+const std::array<int, 13> KUL_TIRAN_F_CUSTOMIZATION_N_CHOICES {7, 7, 10, 8, 7, 7, 20, 29, 32, 5, 8, 7, 5, };
 
-std::array<uint32_t, 32> KUL_TIRAN_F_CUSTOMIZATION_OPTION_IDS {303, 304, 305, 306, 308, 309, 687, 902, 912, 923, 947, 957, 967, };
+const std::array<uint32_t, 32> KUL_TIRAN_F_CUSTOMIZATION_OPTION_IDS {303, 304, 305, 306, 308, 309, 687, 902, 912, 923, 947, 957, 967, };
 
-std::vector<std::vector<int>> KUL_TIRAN_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 13> KUL_TIRAN_F_CUSTOMIZATION_CHOICES {
 	{3140, 3141, 3142, 3143, 3144, 3145, 3146, },
 	{3147, 3148, 3149, 3150, 3151, 3152, 3153, },
 	{3154, 3155, 3156, 3157, 3158, 3159, 3160, 3161, 3162, 7487, },
@@ -2020,10 +1958,8 @@ std::vector<std::vector<int>> KUL_TIRAN_F_CUSTOMIZATION_CHOICES {
 	{15607, 15608, 15609, 15610, 15611, },
 };
 
-
-
 const uint8_t DARK_IRON_DWARF_M_N_CUSTOMIZATIONS = 8;
-std::map<std::string, int> DARK_IRON_DWARF_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> DARK_IRON_DWARF_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -2034,7 +1970,7 @@ std::map<std::string, int> DARK_IRON_DWARF_M_CUSTOMIZATIONS {
 	{"eyecolor", 7},
 };
 
-std::array<uint32_t, 32> DARK_IRON_DWARF_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> DARK_IRON_DWARF_M_NATIVE_CUSTOMIZATIONS {
 	3209,
 	3214,
 	3224,
@@ -2045,11 +1981,11 @@ std::array<uint32_t, 32> DARK_IRON_DWARF_M_NATIVE_CUSTOMIZATIONS {
 	6968,
 };
 
-std::array<int, 8> DARK_IRON_DWARF_M_CUSTOMIZATION_N_CHOICES {5, 10, 8, 7, 7, 6, 6, 3, };
+const std::array<int, 8> DARK_IRON_DWARF_M_CUSTOMIZATION_N_CHOICES {5, 10, 8, 7, 7, 6, 6, 3, };
 
-std::array<uint32_t, 32> DARK_IRON_DWARF_M_CUSTOMIZATION_OPTION_IDS {318, 319, 320, 321, 322, 324, 403, 614, };
+const std::array<uint32_t, 32> DARK_IRON_DWARF_M_CUSTOMIZATION_OPTION_IDS {318, 319, 320, 321, 322, 324, 403, 614, };
 
-std::vector<std::vector<int>> DARK_IRON_DWARF_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 8> DARK_IRON_DWARF_M_CUSTOMIZATION_CHOICES {
 	{3209, 3210, 3211, 3212, 3213, },
 	{3214, 3215, 3216, 3217, 3218, 3219, 3220, 3221, 3222, 3223, },
 	{3224, 3225, 3226, 3227, 3228, 3229, 3230, 3231, },
@@ -2060,10 +1996,8 @@ std::vector<std::vector<int>> DARK_IRON_DWARF_M_CUSTOMIZATION_CHOICES {
 	{6968, 6969, 9479, },
 };
 
-
-
 const uint8_t DARK_IRON_DWARF_F_N_CUSTOMIZATIONS = 7;
-std::map<std::string, int> DARK_IRON_DWARF_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> DARK_IRON_DWARF_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -2073,7 +2007,7 @@ std::map<std::string, int> DARK_IRON_DWARF_F_CUSTOMIZATIONS {
 	{"eyecolor", 6},
 };
 
-std::array<uint32_t, 32> DARK_IRON_DWARF_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> DARK_IRON_DWARF_F_NATIVE_CUSTOMIZATIONS {
 	3258,
 	3263,
 	3273,
@@ -2083,11 +2017,11 @@ std::array<uint32_t, 32> DARK_IRON_DWARF_F_NATIVE_CUSTOMIZATIONS {
 	6970,
 };
 
-std::array<int, 7> DARK_IRON_DWARF_F_CUSTOMIZATION_N_CHOICES {5, 10, 11, 7, 7, 6, 3, };
+const std::array<int, 7> DARK_IRON_DWARF_F_CUSTOMIZATION_N_CHOICES {5, 10, 11, 7, 7, 6, 3, };
 
-std::array<uint32_t, 32> DARK_IRON_DWARF_F_CUSTOMIZATION_OPTION_IDS {325, 326, 327, 328, 404, 405, 615, };
+const std::array<uint32_t, 32> DARK_IRON_DWARF_F_CUSTOMIZATION_OPTION_IDS {325, 326, 327, 328, 404, 405, 615, };
 
-std::vector<std::vector<int>> DARK_IRON_DWARF_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 7> DARK_IRON_DWARF_F_CUSTOMIZATION_CHOICES {
 	{3258, 3259, 3260, 3261, 3262, },
 	{3263, 3264, 3265, 3266, 3267, 3268, 3269, 3270, 3271, 3272, },
 	{3273, 3274, 3275, 3276, 3277, 3278, 3279, 3280, 3281, 3282, 3283, },
@@ -2097,10 +2031,8 @@ std::vector<std::vector<int>> DARK_IRON_DWARF_F_CUSTOMIZATION_CHOICES {
 	{6970, 6971, 9480, },
 };
 
-
-
 const uint8_t VULPERA_M_N_CUSTOMIZATIONS = 8;
-std::map<std::string, int> VULPERA_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> VULPERA_M_CUSTOMIZATIONS {
 	{"furcolor", 0},
 	{"ears", 1},
 	{"snout", 2},
@@ -2111,7 +2043,7 @@ std::map<std::string, int> VULPERA_M_CUSTOMIZATIONS {
 	{"earrings", 7},
 };
 
-std::array<uint32_t, 32> VULPERA_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> VULPERA_M_NATIVE_CUSTOMIZATIONS {
 	3304,
 	3321,
 	3335,
@@ -2122,11 +2054,11 @@ std::array<uint32_t, 32> VULPERA_M_NATIVE_CUSTOMIZATIONS {
 	9581,
 };
 
-std::array<int, 8> VULPERA_M_CUSTOMIZATION_N_CHOICES {9, 6, 6, 6, 1, 3, 20, 2, };
+const std::array<int, 8> VULPERA_M_CUSTOMIZATION_N_CHOICES {9, 6, 6, 6, 1, 3, 20, 2, };
 
-std::array<uint32_t, 32> VULPERA_M_CUSTOMIZATION_OPTION_IDS {331, 336, 338, 406, 407, 408, 852, 854, };
+const std::array<uint32_t, 32> VULPERA_M_CUSTOMIZATION_OPTION_IDS {331, 336, 338, 406, 407, 408, 852, 854, };
 
-std::vector<std::vector<int>> VULPERA_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 8> VULPERA_M_CUSTOMIZATION_CHOICES {
 	{3304, 3305, 3306, 3307, 3308, 3309, 3310, 3311, 3312, },
 	{3321, 3323, 3325, 3327, 3329, 3331, },
 	{3335, 3336, 3337, 3338, 3339, 3340, },
@@ -2137,10 +2069,8 @@ std::vector<std::vector<int>> VULPERA_M_CUSTOMIZATION_CHOICES {
 	{9581, 9582, },
 };
 
-
-
 const uint8_t VULPERA_F_N_CUSTOMIZATIONS = 8;
-std::map<std::string, int> VULPERA_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> VULPERA_F_CUSTOMIZATIONS {
 	{"furcolor", 0},
 	{"ears", 1},
 	{"snout", 2},
@@ -2151,7 +2081,7 @@ std::map<std::string, int> VULPERA_F_CUSTOMIZATIONS {
 	{"earrings", 7},
 };
 
-std::array<uint32_t, 32> VULPERA_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> VULPERA_F_NATIVE_CUSTOMIZATIONS {
 	3341,
 	3358,
 	3376,
@@ -2162,11 +2092,11 @@ std::array<uint32_t, 32> VULPERA_F_NATIVE_CUSTOMIZATIONS {
 	9583,
 };
 
-std::array<int, 8> VULPERA_F_CUSTOMIZATION_N_CHOICES {9, 8, 6, 6, 1, 3, 20, 2, };
+const std::array<int, 8> VULPERA_F_CUSTOMIZATION_N_CHOICES {9, 8, 6, 6, 1, 3, 20, 2, };
 
-std::array<uint32_t, 32> VULPERA_F_CUSTOMIZATION_OPTION_IDS {339, 344, 346, 409, 410, 411, 853, 855, };
+const std::array<uint32_t, 32> VULPERA_F_CUSTOMIZATION_OPTION_IDS {339, 344, 346, 409, 410, 411, 853, 855, };
 
-std::vector<std::vector<int>> VULPERA_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 8> VULPERA_F_CUSTOMIZATION_CHOICES {
 	{3341, 3342, 3343, 3344, 3345, 3346, 3347, 3348, 3349, },
 	{3358, 3360, 3362, 3364, 3366, 3368, 3370, 3372, },
 	{3376, 3377, 3378, 3379, 3380, 3381, },
@@ -2177,10 +2107,8 @@ std::vector<std::vector<int>> VULPERA_F_CUSTOMIZATION_CHOICES {
 	{9583, 9584, },
 };
 
-
-
 const uint8_t MAGHAR_ORC_M_N_CUSTOMIZATIONS = 11;
-std::map<std::string, int> MAGHAR_ORC_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> MAGHAR_ORC_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"hairstyle", 1},
 	{"haircolor", 2},
@@ -2194,7 +2122,7 @@ std::map<std::string, int> MAGHAR_ORC_M_CUSTOMIZATIONS {
 	{"piercings", 10},
 };
 
-std::array<uint32_t, 32> MAGHAR_ORC_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> MAGHAR_ORC_M_NATIVE_CUSTOMIZATIONS {
 	3382,
 	3402,
 	3410,
@@ -2208,11 +2136,11 @@ std::array<uint32_t, 32> MAGHAR_ORC_M_NATIVE_CUSTOMIZATIONS {
 	9882,
 };
 
-std::array<int, 11> MAGHAR_ORC_M_CUSTOMIZATION_N_CHOICES {11, 8, 9, 6, 2, 9, 10, 5, 4, 6, 4, };
+const std::array<int, 11> MAGHAR_ORC_M_CUSTOMIZATION_N_CHOICES {11, 8, 9, 6, 2, 9, 10, 5, 4, 6, 4, };
 
-std::array<uint32_t, 32> MAGHAR_ORC_M_CUSTOMIZATION_OPTION_IDS {347, 350, 351, 352, 353, 412, 880, 882, 883, 884, 885, };
+const std::array<uint32_t, 32> MAGHAR_ORC_M_CUSTOMIZATION_OPTION_IDS {347, 350, 351, 352, 353, 412, 880, 882, 883, 884, 885, };
 
-std::vector<std::vector<int>> MAGHAR_ORC_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 11> MAGHAR_ORC_M_CUSTOMIZATION_CHOICES {
 	{3382, 3383, 3384, 3385, 3386, 3387, 3388, 3389, 3390, 3391, 3392, },
 	{3402, 3403, 3404, 3405, 3406, 3407, 3408, 3409, },
 	{3410, 3411, 3412, 3413, 3414, 3415, 3416, 3417, 3418, },
@@ -2226,10 +2154,8 @@ std::vector<std::vector<int>> MAGHAR_ORC_M_CUSTOMIZATION_CHOICES {
 	{9882, 9883, 9884, 9885, },
 };
 
-
-
 const uint8_t MAGHAR_ORC_F_N_CUSTOMIZATIONS = 8;
-std::map<std::string, int> MAGHAR_ORC_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> MAGHAR_ORC_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"hairstyle", 1},
 	{"haircolor", 2},
@@ -2240,7 +2166,7 @@ std::map<std::string, int> MAGHAR_ORC_F_CUSTOMIZATIONS {
 	{"necklace", 7},
 };
 
-std::array<uint32_t, 32> MAGHAR_ORC_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> MAGHAR_ORC_F_NATIVE_CUSTOMIZATIONS {
 	3428,
 	3449,
 	3457,
@@ -2251,11 +2177,11 @@ std::array<uint32_t, 32> MAGHAR_ORC_F_NATIVE_CUSTOMIZATIONS {
 	9902,
 };
 
-std::array<int, 8> MAGHAR_ORC_F_CUSTOMIZATION_N_CHOICES {12, 9, 9, 9, 17, 11, 4, 4, };
+const std::array<int, 8> MAGHAR_ORC_F_CUSTOMIZATION_N_CHOICES {12, 9, 9, 9, 17, 11, 4, 4, };
 
-std::array<uint32_t, 32> MAGHAR_ORC_F_CUSTOMIZATION_OPTION_IDS {354, 357, 358, 413, 414, 881, 886, 887, };
+const std::array<uint32_t, 32> MAGHAR_ORC_F_CUSTOMIZATION_OPTION_IDS {354, 357, 358, 413, 414, 881, 886, 887, };
 
-std::vector<std::vector<int>> MAGHAR_ORC_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 8> MAGHAR_ORC_F_CUSTOMIZATION_CHOICES {
 	{3428, 3429, 3430, 3431, 3432, 3433, 3434, 3435, 3436, 3437, 3438, 3439, },
 	{3449, 3450, 3451, 3452, 3453, 3454, 3455, 3456, 7480, },
 	{3457, 3458, 3459, 3460, 3461, 3462, 3463, 3464, 3465, },
@@ -2266,10 +2192,8 @@ std::vector<std::vector<int>> MAGHAR_ORC_F_CUSTOMIZATION_CHOICES {
 	{9902, 9901, 9900, 3471, },
 };
 
-
-
 const uint8_t MECHAGNOME_M_N_CUSTOMIZATIONS = 10;
-std::map<std::string, int> MECHAGNOME_M_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> MECHAGNOME_M_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -2282,7 +2206,7 @@ std::map<std::string, int> MECHAGNOME_M_CUSTOMIZATIONS {
 	{"paint", 9},
 };
 
-std::array<uint32_t, 32> MECHAGNOME_M_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> MECHAGNOME_M_NATIVE_CUSTOMIZATIONS {
 	8938,
 	8966,
 	3493,
@@ -2295,11 +2219,11 @@ std::array<uint32_t, 32> MECHAGNOME_M_NATIVE_CUSTOMIZATIONS {
 	8997,
 };
 
-std::array<int, 10> MECHAGNOME_M_CUSTOMIZATION_N_CHOICES {14, 14, 7, 8, 6, 4, 2, 20, 16, 4, };
+const std::array<int, 10> MECHAGNOME_M_CUSTOMIZATION_N_CHOICES {14, 14, 7, 8, 6, 4, 2, 20, 16, 4, };
 
-std::array<uint32_t, 32> MECHAGNOME_M_CUSTOMIZATION_OPTION_IDS {360, 361, 362, 363, 364, 366, 367, 415, 794, 797, };
+const std::array<uint32_t, 32> MECHAGNOME_M_CUSTOMIZATION_OPTION_IDS {360, 361, 362, 363, 364, 366, 367, 415, 794, 797, };
 
-std::vector<std::vector<int>> MECHAGNOME_M_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 10> MECHAGNOME_M_CUSTOMIZATION_CHOICES {
 	{8938, 8939, 8940, 8941, 8942, 8943, 8944, 8945, 8946, 8947, 8948, 8949, 8950, 8951, },
 	{8966, 8967, 8968, 8969, 8970, 8971, 8972, 8973, 8974, 8975, 8976, 8977, 8978, 8979, },
 	{3493, 3494, 3495, 3496, 3497, 3498, 3499, },
@@ -2312,10 +2236,8 @@ std::vector<std::vector<int>> MECHAGNOME_M_CUSTOMIZATION_CHOICES {
 	{8997, 8998, 8999, 15733, },
 };
 
-
-
 const uint8_t MECHAGNOME_F_N_CUSTOMIZATIONS = 9;
-std::map<std::string, int> MECHAGNOME_F_CUSTOMIZATIONS {
+const std::unordered_map<std::string, int> MECHAGNOME_F_CUSTOMIZATIONS {
 	{"skincolor", 0},
 	{"face", 1},
 	{"hairstyle", 2},
@@ -2327,7 +2249,7 @@ std::map<std::string, int> MECHAGNOME_F_CUSTOMIZATIONS {
 	{"paint", 8},
 };
 
-std::array<uint32_t, 32> MECHAGNOME_F_NATIVE_CUSTOMIZATIONS {
+const std::array<uint32_t, 32> MECHAGNOME_F_NATIVE_CUSTOMIZATIONS {
 	8952,
 	8980,
 	3562,
@@ -2339,11 +2261,11 @@ std::array<uint32_t, 32> MECHAGNOME_F_NATIVE_CUSTOMIZATIONS {
 	9003,
 };
 
-std::array<int, 9> MECHAGNOME_F_CUSTOMIZATION_N_CHOICES {14, 14, 9, 8, 4, 2, 20, 16, 4, };
+const std::array<int, 9> MECHAGNOME_F_CUSTOMIZATION_N_CHOICES {14, 14, 9, 8, 4, 2, 20, 16, 4, };
 
-std::array<uint32_t, 32> MECHAGNOME_F_CUSTOMIZATION_OPTION_IDS {368, 369, 370, 371, 374, 375, 416, 795, 799, };
+const std::array<uint32_t, 32> MECHAGNOME_F_CUSTOMIZATION_OPTION_IDS {368, 369, 370, 371, 374, 375, 416, 795, 799, };
 
-std::vector<std::vector<int>> MECHAGNOME_F_CUSTOMIZATION_CHOICES {
+const std::array<std::array<int, 32>, 9> MECHAGNOME_F_CUSTOMIZATION_CHOICES {
 	{8952, 8953, 8954, 8955, 8956, 8957, 8958, 8959, 8960, 8961, 8962, 8963, 8964, 8965, },
 	{8980, 8981, 8982, 8983, 8984, 8985, 8986, 8987, 8988, 8989, 8990, 8991, 8992, 8993, },
 	{3562, 3563, 3564, 3565, 3566, 3567, 3568, 3569, 7476, },
@@ -2357,3 +2279,719 @@ std::vector<std::vector<int>> MECHAGNOME_F_CUSTOMIZATION_CHOICES {
 
 
 
+std::array<uint32_t, 32>& getCustomizationOptionIDs(int race_id, int gender) {
+switch(static_cast<RaceIDs>(race_id)) {
+	case RaceIDs::HUMAN:
+	if(gender) 
+		return Customizations::HUMAN_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::HUMAN_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::ORC:
+	if(gender) 
+		return Customizations::ORC_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::ORC_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::DWARF:
+	if(gender) 
+		return Customizations::DWARF_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::DWARF_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::NELF:
+	if(gender) 
+		return Customizations::NELF_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::NELF_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::UNDEAD:
+	if(gender) 
+		return Customizations::UNDEAD_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::UNDEAD_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::TAUREN:
+	if(gender) 
+		return Customizations::TAUREN_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::TAUREN_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::GNOME:
+	if(gender) 
+		return Customizations::GNOME_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::GNOME_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::TROLL:
+	if(gender) 
+		return Customizations::TROLL_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::TROLL_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::GOBLIN:
+	if(gender) 
+		return Customizations::GOBLIN_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::GOBLIN_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::BELF:
+	if(gender) 
+		return Customizations::BELF_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::BELF_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::DRAENEI:
+	if(gender) 
+		return Customizations::DRAENEI_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::DRAENEI_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::WORGEN:
+	if(gender) 
+		return Customizations::WORGEN_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::WORGEN_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::PANDAREN:
+	if(gender) 
+		return Customizations::PANDAREN_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::PANDAREN_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::NIGHTBORNE:
+	if(gender) 
+		return Customizations::NIGHTBORNE_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::NIGHTBORNE_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::HIGHMOUNTAIN_TAUREN:
+	if(gender) 
+		return Customizations::HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::VOID_ELF:
+	if(gender) 
+		return Customizations::VOID_ELF_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::VOID_ELF_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::LIGHTFORGED_DRAENEI:
+	if(gender) 
+		return Customizations::LIGHTFORGED_DRAENEI_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::LIGHTFORGED_DRAENEI_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::ZANDALARI_TROLL:
+	if(gender) 
+		return Customizations::ZANDALARI_TROLL_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::ZANDALARI_TROLL_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::KUL_TIRAN:
+	if(gender) 
+		return Customizations::KUL_TIRAN_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::KUL_TIRAN_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::DARK_IRON_DWARF:
+	if(gender) 
+		return Customizations::DARK_IRON_DWARF_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::DARK_IRON_DWARF_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::VULPERA:
+	if(gender) 
+		return Customizations::VULPERA_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::VULPERA_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::MAGHAR_ORC:
+	if(gender) 
+		return Customizations::MAGHAR_ORC_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::MAGHAR_ORC_M_CUSTOMIZATION_OPTION_IDS;
+	case RaceIDs::MECHAGNOME:
+	if(gender) 
+		return Customizations::MECHAGNOME_F_CUSTOMIZATION_OPTION_IDS;
+	else
+		return Customizations::MECHAGNOME_M_CUSTOMIZATION_OPTION_IDS;
+}
+
+std::unordered_map<std::string, int>& getCustomizations(int race_id, int gender) {
+switch(static_cast<RaceIDs>(race_id)) {
+	case RaceIDs::HUMAN:
+	if(gender) 
+		return Customizations::HUMAN_F_CUSTOMIZATIONS;
+	else
+		return Customizations::HUMAN_M_CUSTOMIZATIONS;
+	case RaceIDs::ORC:
+	if(gender) 
+		return Customizations::ORC_F_CUSTOMIZATIONS;
+	else
+		return Customizations::ORC_M_CUSTOMIZATIONS;
+	case RaceIDs::DWARF:
+	if(gender) 
+		return Customizations::DWARF_F_CUSTOMIZATIONS;
+	else
+		return Customizations::DWARF_M_CUSTOMIZATIONS;
+	case RaceIDs::NELF:
+	if(gender) 
+		return Customizations::NELF_F_CUSTOMIZATIONS;
+	else
+		return Customizations::NELF_M_CUSTOMIZATIONS;
+	case RaceIDs::UNDEAD:
+	if(gender) 
+		return Customizations::UNDEAD_F_CUSTOMIZATIONS;
+	else
+		return Customizations::UNDEAD_M_CUSTOMIZATIONS;
+	case RaceIDs::TAUREN:
+	if(gender) 
+		return Customizations::TAUREN_F_CUSTOMIZATIONS;
+	else
+		return Customizations::TAUREN_M_CUSTOMIZATIONS;
+	case RaceIDs::GNOME:
+	if(gender) 
+		return Customizations::GNOME_F_CUSTOMIZATIONS;
+	else
+		return Customizations::GNOME_M_CUSTOMIZATIONS;
+	case RaceIDs::TROLL:
+	if(gender) 
+		return Customizations::TROLL_F_CUSTOMIZATIONS;
+	else
+		return Customizations::TROLL_M_CUSTOMIZATIONS;
+	case RaceIDs::GOBLIN:
+	if(gender) 
+		return Customizations::GOBLIN_F_CUSTOMIZATIONS;
+	else
+		return Customizations::GOBLIN_M_CUSTOMIZATIONS;
+	case RaceIDs::BELF:
+	if(gender) 
+		return Customizations::BELF_F_CUSTOMIZATIONS;
+	else
+		return Customizations::BELF_M_CUSTOMIZATIONS;
+	case RaceIDs::DRAENEI:
+	if(gender) 
+		return Customizations::DRAENEI_F_CUSTOMIZATIONS;
+	else
+		return Customizations::DRAENEI_M_CUSTOMIZATIONS;
+	case RaceIDs::WORGEN:
+	if(gender) 
+		return Customizations::WORGEN_F_CUSTOMIZATIONS;
+	else
+		return Customizations::WORGEN_M_CUSTOMIZATIONS;
+	case RaceIDs::PANDAREN:
+	if(gender) 
+		return Customizations::PANDAREN_F_CUSTOMIZATIONS;
+	else
+		return Customizations::PANDAREN_M_CUSTOMIZATIONS;
+	case RaceIDs::NIGHTBORNE:
+	if(gender) 
+		return Customizations::NIGHTBORNE_F_CUSTOMIZATIONS;
+	else
+		return Customizations::NIGHTBORNE_M_CUSTOMIZATIONS;
+	case RaceIDs::HIGHMOUNTAIN_TAUREN:
+	if(gender) 
+		return Customizations::HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATIONS;
+	else
+		return Customizations::HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATIONS;
+	case RaceIDs::VOID_ELF:
+	if(gender) 
+		return Customizations::VOID_ELF_F_CUSTOMIZATIONS;
+	else
+		return Customizations::VOID_ELF_M_CUSTOMIZATIONS;
+	case RaceIDs::LIGHTFORGED_DRAENEI:
+	if(gender) 
+		return Customizations::LIGHTFORGED_DRAENEI_F_CUSTOMIZATIONS;
+	else
+		return Customizations::LIGHTFORGED_DRAENEI_M_CUSTOMIZATIONS;
+	case RaceIDs::ZANDALARI_TROLL:
+	if(gender) 
+		return Customizations::ZANDALARI_TROLL_F_CUSTOMIZATIONS;
+	else
+		return Customizations::ZANDALARI_TROLL_M_CUSTOMIZATIONS;
+	case RaceIDs::KUL_TIRAN:
+	if(gender) 
+		return Customizations::KUL_TIRAN_F_CUSTOMIZATIONS;
+	else
+		return Customizations::KUL_TIRAN_M_CUSTOMIZATIONS;
+	case RaceIDs::DARK_IRON_DWARF:
+	if(gender) 
+		return Customizations::DARK_IRON_DWARF_F_CUSTOMIZATIONS;
+	else
+		return Customizations::DARK_IRON_DWARF_M_CUSTOMIZATIONS;
+	case RaceIDs::VULPERA:
+	if(gender) 
+		return Customizations::VULPERA_F_CUSTOMIZATIONS;
+	else
+		return Customizations::VULPERA_M_CUSTOMIZATIONS;
+	case RaceIDs::MAGHAR_ORC:
+	if(gender) 
+		return Customizations::MAGHAR_ORC_F_CUSTOMIZATIONS;
+	else
+		return Customizations::MAGHAR_ORC_M_CUSTOMIZATIONS;
+	case RaceIDs::MECHAGNOME:
+	if(gender) 
+		return Customizations::MECHAGNOME_F_CUSTOMIZATIONS;
+	else
+		return Customizations::MECHAGNOME_M_CUSTOMIZATIONS;
+}
+
+int getNumberOfCustomizations(int race_id, int gender) {
+switch(static_cast<RaceIDs>(race_id)) {
+	case RaceIDs::HUMAN:
+	if(gender) 
+		return Customizations::HUMAN_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::HUMAN_M_N_CUSTOMIZATIONS;
+	case RaceIDs::ORC:
+	if(gender) 
+		return Customizations::ORC_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::ORC_M_N_CUSTOMIZATIONS;
+	case RaceIDs::DWARF:
+	if(gender) 
+		return Customizations::DWARF_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::DWARF_M_N_CUSTOMIZATIONS;
+	case RaceIDs::NELF:
+	if(gender) 
+		return Customizations::NELF_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::NELF_M_N_CUSTOMIZATIONS;
+	case RaceIDs::UNDEAD:
+	if(gender) 
+		return Customizations::UNDEAD_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::UNDEAD_M_N_CUSTOMIZATIONS;
+	case RaceIDs::TAUREN:
+	if(gender) 
+		return Customizations::TAUREN_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::TAUREN_M_N_CUSTOMIZATIONS;
+	case RaceIDs::GNOME:
+	if(gender) 
+		return Customizations::GNOME_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::GNOME_M_N_CUSTOMIZATIONS;
+	case RaceIDs::TROLL:
+	if(gender) 
+		return Customizations::TROLL_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::TROLL_M_N_CUSTOMIZATIONS;
+	case RaceIDs::GOBLIN:
+	if(gender) 
+		return Customizations::GOBLIN_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::GOBLIN_M_N_CUSTOMIZATIONS;
+	case RaceIDs::BELF:
+	if(gender) 
+		return Customizations::BELF_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::BELF_M_N_CUSTOMIZATIONS;
+	case RaceIDs::DRAENEI:
+	if(gender) 
+		return Customizations::DRAENEI_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::DRAENEI_M_N_CUSTOMIZATIONS;
+	case RaceIDs::WORGEN:
+	if(gender) 
+		return Customizations::WORGEN_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::WORGEN_M_N_CUSTOMIZATIONS;
+	case RaceIDs::PANDAREN:
+	if(gender) 
+		return Customizations::PANDAREN_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::PANDAREN_M_N_CUSTOMIZATIONS;
+	case RaceIDs::NIGHTBORNE:
+	if(gender) 
+		return Customizations::NIGHTBORNE_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::NIGHTBORNE_M_N_CUSTOMIZATIONS;
+	case RaceIDs::HIGHMOUNTAIN_TAUREN:
+	if(gender) 
+		return Customizations::HIGHMOUNTAIN_TAUREN_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::HIGHMOUNTAIN_TAUREN_M_N_CUSTOMIZATIONS;
+	case RaceIDs::VOID_ELF:
+	if(gender) 
+		return Customizations::VOID_ELF_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::VOID_ELF_M_N_CUSTOMIZATIONS;
+	case RaceIDs::LIGHTFORGED_DRAENEI:
+	if(gender) 
+		return Customizations::LIGHTFORGED_DRAENEI_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::LIGHTFORGED_DRAENEI_M_N_CUSTOMIZATIONS;
+	case RaceIDs::ZANDALARI_TROLL:
+	if(gender) 
+		return Customizations::ZANDALARI_TROLL_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::ZANDALARI_TROLL_M_N_CUSTOMIZATIONS;
+	case RaceIDs::KUL_TIRAN:
+	if(gender) 
+		return Customizations::KUL_TIRAN_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::KUL_TIRAN_M_N_CUSTOMIZATIONS;
+	case RaceIDs::DARK_IRON_DWARF:
+	if(gender) 
+		return Customizations::DARK_IRON_DWARF_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::DARK_IRON_DWARF_M_N_CUSTOMIZATIONS;
+	case RaceIDs::VULPERA:
+	if(gender) 
+		return Customizations::VULPERA_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::VULPERA_M_N_CUSTOMIZATIONS;
+	case RaceIDs::MAGHAR_ORC:
+	if(gender) 
+		return Customizations::MAGHAR_ORC_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::MAGHAR_ORC_M_N_CUSTOMIZATIONS;
+	case RaceIDs::MECHAGNOME:
+	if(gender) 
+		return Customizations::MECHAGNOME_F_N_CUSTOMIZATIONS;
+	else
+		return Customizations::MECHAGNOME_M_N_CUSTOMIZATIONS;
+}
+
+int getNumberOfChoices(int race_id, int gender, int option) {
+switch(static_cast<RaceIDs>(race_id)) {
+	case RaceIDs::HUMAN:
+	if(gender) 
+		return Customizations::HUMAN_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::HUMAN_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::ORC:
+	if(gender) 
+		return Customizations::ORC_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::ORC_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::DWARF:
+	if(gender) 
+		return Customizations::DWARF_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::DWARF_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::NELF:
+	if(gender) 
+		return Customizations::NELF_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::NELF_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::UNDEAD:
+	if(gender) 
+		return Customizations::UNDEAD_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::UNDEAD_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::TAUREN:
+	if(gender) 
+		return Customizations::TAUREN_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::TAUREN_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::GNOME:
+	if(gender) 
+		return Customizations::GNOME_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::GNOME_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::TROLL:
+	if(gender) 
+		return Customizations::TROLL_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::TROLL_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::GOBLIN:
+	if(gender) 
+		return Customizations::GOBLIN_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::GOBLIN_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::BELF:
+	if(gender) 
+		return Customizations::BELF_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::BELF_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::DRAENEI:
+	if(gender) 
+		return Customizations::DRAENEI_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::DRAENEI_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::WORGEN:
+	if(gender) 
+		return Customizations::WORGEN_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::WORGEN_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::PANDAREN:
+	if(gender) 
+		return Customizations::PANDAREN_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::PANDAREN_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::NIGHTBORNE:
+	if(gender) 
+		return Customizations::NIGHTBORNE_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::NIGHTBORNE_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::HIGHMOUNTAIN_TAUREN:
+	if(gender) 
+		return Customizations::HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::VOID_ELF:
+	if(gender) 
+		return Customizations::VOID_ELF_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::VOID_ELF_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::LIGHTFORGED_DRAENEI:
+	if(gender) 
+		return Customizations::LIGHTFORGED_DRAENEI_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::LIGHTFORGED_DRAENEI_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::ZANDALARI_TROLL:
+	if(gender) 
+		return Customizations::ZANDALARI_TROLL_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::ZANDALARI_TROLL_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::KUL_TIRAN:
+	if(gender) 
+		return Customizations::KUL_TIRAN_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::KUL_TIRAN_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::DARK_IRON_DWARF:
+	if(gender) 
+		return Customizations::DARK_IRON_DWARF_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::DARK_IRON_DWARF_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::VULPERA:
+	if(gender) 
+		return Customizations::VULPERA_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::VULPERA_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::MAGHAR_ORC:
+	if(gender) 
+		return Customizations::MAGHAR_ORC_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::MAGHAR_ORC_M_CUSTOMIZATION_N_CHOICES[option];
+	case RaceIDs::MECHAGNOME:
+	if(gender) 
+		return Customizations::MECHAGNOME_F_CUSTOMIZATION_N_CHOICES[option];
+	else
+		return Customizations::MECHAGNOME_M_CUSTOMIZATION_N_CHOICES[option];
+}
+
+int getChoiceID(int race_id, int gender, int option, int choice) {
+switch(static_cast<RaceIDs>(race_id)) {
+	case RaceIDs::HUMAN:
+	if(gender) 
+		return Customizations::HUMAN_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::HUMAN_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::ORC:
+	if(gender) 
+		return Customizations::ORC_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::ORC_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::DWARF:
+	if(gender) 
+		return Customizations::DWARF_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::DWARF_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::NELF:
+	if(gender) 
+		return Customizations::NELF_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::NELF_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::UNDEAD:
+	if(gender) 
+		return Customizations::UNDEAD_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::UNDEAD_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::TAUREN:
+	if(gender) 
+		return Customizations::TAUREN_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::TAUREN_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::GNOME:
+	if(gender) 
+		return Customizations::GNOME_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::GNOME_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::TROLL:
+	if(gender) 
+		return Customizations::TROLL_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::TROLL_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::GOBLIN:
+	if(gender) 
+		return Customizations::GOBLIN_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::GOBLIN_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::BELF:
+	if(gender) 
+		return Customizations::BELF_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::BELF_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::DRAENEI:
+	if(gender) 
+		return Customizations::DRAENEI_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::DRAENEI_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::WORGEN:
+	if(gender) 
+		return Customizations::WORGEN_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::WORGEN_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::PANDAREN:
+	if(gender) 
+		return Customizations::PANDAREN_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::PANDAREN_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::NIGHTBORNE:
+	if(gender) 
+		return Customizations::NIGHTBORNE_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::NIGHTBORNE_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::HIGHMOUNTAIN_TAUREN:
+	if(gender) 
+		return Customizations::HIGHMOUNTAIN_TAUREN_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::HIGHMOUNTAIN_TAUREN_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::VOID_ELF:
+	if(gender) 
+		return Customizations::VOID_ELF_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::VOID_ELF_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::LIGHTFORGED_DRAENEI:
+	if(gender) 
+		return Customizations::LIGHTFORGED_DRAENEI_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::LIGHTFORGED_DRAENEI_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::ZANDALARI_TROLL:
+	if(gender) 
+		return Customizations::ZANDALARI_TROLL_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::ZANDALARI_TROLL_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::KUL_TIRAN:
+	if(gender) 
+		return Customizations::KUL_TIRAN_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::KUL_TIRAN_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::DARK_IRON_DWARF:
+	if(gender) 
+		return Customizations::DARK_IRON_DWARF_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::DARK_IRON_DWARF_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::VULPERA:
+	if(gender) 
+		return Customizations::VULPERA_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::VULPERA_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::MAGHAR_ORC:
+	if(gender) 
+		return Customizations::MAGHAR_ORC_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::MAGHAR_ORC_M_CUSTOMIZATION_CHOICES[option][choice];
+	case RaceIDs::MECHAGNOME:
+	if(gender) 
+		return Customizations::MECHAGNOME_F_CUSTOMIZATION_CHOICES[option][choice];
+	else
+		return Customizations::MECHAGNOME_M_CUSTOMIZATION_CHOICES[option][choice];
+}
+
+std::array<uint32_t, 32>& getNativeCustomizations(int race_id, int gender) {
+switch(static_cast<RaceIDs>(race_id)) {
+	case RaceIDs::HUMAN:
+	if(gender) 
+		return Customizations::HUMAN_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::HUMAN_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::ORC:
+	if(gender) 
+		return Customizations::ORC_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::ORC_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::DWARF:
+	if(gender) 
+		return Customizations::DWARF_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::DWARF_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::NELF:
+	if(gender) 
+		return Customizations::NELF_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::NELF_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::UNDEAD:
+	if(gender) 
+		return Customizations::UNDEAD_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::UNDEAD_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::TAUREN:
+	if(gender) 
+		return Customizations::TAUREN_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::TAUREN_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::GNOME:
+	if(gender) 
+		return Customizations::GNOME_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::GNOME_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::TROLL:
+	if(gender) 
+		return Customizations::TROLL_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::TROLL_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::GOBLIN:
+	if(gender) 
+		return Customizations::GOBLIN_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::GOBLIN_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::BELF:
+	if(gender) 
+		return Customizations::BELF_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::BELF_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::DRAENEI:
+	if(gender) 
+		return Customizations::DRAENEI_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::DRAENEI_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::WORGEN:
+	if(gender) 
+		return Customizations::WORGEN_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::WORGEN_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::PANDAREN:
+	if(gender) 
+		return Customizations::PANDAREN_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::PANDAREN_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::NIGHTBORNE:
+	if(gender) 
+		return Customizations::NIGHTBORNE_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::NIGHTBORNE_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::HIGHMOUNTAIN_TAUREN:
+	if(gender) 
+		return Customizations::HIGHMOUNTAIN_TAUREN_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::HIGHMOUNTAIN_TAUREN_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::VOID_ELF:
+	if(gender) 
+		return Customizations::VOID_ELF_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::VOID_ELF_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::LIGHTFORGED_DRAENEI:
+	if(gender) 
+		return Customizations::LIGHTFORGED_DRAENEI_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::LIGHTFORGED_DRAENEI_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::ZANDALARI_TROLL:
+	if(gender) 
+		return Customizations::ZANDALARI_TROLL_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::ZANDALARI_TROLL_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::KUL_TIRAN:
+	if(gender) 
+		return Customizations::KUL_TIRAN_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::KUL_TIRAN_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::DARK_IRON_DWARF:
+	if(gender) 
+		return Customizations::DARK_IRON_DWARF_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::DARK_IRON_DWARF_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::VULPERA:
+	if(gender) 
+		return Customizations::VULPERA_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::VULPERA_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::MAGHAR_ORC:
+	if(gender) 
+		return Customizations::MAGHAR_ORC_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::MAGHAR_ORC_M_NATIVE_CUSTOMIZATIONS;
+	case RaceIDs::MECHAGNOME:
+	if(gender) 
+		return Customizations::MECHAGNOME_F_NATIVE_CUSTOMIZATIONS;
+	else
+		return Customizations::MECHAGNOME_M_NATIVE_CUSTOMIZATIONS;
+}
+
+} // namespace Customizations
+} // namespace LiMorph

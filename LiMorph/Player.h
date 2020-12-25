@@ -6,6 +6,7 @@
 #include "Offsets.h"
 #include "WoWUtils.h"
 #include <vector>
+#include <unordered_map>
 
 namespace LiMorph {
 
@@ -44,7 +45,7 @@ public:
 	bool isShapeshiftTransparentByDefault(ShapeshiftForm form);
 	int getShapeshiftID(ShapeshiftForm form);
 	int getOriginalShapeshiftID(ShapeshiftForm form);
-	std::map<std::string, int>& getCustomizations();
+	const std::unordered_map<std::string, int>& getCustomizations();
 	int getNumberOfChoices(int option);
 	int getChoiceID(int option, int choice);
 	bool getDisableMeta();

@@ -185,7 +185,7 @@ int Player::getOriginalShapeshiftID(ShapeshiftForm form) {
 	return m_original_shapeshift_ids[WoWUtils::shapeshiftToIndex(form)];
 }
 
-std::map<std::string, int>& Player::getCustomizations() {
+const std::unordered_map<std::string, int>& Player::getCustomizations() {
 	return Customizations::getCustomizations(m_race_id, m_gender_id);
 }
 
