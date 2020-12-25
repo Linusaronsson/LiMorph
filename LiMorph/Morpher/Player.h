@@ -1,12 +1,12 @@
 #pragma once
 
-#include <array>
+#include "../Memory/Memory.h"
+#include "../Utils/Offsets.h"
+#include "../Utils/WoWUtils.h"
 
-#include "Memory.h"
-#include "Offsets.h"
-#include "WoWUtils.h"
 #include <vector>
 #include <unordered_map>
+#include <array>
 
 namespace LiMorph {
 

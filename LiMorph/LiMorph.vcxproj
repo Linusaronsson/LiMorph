@@ -143,6 +143,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -156,37 +157,21 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Customizations.h" />
-    <ClInclude Include="framework.h" />
-    <ClInclude Include="Functions.h" />
-    <ClInclude Include="Lexer.h" />
-    <ClInclude Include="Logging.h" />
-    <ClInclude Include="MainThread.h" />
-    <ClInclude Include="Memory.h" />
-    <ClInclude Include="Morpher.h" />
-    <ClInclude Include="Offsets.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Token.h" />
-    <ClInclude Include="VMTHook.h" />
-    <ClInclude Include="WoWUtils.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="Functions.cpp" />
-    <ClCompile Include="Lexer.cpp" />
-    <ClCompile Include="Logging.cpp" />
-    <ClCompile Include="MainThread.cpp" />
-    <ClCompile Include="Memory.cpp" />
-    <ClCompile Include="Morpher.cpp" />
+    <ClCompile Include="Lexer\Lexer.cpp" />
+    <ClCompile Include="Lexer\Token.cpp" />
+    <ClCompile Include="Memory\Memory.cpp" />
+    <ClCompile Include="Morpher\Morpher.cpp" />
+    <ClCompile Include="Morpher\Player.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Token.cpp" />
+    <ClCompile Include="Thread\MainThread.cpp" />
+    <ClCompile Include="Utils\Functions.cpp" />
+    <ClCompile Include="Utils\Logging.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Lua\ClickMorphing.lua" />
@@ -194,6 +179,22 @@
     <None Include="Lua\MountEvent.lua" />
     <None Include="Lua\ParseChat.lua" />
     <None Include="Lua\ShapeshiftEvent.lua" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Customizations\Customizations.h" />
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="Lexer\Lexer.h" />
+    <ClInclude Include="Lexer\Token.h" />
+    <ClInclude Include="Memory\Memory.h" />
+    <ClInclude Include="Morpher\Morpher.h" />
+    <ClInclude Include="Morpher\Player.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Thread\MainThread.h" />
+    <ClInclude Include="Utils\Functions.h" />
+    <ClInclude Include="Utils\Logging.h" />
+    <ClInclude Include="Utils\Offsets.h" />
+    <ClInclude Include="Utils\VMTHook.h" />
+    <ClInclude Include="Utils\WoWUtils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

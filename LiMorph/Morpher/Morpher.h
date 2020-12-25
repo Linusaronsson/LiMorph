@@ -1,13 +1,12 @@
 #pragma once
 
-#include "Offsets.h"
-#include "Memory.h"
-#include "MainThread.h"
-#include "Lexer.h"
-#include "WoWUtils.h"
-#include "VMTHook.h"
+#include "../Utils/Offsets.h"
+#include "../Memory/Memory.h"
+#include "../Thread/MainThread.h"
+#include "../Lexer/Lexer.h"
+#include "../Utils/WoWUtils.h"
+#include "../Utils/VMTHook.h"
 #include "Player.h"
-
 
 //12E0
 namespace LiMorph {

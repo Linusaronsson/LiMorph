@@ -1,8 +1,8 @@
 #pragma once
 
-#include "pch.h"
+#include "../pch.h"
 #include "Offsets.h"
-#include "Morpher.h"
+#include "../Morpher/Morpher.h"
 
 #include <functional>
 

@@ -1,10 +1,9 @@
-#include "pch.h"
+#include "../pch.h"
 #include "Morpher.h"
-#include "Functions.h"
-#include <sstream>
 
-#include "Logging.h"
-#include "Token.h"
+#include "../Utils/Functions.h"
+#include "../Utils/Logging.h"
+#include "../Lexer/Token.h"
 
 //extern uintptr_t base_address;
 extern LiMorph::Morpher* morpher_ptr;
@@ -28,22 +27,22 @@ void Morpher::reportParseError(const std::string& message) {
 
 const char* Morpher::getMountEventLuaCode() {
     auto dummy = 0;
-    #include "Lua/MountEvent.lua"
+    #include "../Lua/MountEvent.lua"
 }
 
 const char* Morpher::getParseChatLuaCode() {
     auto dummy = 0;
-    #include "Lua/ParseChat.lua"
+    #include "../Lua/ParseChat.lua"
 }
 
 const char* Morpher::getClickMorphingCode() {
     auto dummy = 0;
-    #include "Lua/ClickMorphing.lua"
+    #include "../Lua/ClickMorphing.lua"
 }
 
 const char* Morpher::getClickMountMorphingCode() {
     auto dummy = 0;
-    #include "Lua/ClickMountMorphing.lua"
+    #include "../Lua/ClickMountMorphing.lua"
 }
 
 int __cdecl Morpher::chatCallback(uintptr_t lua_state) {

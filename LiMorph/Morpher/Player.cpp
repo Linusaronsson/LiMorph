@@ -1,6 +1,7 @@
-#include "pch.h"
+#include "../pch.h"
 #include "Player.h"
-#include "Customizations.h"
+
+#include "../Customizations/Customizations.h"
 
 
 namespace LiMorph {
