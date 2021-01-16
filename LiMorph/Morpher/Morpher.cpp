@@ -89,8 +89,8 @@ void Morpher::initializeMorpherCallback() {
     morpher_ptr->initializeMorpher();
 }
 
-void Morpher::hookUpdateDisplayInfoCallback() {
-    morpher_ptr->hookUpdateDisplayInfo();
+void Morpher::hookingCallback() {
+    morpher_ptr->hookFunctions();
 }
 
 void Morpher::registerFunctions() {
@@ -117,7 +117,7 @@ void Morpher::zoningCallback() {
 }
 
 void Morpher::zoning() {
-    hookUpdateDisplayInfo();
+    hookFunctions();
     m_player.restorePlayer(); // note: does not set current morph id in memory (its taken care of by player_shapeshift_event() below)
 
     //when zoning wow will call UpdateDisplayInfo (while unhooked) with a new model (original model of whichever shapeshift),
@@ -134,27 +134,31 @@ void Morpher::zoning() {
     updateModel();
 }
 
+//spellvisualid power infusion: 39072
+// pws: 38943
 void Morpher::initializeMorpher() {
+
     
     m_player_ptr = getPlayerPtr();
-    
+    m_hook = nullptr;
     m_player = Player(m_player_ptr);
     m_player.initializePlayer();
     m_last_morphed_id = m_player.getCurrentMorphID(); // maybe not needed or wrong
-    //m_hook = new VMTHook(reinterpret_cast<void*>(m_player_ptr));
+
+    m_hook = new VMTHook(reinterpret_cast<void*>(m_player_ptr));
    // m_hook->PrintFunctions(m_base_address);
-    hookUpdateDisplayInfo();
+    hookFunctions();
     registerFunctions();
     registerLuaEvents();
 
     morphRace(m_player.getRaceID());
     smartMorphShapeshift();
 
-    //smartMorphShapeshift();
     SendWoWMessage("Loaded. Type .commands for usable commands.");
+  // male orc: 51894
+    // undead male: 54041
     
-  /*
-    
+    /*
     std::stringstream stream;
     stream << std::hex << m_base_address;
     SendWoWMessage("Base address: " + stream.str());
@@ -163,21 +167,30 @@ void Morpher::initializeMorpher() {
     SendWoWMessage("Player_ptr address: " + stream.str());
     SendWoWMessage("raceID: " + std::to_string(m_player.getRaceID()));
     SendWoWMessage("genderID: " + std::to_string(m_player.getGenderID()));
-
     */
+    
 }
 
-void Morpher::hookUpdateDisplayInfo() {
+void Morpher::hookFunctions() {
+    if (m_hook)
+        delete m_hook;
     VMTHook* hook = new VMTHook(reinterpret_cast<void*>(m_player_ptr));
     hook->HookFunction(updateDisplayInfoHook, Offsets::update_display_info_vtable_offset);
+    //hook->HookFunction(updateScaleHook, Offsets::update_scale_vtable_offset);
+    m_hook = hook;
 }
 
-typedef   int(__fastcall* testFuncT)(uintptr_t, uint32_t arg, uint32_t arg2, uint32_t arg3);
+//11
+//14
+//
+
+typedef   int(__fastcall* testFuncT)(uintptr_t, float arg);
 void __fastcall Morpher::updateDisplayInfoHook(uintptr_t unit) {
     morpher_ptr->updateDisplayInfoCustom(unit);
 
-     //morpher_ptr->SendWoWMessage("HOOKED DISPLAY: " + std::to_string(arg) + ",   " + std::to_string(arg2) + ",     " + std::to_string(arg3));
-    // return morpher_ptr->m_hook->GetOriginalFunction<testFuncT>(morpher_ptr->m_func)(unit, 0, 27, arg3);
+   // morpher_ptr->SendWoWMessage("HOOKED DISPLAY: ");// +std::to_string(arg)); //+ ",   " + std::to_string(arg2) + ",     " + std::to_string(arg3));
+    //morpher_ptr->m_hook->GetOriginalFunction<testFuncT>(morpher_ptr->m_func)(unit, 10.5);
+
   //   morpher_ptr->SendWoWMessage(ret);
      //morpher_ptr->SendWoWMessage("Return val: " + std::to_string(ret));
 
@@ -191,6 +204,10 @@ void __fastcall Morpher::updateDisplayInfoHook(uintptr_t unit) {
 
 void Morpher::updateDisplayInfoCustom(uintptr_t unit) {
     //SendWoWMessage("Hello?");
+    if (m_player.getScaleFromMemory() != m_player.getScale()) {
+        m_player.setScale(m_player.getScale());
+        //  WoWFunctions::updateModel(m_player_ptr);
+    }
     switch (m_player.getMorphIDFromMemory()) {
     case 68670:
         if (m_player.getDisableMeta())
@@ -212,6 +229,7 @@ void Morpher::updateModel() {
         m_last_morphed_id = m_player.getCurrentMorphID();
         WoWFunctions::updateModel(m_player_ptr);
     }
+   // m_player.resetMorphIDInMemory();
 }
 
 uintptr_t Morpher::getPlayerPtr() {
@@ -221,7 +239,7 @@ uintptr_t Morpher::getPlayerPtr() {
 int Morpher::getTargetMorphID() {
     uintptr_t target_ptr = WoWFunctions::getUnitFromName("Target");
     if (target_ptr) {
-        return Memory::readMemory<int>(target_ptr + Offsets::morph_id);
+        return Memory::readMemory<int>(target_ptr + Offsets::original_morph_id);
     }
     else {
         reportParseError("You need to target something first.");
@@ -263,6 +281,12 @@ void Morpher::morphShapeshift(ShapeshiftForm form_id, int morph_id) {
     }
 }
 
+DWORD WINAPI Morpher::testTest(LPVOID lpParam) {
+    Sleep(500);
+    morpher_ptr->m_player.resetMorphIDInMemory();
+    return 1;
+}
+
 // Only responsible for setting the correct morph id as the current morph id
 void Morpher::smartMorphShapeshift(bool set_original) {
     ShapeshiftForm form_id =
@@ -270,7 +294,9 @@ void Morpher::smartMorphShapeshift(bool set_original) {
     //SendWoWMessage(std::to_string((int)form_id));
 
     int morph_id_in_mem = m_player.getMorphIDFromMemory();
+    
     int orig = morph_id_in_mem;
+    
     if (morph_id_in_mem == m_player.getNativeMorphID()) {
         morph_id_in_mem = m_player.getOriginalShapeshiftID(ShapeshiftForm::HUMANOID);
         m_player.setMorphIDInMemory(morph_id_in_mem); // make sure UpdateModel is called even for transparent shapeshifts
@@ -289,6 +315,7 @@ void Morpher::smartMorphShapeshift(bool set_original) {
             return;
         }
     }
+    
 
     switch (form_id) {
     case ShapeshiftForm::MOONKIN:
@@ -326,10 +353,16 @@ void Morpher::smartMorphShapeshift(bool set_original) {
        // SendWoWMessage("UNREACHABLE: smartMorphShapeshift()");
         break;
     }
+    auto thread = CreateThread(NULL, 0, &testTest, NULL, 0, NULL);
+    CloseHandle(thread);
 }
 
 void Morpher::morphRace(int race_id) {
     RaceIDs id = static_cast<RaceIDs>(race_id);
+    if (id == RaceIDs::PANDAREN_ALLIANCE || id == RaceIDs::PANDAREN_HORDE) {
+        id = RaceIDs::PANDAREN;
+        race_id = static_cast<int>(RaceIDs::PANDAREN);
+    }
     switch (id) {
     case RaceIDs::HUMAN:
     case RaceIDs::ORC:
@@ -342,7 +375,24 @@ void Morpher::morphRace(int race_id) {
     case RaceIDs::GOBLIN:
     case RaceIDs::BELF:
     case RaceIDs::DRAENEI:
+
+        /*
+    case RaceIDs::FEL_ORC:
+    case RaceIDs::NAGA:
+    case RaceIDs::BROKEN:
+    case RaceIDs::SKELETON:
+    case RaceIDs::VRYKUL:
+    case RaceIDs::TUSKARR:
+    case RaceIDs::FOREST_TROLL:
+    case RaceIDs::TAUNKA:
+    case RaceIDs::NORTHREND_SKELETON:
+    case RaceIDs::ICE_TROLL:
+    */
+
     case RaceIDs::WORGEN:
+
+   // case RaceIDs::GILNEAN:
+
     case RaceIDs::PANDAREN:
     case RaceIDs::NIGHTBORNE:
     case RaceIDs::HIGHMOUNTAIN_TAUREN:
@@ -350,6 +400,9 @@ void Morpher::morphRace(int race_id) {
     case RaceIDs::LIGHTFORGED_DRAENEI:
     case RaceIDs::ZANDALARI_TROLL:
     case RaceIDs::KUL_TIRAN:
+
+  //  case RaceIDs::THIN_HUMAN:
+
     case RaceIDs::DARK_IRON_DWARF:
     case RaceIDs::VULPERA:
     case RaceIDs::MAGHAR_ORC:
@@ -371,14 +424,14 @@ void Morpher::morphRace(int race_id) {
 void Morpher::updateGender(int gender_id) {
     RaceIDs race_id = static_cast<RaceIDs>(m_player.getRaceID());
     if (!gender_id) {
+        m_player.setGenderID(0);
         morphShapeshift(ShapeshiftForm::HUMANOID, 
             static_cast<int>(WoWUtils::race_male.at(race_id)));
-        m_player.setGenderID(0);
     }
     else {
+        m_player.setGenderID(1);
         morphShapeshift(ShapeshiftForm::HUMANOID,
             static_cast<int>(WoWUtils::race_female.at(race_id)));
-        m_player.setGenderID(1);
     }
 }
 
@@ -450,6 +503,7 @@ void Morpher::morphMount() {
     if (m_player.mountMorphed()) {
        WoWFunctions::updateMountModel(m_player_ptr, m_player.getMountID());
     }
+    m_player.setScale(m_player.getScale()); // needed?
     updateModel();
 }
 
@@ -492,7 +546,7 @@ void Morpher::startMorpher() {
                 case 1809:
                     // This is reached after a /reload loading screen
                     // m_player.restorePlayer(); //not needed for /reload
-                    ts.invokeInMainThread(hookUpdateDisplayInfoCallback); // not necessary to rehook on /reload i think
+                    ts.invokeInMainThread(hookingCallback); // not necessary to rehook on /reload i think
                     ts.invokeInMainThread(registerFunctions);
                     ts.invokeInMainThread(registerLuaEvents);
                     break;
@@ -581,7 +635,15 @@ void Morpher::parseChat(uintptr_t lua_state) {
                 m_lex.finish();
                 return;
             case TokenType::NUMBER:
+                m_player.setMorphIDInMemory(t.toNumber());
+                WoWFunctions::updateModel(m_player_ptr);
                 reportParseError("Command can not start with number.");
+                return;
+            case TokenType::FLOAT: //unused atm
+                   reportParseError("Command can not start with number.");
+                   return;
+            case TokenType::SCALE:
+                parseScale();
                 return;
             case TokenType::END:
                 reportParseError("UNREACHABLE END");
@@ -619,7 +681,7 @@ void Morpher::parseCommands() {
     SendWoWMessage(".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "0|r");
     SendWoWMessage(".customizations");
     SendWoWMessage(".disablemeta");
-
+    SendWoWMessage(".scale |cFF" + required_color + "<scale>|r");
 
     SendWoWMessage(".npcid");
     SendWoWMessage(".reset");
@@ -647,7 +709,10 @@ void Morpher::parseMorph() {
     Token next = m_lex.nextToken();
     if (next.type() == TokenType::NUMBER) {
       // m_func = next.toNumber();
-      // m_hook->HookFunction(updateDisplayInfoHook, next.toNumber());
+     //  m_hook->HookFunction(updateDisplayInfoHook, next.toNumber());
+      // m_player.setScale(5.5);
+      // m_hook->GetOriginalFunction<testFuncT>(m_func)(getPlayerPtr(), 4.5);
+
         //testFunc _getUnitFromName =
         //    reinterpret_cast<testFunc>(morpher_ptr->getBaseAddress() + 0x1CDEC0);
        // _getUnitFromName(next.toNumber(), 0, 0, 0, 0);
@@ -661,9 +726,26 @@ void Morpher::parseMorph() {
     else if(next.type() == TokenType::STRING) {
         std::string arg = next.toString();
         if (arg == "target") {
+            uintptr_t target_ptr = WoWFunctions::getUnitFromName("Target");
             int target_morph_id = getTargetMorphID();
-            if(target_morph_id)
+            uint8_t type =
+                Memory::readMemory<uint8_t>(target_ptr + Offsets::object_type);
+            if (type == 6) {
+               // SendWoWMessage("Type: " + std::to_string(type));
+                if (target_morph_id) {
+                    m_player.copyPlayerItems(target_ptr);
+                    uint8_t race = Memory::readMemory<uint8_t>(target_ptr + Offsets::race_id);
+                    uint8_t gender = Memory::readMemory<uint8_t>(target_ptr + Offsets::gender_id);
+                    m_player.setRaceID(race);
+                    m_player.setGenderID(gender);
+                    m_player.setCustomizationPtr(Memory::readMemory<uintptr_t>(target_ptr + Offsets::customization_ptr));
+                    morphShapeshift(ShapeshiftForm::HUMANOID, (int)WoWUtils::getRaceMorphID(race, gender));
+                }
+            } 
+
+            if (type == 5) {
                 morphShapeshift(ShapeshiftForm::HUMANOID, target_morph_id);
+            }
         }
         else
             reportParseError("Invalid .morph operand.");
@@ -677,6 +759,8 @@ void Morpher::parseRace() {
     Token next = m_lex.nextToken();
     if (next.type() == TokenType::NUMBER) {
         morphRace(next.toNumber());
+        //auto thread = CreateThread(NULL, 0, &testTest, NULL, 0, NULL);
+       // CloseHandle(thread);
     }
     else {
         reportParseError("Invalid .race operand (must be number).");
@@ -692,18 +776,21 @@ void Morpher::parseGender() {
     else {
         morphGender(-1);
     }
+  //  auto thread = CreateThread(NULL, 0, &testTest, NULL, 0, NULL);
+  //  CloseHandle(thread);
     m_lex.finish();
 }
 
 void Morpher::parseItem() {
-    // m_hook->UnhookAllFunctions();
-    //return;
+   // m_hook->UnhookAllFunctions();
+   // return;
     Token next = m_lex.nextToken();
     int item;
     int item_id;
     if (next.type() == TokenType::NUMBER) {
         item = next.toNumber();
         next = m_lex.nextToken();
+        m_player.m_index = item;
         if (next.type() == TokenType::NUMBER) {
             item_id = next.toNumber();
             next = m_lex.nextToken();
@@ -859,7 +946,9 @@ void Morpher::parseMorphNPC() {
 void Morpher::parseNPCID() {
     int target_morph_id = getTargetMorphID();
     if (target_morph_id) {
-        SendWoWMessage(std::to_string(target_morph_id));
+       // SendWoWMessage(std::to_string(target_morph_id));
+        SendWoWMessage(std::to_string(Memory::readMemory<int>(m_player_ptr + Offsets::original_morph_id)));
+
     }
     m_lex.finish();
 }
@@ -894,6 +983,8 @@ void Morpher::parseCustomizationOption(const std::string& str) {
             //SendWoWMessage(std::to_string(choice_id));
             m_player.setCustomizationChoice(customizations.at(str), choice_id);
             WoWFunctions::updateModel(m_player_ptr);
+            auto thread = CreateThread(NULL, 0, &testTest, NULL, 0, NULL);
+            CloseHandle(thread);
         }
         else {
             reportParseError("Invalid ." + str + " first operand.");
@@ -904,6 +995,20 @@ void Morpher::parseCustomizationOption(const std::string& str) {
     }
     m_lex.finish();
 }
+
+void Morpher::parseScale() {
+    Token next = m_lex.nextToken();
+    if (next.type() == TokenType::NUMBER) {
+        m_player.setScale(next.toFloat());
+       // WoWFunctions::updateModel(m_player_ptr);
+        //WoWFunctions::updateScale(m_player_ptr);
+    }
+    else {
+        reportParseError("Invalid .scale operand (must be decimal number).");
+    }
+    m_lex.finish();
+}
+
 
 void Morpher::resetMorpher() {
     m_player.resetPlayer();

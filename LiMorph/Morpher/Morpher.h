@@ -27,6 +27,10 @@ public:
 		return m_base_address;
 	}
 
+	inline VMTHook* getVMTHook() {
+		return m_hook;
+	}
+
 private:
 	// printing in wow
 	void SendWoWMessage(const std::string& message, const std::string& color);
@@ -47,7 +51,7 @@ private:
 
 	// main thread callbacks
 	static void initializeMorpherCallback();
-	static void hookUpdateDisplayInfoCallback();
+	static void hookingCallback();
 	static void registerFunctions();
 	static void registerLuaEvents();
 	static void zoningCallback();
@@ -55,10 +59,11 @@ private:
 	// methods called by main thread callbacks
 	void zoning();
 	void initializeMorpher();
-	void hookUpdateDisplayInfo();
+	void hookFunctions();
 
 	// CGUnit_C__UpdateDisplayInfo callback
 	static void __fastcall updateDisplayInfoHook(uintptr_t unit);
+
 	void updateDisplayInfoCustom(uintptr_t unit);
 
 	// update model
@@ -96,8 +101,9 @@ private:
 	void parseNPCID();
 	void parseCustomizations();
 	void parseCustomizationOption(const std::string& str);
+	void parseScale();
 	void resetMorpher();
-
+	static DWORD WINAPI testTest(LPVOID lpParam);
 	uintptr_t iterateObjMgr();
 
 	int m_func;

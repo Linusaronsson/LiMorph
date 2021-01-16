@@ -80,6 +80,13 @@ Token Lexer::number() {
 		advance();
 	}
 
+	if (m_current_char == '.' && isDigit(peek())) {
+		advance();
+		while (isDigit(m_current_char)) {
+			advance();
+		}
+	}
+
 	return constructToken(TokenType::NUMBER);
 	// Add support for numbers written in scientific notation
 }
@@ -107,6 +114,7 @@ Token Lexer::identifier() {
 	if (result == "npcid") return constructToken(TokenType::NPCID);
 	if (result == "customizations") return constructToken(TokenType::CUSTOMIZATIONS);
 	if (result == "disablemeta") return constructToken(TokenType::DISABLEMETA);
+	if (result == "scale") return constructToken(TokenType::SCALE);
 
 	return constructToken(TokenType::STRING);
 }

@@ -18,7 +18,9 @@ enum class TokenType : uint8_t
 	SHAPESHIFT,
 	MOUNT,
 	NUMBER,
+	FLOAT,
 	STRING,
+	SCALE,
 	NPC,
 	CUSTOMIZATIONS,
 	DISABLEMETA,
@@ -51,6 +53,8 @@ public:
 			return "MOUNT";
 		case TokenType::NUMBER:
 			return "NUMBER";
+		case TokenType::FLOAT:
+			return "FLOAT";
 		case TokenType::STRING:
 			return "STRING";
 		case TokenType::NPC:
@@ -67,11 +71,19 @@ public:
 			return "UNREACHABLE TOKENTYPE";
 		}
 	}
+
 	int toNumber() const {
 		int num;
 		auto result = std::from_chars(m_str.data(), m_str.data() + m_str.size(), num);
 		return num;
 	}
+
+	float toFloat() const {
+		float dbl;
+		auto result = std::from_chars(m_str.data(), m_str.data() + m_str.size(), dbl);
+		return dbl;
+	}
+
 private:
 	TokenType m_type;
 	std::string_view m_str;
