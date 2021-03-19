@@ -447,7 +447,7 @@ void Player::setMorphIDInMemory(int morph_id) {
 		//Memory::writeMemory<int>(m_player_ptr + Offsets::original_morph_id, 1);
 		//Memory::writeMemory<int>(m_player_ptr + Offsets::morph_id, 0);
 
-		Memory::writeMemory<uint8_t>(m_player_ptr + dat[8], m_gender_id);
+		Memory::writeMemory<uint8_t>(m_player_ptr + dat[8]+0x18, m_gender_id);
 		//	}
 	//	Memory::writeMemory<uint8_t>(m_player_ptr + Offsets::race_id, m_race_id);
 	}
@@ -462,7 +462,7 @@ void Player::resetMorphIDInMemory() {
 	//Memory::writeMemory<int>(m_player_ptr + Offsets::morph_id, m_original_morph_id);
 	//Memory::writeMemory<int>(m_player_ptr + Offsets::original_morph_id, m_original_morph_id);
 	Memory::writeMemory<uint8_t>(m_player_ptr + Offsets::gender_id, m_original_gender_id);
-	Memory::writeMemory<uint8_t>(m_player_ptr + dat[8], m_original_gender_id);
+	Memory::writeMemory<uint8_t>(m_player_ptr + dat[8] + 0x18, m_original_gender_id);
 	Memory::writeMemory<uint8_t>(m_player_ptr + Offsets::race_id, m_original_race_id);
 }
 

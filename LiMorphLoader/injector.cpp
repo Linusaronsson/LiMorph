@@ -87,8 +87,8 @@ int main()
    //ImageBase = (ULONG_PTR)GetModuleHandleW(NULL);
    //int remap_ret = RmpRemapImage(ImageBase);
 
-    uintptr_t game_version = base_address + 0x261D6E4;
-    uintptr_t game_build = base_address + 0x260CAC4;
+    uintptr_t game_version = base_address + 0x2D0241C;
+    uintptr_t game_build = base_address + 0x2CF1634;
 
     HANDLE hProc = OpenProcess(PROCESS_ALL_ACCESS, 0, process_id);
     char version[10];
@@ -101,7 +101,7 @@ int main()
         ReadProcessMemory(hProc, (LPVOID)game_version, &version, 10, 0);
         ReadProcessMemory(hProc, (LPVOID)game_build, &build, 10, 0);
         std::string current_verion = std::string(version) + "." + std::string(build);
-        std::string supported_version = "9.0.2.37176";
+        std::string supported_version = "9.0.5.37899";
 
         std::cout << "Current WoW version: " << current_verion << std::endl;
       //  std::cout << "LiMorph currently supports WoW version: " + supported_version << std::endl;

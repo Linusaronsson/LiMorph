@@ -34,6 +34,7 @@ public:
 private:
 	// printing in wow
 	void SendWoWMessage(const std::string& message, const std::string& color);
+	void SendWoWMessage(uintptr_t lua_state, const std::string& message, const std::string& color);
 	void reportParseError(const std::string& message);
 
 	// load lua code into c++
@@ -44,6 +45,8 @@ private:
 
 	// lua callbacks (for LUA API)
 	static int chatCallback(uintptr_t lua_state);
+	static int initLM(uintptr_t lua_state);
+	static int customMessage(uintptr_t lua_state);
 	static int mountCallback(uintptr_t lua_state);
 	static int morphItemCallback(uintptr_t lua_state);
 	static int morphEnchantCallback(uintptr_t lua_state);
@@ -114,6 +117,10 @@ private:
 	Lexer m_lex;
 	VMTHook* m_hook;
 
+	std::string most_recent;
+
+	uintptr_t active_lua_state;
+	bool lua_loaded = false;
 	bool is_moonkin_transparent = false;
 	int m_last_morphed_id = 0;
 };

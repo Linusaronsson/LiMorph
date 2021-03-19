@@ -17,7 +17,19 @@ void Morpher::SendWoWMessage(const std::string& message,
     std::string script = "DEFAULT_CHAT_FRAME:AddMessage('|cFF3480eb LiMorph:|r ";
     script += message;
     script += "'," + color + ")"; //RGB color of message.
-    WoWFunctions::executeLUA(script);
+    most_recent = script;
+    //WoWFunctions::executeLUA(script);
+}
+
+void Morpher::SendWoWMessage(uintptr_t lua_state, const std::string& message,
+    const std::string& color = "1,1,1") {
+    std::string script = "DEFAULT_CHAT_FRAME:AddMessage('|cFF3480eb LiMorph:|r ";
+    script += message;
+    script += "'," + color + ")"; //RGB color of message.
+   // WoWFunctions::executeLUA(script);
+    WoWFunctions::luaPushLString(lua_state, script.c_str(), script.length());
+    WoWFunctions::executeWrapperLUA(lua_state);
+
 }
 
 void Morpher::reportParseError(const std::string& message) {
@@ -47,6 +59,52 @@ const char* Morpher::getClickMountMorphingCode() {
 
 int __cdecl Morpher::chatCallback(uintptr_t lua_state) {
     morpher_ptr->parseChat(lua_state);
+    return 0;
+}
+
+int __cdecl Morpher::initLM(uintptr_t lua_state) {
+
+    if (!morpher_ptr->lua_loaded) {
+        const std::string& color = "1,1,1";
+        std::string script = "DEFAULT_CHAT_FRAME:AddMessage('|cFF3480eb LiMorph:|r ";
+        script += "Loaded. Type .commands for usable commands.";
+        script += "'," + color + ")"; //RGB color of message.
+        std::string lua = std::string(getParseChatLuaCode()) +
+            std::string(getMountEventLuaCode()) +
+            std::string(getClickMorphingCode()) +
+            std::string(getClickMountMorphingCode()) + "\n" + script;
+
+       // std::stringstream stream;
+        //stream << std::hex << lua_state << ",   " << std::hex << morpher_ptr->m_base_address << ",   " << std::hex << morpher_ptr->m_player_ptr;
+       // std::string lua3 = "print('lua_state: " + stream.str();
+       // lua3 += "')";
+        //std::string lua3 = "print('HELLO LUL')";
+        WoWFunctions::luaPushLString(lua_state, lua.c_str(), lua.length());
+        WoWFunctions::executeWrapperLUA(lua_state);
+        morpher_ptr->lua_loaded = true;
+    }
+  //  std::stringstream stream;
+    //stream << std::hex << morpher_ptr->m_base_address;
+    //stream << " \t\n";
+    //stream << std::hex << morpher_ptr->m_player_ptr;
+    //std::string s = "print('" + stream.str() + "')";
+    /*
+    std::string lua = std::string(getParseChatLuaCode()) +
+        std::string(getMountEventLuaCode()) +
+        std::string(getClickMorphingCode()) + 
+        std::string(getClickMountMorphingCode());
+        */
+
+    return 0;
+}
+
+
+int __cdecl Morpher::customMessage(uintptr_t lua_state) {
+    if (morpher_ptr->most_recent != "") {
+        WoWFunctions::luaPushLString(lua_state, morpher_ptr->most_recent.c_str(), morpher_ptr->most_recent.length());
+        WoWFunctions::executeWrapperLUA(lua_state);
+    }
+    morpher_ptr->most_recent = "";
     return 0;
 }
 
@@ -100,16 +158,19 @@ void Morpher::registerFunctions() {
     WoWFunctions::registerFunction("MorphItem", (uintptr_t)morphItemCallback);
     WoWFunctions::registerFunction("MorphEnchant", (uintptr_t)morphEnchantCallback);
     WoWFunctions::registerFunction("MorphMount", (uintptr_t)morphMountCallback);
+    WoWFunctions::registerFunction("LM", (uintptr_t)initLM);
+    WoWFunctions::registerFunction("CustomMessage", (uintptr_t)customMessage);
+
     //WoWFunctions::registerFunction("PlayerPtr", (uintptr_t)WoWFunctions::getUnitFromName("Player"));
 
 }
 
 void Morpher::registerLuaEvents() {
-    WoWFunctions::executeLUA(getMountEventLuaCode());
+   // WoWFunctions::executeLUA(getMountEventLuaCode());
     //WoWFunctions::executeLUA(getShapeshiftEventLuaCode());
     WoWFunctions::executeLUA(getParseChatLuaCode());
-    WoWFunctions::executeLUA(getClickMorphingCode());
-    WoWFunctions::executeLUA(getClickMountMorphingCode());
+  //  WoWFunctions::executeLUA(getClickMorphingCode());
+   // WoWFunctions::executeLUA(getClickMountMorphingCode());
 }
 
 void Morpher::zoningCallback() {
@@ -128,7 +189,8 @@ void Morpher::zoning() {
 
     // needed incase mount state is different between enter and exit zoning
     // (in which case mount event is not triggered automatically)
-    WoWFunctions::executeLUA("player_mount_event()");
+    //WoWFunctions::executeLUA("player_mount_event()"); //removed in 9.0.5
+    //morphMount(); // changed after 9.0.5 (was line above b4)
 
     smartMorphShapeshift();
     updateModel();
@@ -146,15 +208,15 @@ void Morpher::initializeMorpher() {
     m_last_morphed_id = m_player.getCurrentMorphID(); // maybe not needed or wrong
 
     m_hook = new VMTHook(reinterpret_cast<void*>(m_player_ptr));
-   // m_hook->PrintFunctions(m_base_address);
+    //m_hook->PrintFunctions(m_base_address);
     hookFunctions();
     registerFunctions();
-    registerLuaEvents();
+    //registerLuaEvents();
 
-    morphRace(m_player.getRaceID());
-    smartMorphShapeshift();
+    //morphRace(m_player.getRaceID());
+    //smartMorphShapeshift();
 
-    SendWoWMessage("Loaded. Type .commands for usable commands.");
+   // SendWoWMessage("Loaded. Type .commands for usable commands.");
   // male orc: 51894
     // undead male: 54041
     
@@ -509,7 +571,8 @@ void Morpher::morphMount() {
 
 void Morpher::morphMountByID(int mount_id) {
     m_player.setMountID(mount_id);
-    WoWFunctions::executeLUA("player_mount_event()");
+    morphMount();
+    //WoWFunctions::executeLUA("player_mount_event()");
 }
 
 void Morpher::morphTitle(int title_id) {
@@ -540,6 +603,7 @@ void Morpher::startMorpher() {
                 case 1561:
                     // This is reached after a login loading screen
                     ts.invokeInMainThread(initializeMorpherCallback);
+                    lua_loaded = false;
                     morpher_loaded = true;
                     break;
                 case 1293:
@@ -548,7 +612,8 @@ void Morpher::startMorpher() {
                     // m_player.restorePlayer(); //not needed for /reload
                     ts.invokeInMainThread(hookingCallback); // not necessary to rehook on /reload i think
                     ts.invokeInMainThread(registerFunctions);
-                    ts.invokeInMainThread(registerLuaEvents);
+                    lua_loaded = false;
+                    //ts.invokeInMainThread(registerLuaEvents); //removed in 9.0.5
                     break;
                 case 1537:
                     // This is reached after a loading screen cause by any form of zoning in game
@@ -565,18 +630,19 @@ void Morpher::startMorpher() {
                 if (!morpher_loaded) { // todo: is this really needed? (wow doesnt allow the same dll to be injected again)
                     while (getPlayerPtr() == 0); 
                     ts.invokeInMainThread(initializeMorpherCallback);
+                    lua_loaded = false;
                    // iterateObjMgr();
                     morpher_loaded = true;
                 }
             }
         }
     }
-
 }
 
 // Chat Parsing
 void Morpher::parseChat(uintptr_t lua_state) {
     //SendWoWMessage("well that worked..");
+    active_lua_state = lua_state;
     int top = WoWFunctions::luaGetTop(lua_state);
     if (top) {
         std::string msg = WoWFunctions::luaToString(lua_state, top, 0);
@@ -659,35 +725,78 @@ void Morpher::parseChat(uintptr_t lua_state) {
             current = m_lex.nextToken().type();
         }
     }
+    
 }
 
 void Morpher::parseCommands() {
     std::string required_color = "E74C3C";
     std::string optional_color = "28B463";
-    SendWoWMessage("|cFF" + required_color + "Required|r |cFF" + optional_color + "Optional|r");
-  //  SendWoWMessage("Existing commands: ");
-    SendWoWMessage(".morph |cFF" + required_color +  "<morph_id>|r");
-    SendWoWMessage(".morph |cFF" + required_color + "target|r");
-    SendWoWMessage(".race |cFF" + required_color + "<race_id>|r");
-    SendWoWMessage(".gender |cFF" + optional_color + "[0-1]|r");
-    SendWoWMessage(".item |cFF" + required_color + "<item>|r |cFF" + required_color + "<item_id>|r |cFF" + optional_color + "<version_id>|r");
-    SendWoWMessage(".item |cFF" + required_color + "target|r");
-    SendWoWMessage(".item |cFF" + required_color + "<item>|r |cFF" + required_color + "target|r");
-    SendWoWMessage(".mount |cFF" + required_color + "<mount_id>|r");
-    SendWoWMessage(".title |cFF" + required_color + "<title_id>|r");
-    SendWoWMessage(".enchant |cFF" + required_color + "[1-2]|r |cFF" + required_color + "<enchant_id>|r");
-    SendWoWMessage(".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "<morph_id>|r");
-    SendWoWMessage(".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "target|r");
-    SendWoWMessage(".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "0|r");
-    SendWoWMessage(".customizations");
-    SendWoWMessage(".disablemeta");
-    SendWoWMessage(".scale |cFF" + required_color + "<scale>|r");
+    const std::string& color = "1,1,1";
 
-    SendWoWMessage(".npcid");
-    SendWoWMessage(".reset");
+    std::string dchat = "DEFAULT_CHAT_FRAME:AddMessage('|cFF3480eb LiMorph:|r ";
+    std::string script = dchat;
+    script += "|cFF" + required_color + "Required|r |cFF" + optional_color + "Optional|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".morph |cFF" + required_color + "<morph_id>|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".morph |cFF" + required_color + "target|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".race |cFF" + required_color + "<race_id>|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".gender |cFF" + optional_color + "[0-1]|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".item |cFF" + required_color + "<item>|r |cFF" + required_color + "<item_id>|r |cFF" + optional_color + "<version_id>|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".item |cFF" + required_color + "target|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".item |cFF" + required_color + "<item>|r |cFF" + required_color + "target|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".mount |cFF" + required_color + "<mount_id>|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".title |cFF" + required_color + "<title_id>|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".enchant |cFF" + required_color + "[1-2]|r |cFF" + required_color + "<enchant_id>|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "<morph_id>|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "target|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".shapeshift |cFF" + required_color + "<form_id>|r |cFF" + required_color + "0|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".customizations";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".disablemeta";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".scale |cFF" + required_color + "<scale>|r";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".npcid";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += ".reset";
+    script += "'," + color + ")"; //RGB color of message.
+    script += dchat;
+    script += "Note: You can alt-click items and mounts in the collection tab in order to morph them.";
+    script += "'," + color + ")"; //RGB color of message.
 
-    SendWoWMessage("Note: You can alt-click items and mounts in the collection tab in order to morph them.");
-
+    most_recent = script;
+    //SendWoWMessage(commands);
     m_lex.finish();
 }
 
@@ -956,10 +1065,11 @@ void Morpher::parseNPCID() {
 void Morpher::parseCustomizations() {
     //SendWoWMessage("asd");
     auto& customizations = m_player.getCustomizations();
+    std::string script;
     for (const auto& p : customizations) {
-        SendWoWMessage("." + p.first + " <0-" +
-            std::to_string(m_player.getNumberOfChoices(p.second)-1) + ">");
+        script += "." + p.first + " <0-" + std::to_string(m_player.getNumberOfChoices(p.second)-1) + ">    ";
     }
+    SendWoWMessage(script);
     m_lex.finish();
 }
 
